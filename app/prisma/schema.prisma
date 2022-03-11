@@ -140,21 +140,34 @@ model traspasos {
 model usuarios {
   id                                              Int             @id @default(autoincrement())
   nombre                                          String          @db.VarChar(50)
-  usuario                                         String          @db.VarChar(50)
+  usuario                                         String          @unique(map: "usuario") @db.VarChar(50)
   email                                           String          @db.VarChar(50)
   password                                        String          @db.Char(32)
   token                                           String          @db.VarChar(50)
   estado                                          usuarios_estado @default(P)
   lider                                           Boolean         @default(dbgenerated("(b'0')")) @db.Bit(1)
   foto                                            String          @db.VarChar(50)
-  idLiga                                          Int
-  ligas_ligasTousuarios_idLiga                    ligas           @relation("ligasTousuarios_idLiga", fields: [idLiga], references: [id], onDelete: Cascade, map: "usuarios_ibfk_2")
+  idLiga                                          Int?
+  ligas_ligasTousuarios_idLiga                    ligas?          @relation("ligasTousuarios_idLiga", fields: [idLiga], references: [id], onDelete: Cascade, map: "usuarios_ibfk_2")
   jugadores                                       jugadores[]
   ligas_ligas_idUsuarioLiderTousuarios            ligas[]         @relation("ligas_idUsuarioLiderTousuarios")
   traspasos_traspasos_idUsuarioEmisorTousuarios   traspasos[]     @relation("traspasos_idUsuarioEmisorTousuarios")
   traspasos_traspasos_idusuarioReceptorTousuarios traspasos[]     @relation("traspasos_idusuarioReceptorTousuarios")
 
   @@index([idLiga], map: "idLiga")
+}
+
+model iconosnoticias {
+  id     Int                 @id @default(autoincrement())
+  tema   iconosnoticias_tema @unique(map: "tema")
+  imagen String              @db.VarChar(50)
+}
+
+model noticias {
+  id    Int           @id @default(autoincrement())
+  tema  noticias_tema @default(I)
+  texto String        @db.VarChar(50)
+  fecha DateTime      @default(now()) @db.Date
 }
 
 enum jugadores_posicion {
@@ -175,4 +188,14 @@ enum usuarios_estado {
   P
   A
   B
+}
+
+enum iconosnoticias_tema {
+  I
+  T
+}
+
+enum noticias_tema {
+  I
+  T
 }
