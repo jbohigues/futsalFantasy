@@ -140,13 +140,14 @@ model traspasos {
 model usuarios {
   id                                              Int             @id @default(autoincrement())
   nombre                                          String          @db.VarChar(50)
+  apellidos                                       String?         @db.VarChar(50)
   usuario                                         String          @unique(map: "usuario") @db.VarChar(50)
   email                                           String          @db.VarChar(50)
   password                                        String          @db.Char(32)
   token                                           String          @db.VarChar(50)
   estado                                          usuarios_estado @default(P)
   lider                                           Boolean         @default(dbgenerated("(b'0')")) @db.Bit(1)
-  foto                                            String          @db.VarChar(50)
+  foto                                            String          @default("userDefecto.png") @db.VarChar(50)
   idLiga                                          Int?
   ligas_ligasTousuarios_idLiga                    ligas?          @relation("ligasTousuarios_idLiga", fields: [idLiga], references: [id], onDelete: Cascade, map: "usuarios_ibfk_2")
   jugadores                                       jugadores[]
@@ -167,7 +168,9 @@ model noticias {
   id    Int           @id @default(autoincrement())
   tema  noticias_tema @default(I)
   texto String        @db.VarChar(50)
-  fecha DateTime      @default(now()) @db.Date
+  fecha DateTime      @default(now()) @db.DateTime(0)
+  dia   DateTime      @default(now()) @db.Date
+  hora  DateTime      @default(now()) @db.Time(0)
 }
 
 enum jugadores_posicion {
