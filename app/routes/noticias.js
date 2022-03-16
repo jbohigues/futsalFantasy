@@ -4,9 +4,41 @@ var prismaclient = require("@prisma/client");
 
 const prisma = new prismaclient.PrismaClient();
 
-router.get("/", async function (req, res, next) {
+router.get("/:skip", async function (req, res, next) {
   try {
-    const noticias = await prisma.noticias.findMany();
+    const skip = Number(req.params.skip);
+    const noticias = await prisma.noticias.findMany({
+      skip: skip,
+      take: 2,
+      orderBy: [
+        {
+          fecha: "desc",
+        },
+      ],
+    });
+    res.json(noticias);
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
+router.get("/:skip/:filtro", async function (req, res, next) {
+  try {
+    const skip = Number(req.params.skip);
+    const filtro = req.params.filtro;
+
+    const noticias = await prisma.noticias.findMany({
+      skip: skip,
+      take: 2,
+      orderBy: [
+        {
+          fecha: "desc",
+        },
+      ],
+      where: {
+        tema: filtro
+      }
+    });
     res.json(noticias);
   } catch (error) {
     res.send("ERROR: " + error);

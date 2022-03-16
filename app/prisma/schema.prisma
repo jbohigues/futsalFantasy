@@ -160,7 +160,7 @@ model usuarios {
 
 model iconosnoticias {
   id     Int                 @id @default(autoincrement())
-  tema   iconosnoticias_tema @unique(map: "tema")
+  tema   iconosnoticias_tema
   imagen String              @db.VarChar(50)
 }
 
@@ -169,8 +169,6 @@ model noticias {
   tema  noticias_tema @default(I)
   texto String        @db.VarChar(50)
   fecha DateTime      @default(now()) @db.DateTime(0)
-  dia   DateTime      @default(now()) @db.Date
-  hora  DateTime      @default(now()) @db.Time(0)
 }
 
 enum jugadores_posicion {
