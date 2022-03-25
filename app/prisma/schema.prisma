@@ -99,7 +99,6 @@ model usuarios {
   idLiga                                          Int?
   ligas_ligasTousuarios_idLiga                    ligas?            @relation("ligasTousuarios_idLiga", fields: [idLiga], references: [id], onDelete: Cascade, map: "usuarios_ibfk_2")
   equiposusuarios                                 equiposusuarios[]
-  jugadoresreales                                 jugadoresreales[]
   ligas_ligas_idUsuarioLiderTousuarios            ligas[]           @relation("ligas_idUsuarioLiderTousuarios")
   traspasos_traspasos_idUsuarioEmisorTousuarios   traspasos[]       @relation("traspasos_idUsuarioEmisorTousuarios")
   traspasos_traspasos_idusuarioReceptorTousuarios traspasos[]       @relation("traspasos_idusuarioReceptorTousuarios")
@@ -142,15 +141,17 @@ model equiposreales {
 }
 
 model equiposusuarios {
-  id        Int      @id @default(autoincrement())
-  idUsuario Int
-  idLiga    Int?
-  nombre    String   @db.VarChar(50)
-  foto      String   @default("equipo.png") @db.VarChar(50)
-  puntos    Int      @default(0)
-  dinero    Int      @default(40000000)
-  ligas     ligas?   @relation(fields: [idLiga], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "equiposusuarios_ibfk_2")
-  usuarios  usuarios @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "equiposusuarios_ibfk_1")
+  id              Int               @id @default(autoincrement())
+  idUsuario       Int
+  idLiga          Int?
+  nombre          String            @db.VarChar(50)
+  foto            String            @default("equipo.png") @db.VarChar(50)
+  puntos          Int               @default(0)
+  dinero          Int               @default(40000000)
+  numJugadores    Int               @default(15)
+  ligas           ligas?            @relation(fields: [idLiga], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "equiposusuarios_ibfk_2")
+  usuarios        usuarios          @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "equiposusuarios_ibfk_1")
+  jugadoresreales jugadoresreales[]
 
   @@index([idLiga], map: "idLiga")
   @@index([idUsuario], map: "idUsuario")
@@ -165,14 +166,14 @@ model jugadoresreales {
   estado                 jugadoresreales_estado   @default(P)
   foto                   String?                  @db.VarChar(50)
   idEquipoReal           Int
-  idUsuario              Int
+  idEquipoUsuario        Int
   equiposreales          equiposreales            @relation(fields: [idEquipoReal], references: [id], onDelete: Cascade, map: "jugadoresreales_ibfk_3")
-  usuarios               usuarios                 @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "jugadoresreales_ibfk_4")
+  equiposusuarios        equiposusuarios          @relation(fields: [idEquipoUsuario], references: [id], onDelete: Cascade, map: "jugadoresreales_ibfk_5")
   infojugadoresenpartido infojugadoresenpartido[] @ignore
   traspasos              traspasos[]
 
   @@index([idEquipoReal], map: "idEquipo")
-  @@index([idUsuario], map: "idUsuario")
+  @@index([idEquipoUsuario], map: "idEquipoUsuario")
 }
 
 model calendario {

@@ -41,6 +41,9 @@ router.get("/l2=:id", async function (req, res, next) {
       },
       orderBy: {
         puntos: 'desc'
+      },
+      include:{
+        jugadoresreales: true
       }
     });
     res.json(equiposLiga);
