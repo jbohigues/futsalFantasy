@@ -7,120 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model calendario {
+  id                                                  Int                      @id @default(autoincrement())
+  jornada                                             Int
+  idLocal                                             Int
+  idVisitante                                         Int
+  fecha                                               DateTime                 @default(now()) @db.DateTime(0)
+  equiposreales_calendario_idLocalToequiposreales     equiposreales            @relation("calendario_idLocalToequiposreales", fields: [idLocal], references: [id], onDelete: Cascade, map: "calendario_ibfk_5")
+  equiposreales_calendario_idVisitanteToequiposreales equiposreales            @relation("calendario_idVisitanteToequiposreales", fields: [idVisitante], references: [id], onDelete: Cascade, map: "calendario_ibfk_6")
+  infojugadoresenpartido                              infojugadoresenpartido[] @ignore
+  resultados                                          resultados[]             @ignore
+
+  @@index([idLocal], map: "idLocal")
+  @@index([idVisitante], map: "idVisitante")
+}
+
 model cardshome {
   id     Int    @id @default(autoincrement())
   imagen String @db.VarChar(50)
   texto  String @db.VarChar(50)
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model infojugadoresenpartido {
-  idPartido       Int
-  idJugador       Int
-  titular         Boolean         @default(dbgenerated("(b'0')")) @db.Bit(1)
-  goles           Int             @default(0)
-  amarillas       Int             @default(0)
-  rojaDirecta     Boolean         @default(dbgenerated("(b'0')")) @db.Bit(1)
-  puntos          Int             @default(0)
-  jugadoresreales jugadoresreales @relation(fields: [idJugador], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "infojugadoresenpartido_ibfk_2")
-
-  @@index([idJugador], map: "idJugador")
-  @@index([idPartido], map: "idPartido")
-  @@ignore
-}
-
-model ligas {
-  id                                      Int               @id @default(autoincrement())
-  nombre                                  String            @db.VarChar(50)
-  foto                                    String            @db.VarChar(50)
-  codigoLiga                              String            @db.VarChar(50)
-  abono                                   Int               @default(100000)
-  numMaxPlantilla                         Int               @default(23)
-  numJugMercado                           Int               @default(14)
-  diasJugEnMercado                        Int               @default(2)
-  diasGestionPujas                        Int               @default(2)
-  idUsuarioLider                          Int
-  usuarios_ligas_idUsuarioLiderTousuarios usuarios          @relation("ligas_idUsuarioLiderTousuarios", fields: [idUsuarioLider], references: [id], onDelete: Cascade, map: "ligas_ibfk_2")
-  equiposusuarios                         equiposusuarios[]
-  noticias                                noticias[]
-  puntos                                  puntos[]          @ignore
-  usuarios_ligasTousuarios_idLiga         usuarios[]        @relation("ligasTousuarios_idLiga")
-
-  @@index([idUsuarioLider], map: "idUsuarioLider")
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model puntos {
-  idLiga           Int
-  titular          Int   @default(2)
-  golDL            Int   @default(3)
-  golMC            Int   @default(4)
-  golDF            Int   @default(5)
-  golPT            Int   @default(6)
-  segundaAmarilla  Int   @default(-3)
-  rojaDirecta      Int   @default(-6)
-  malPartido       Int   @default(-2)
-  noJuegaPartido   Int   @default(0)
-  buenPartido      Int   @default(2)
-  excelentePartido Int   @default(3)
-  perfectoPartido  Int   @default(4)
-  ligas            ligas @relation(fields: [idLiga], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "puntos_ibfk_1")
-
-  @@index([idLiga], map: "idLiga")
-  @@ignore
-}
-
-model traspasos {
-  id                                             Int             @id @default(autoincrement())
-  idJugador                                      Int
-  idUsuarioEmisor                                Int
-  idusuarioReceptor                              Int
-  precio                                         Int
-  jugadoresreales                                jugadoresreales @relation(fields: [idJugador], references: [id], onDelete: Cascade, map: "traspasos_ibfk_4")
-  usuarios_traspasos_idUsuarioEmisorTousuarios   usuarios        @relation("traspasos_idUsuarioEmisorTousuarios", fields: [idUsuarioEmisor], references: [id], onDelete: Cascade, map: "traspasos_ibfk_6")
-  usuarios_traspasos_idusuarioReceptorTousuarios usuarios        @relation("traspasos_idusuarioReceptorTousuarios", fields: [idusuarioReceptor], references: [id], onDelete: Cascade, map: "traspasos_ibfk_5")
-
-  @@index([idJugador], map: "idJugador")
-  @@index([idUsuarioEmisor], map: "idUsuarioEmisor")
-  @@index([idusuarioReceptor], map: "idusuarioReceptor")
-}
-
-model usuarios {
-  id                                              Int               @id @default(autoincrement())
-  nombre                                          String            @db.VarChar(50)
-  apellidos                                       String?           @db.VarChar(50)
-  usuario                                         String            @unique(map: "usuario") @db.VarChar(50)
-  email                                           String            @db.VarChar(50)
-  password                                        String            @db.Char(32)
-  token                                           String            @db.VarChar(50)
-  estado                                          usuarios_estado   @default(P)
-  lider                                           Boolean           @default(dbgenerated("(b'0')")) @db.Bit(1)
-  foto                                            String            @default("userDefecto.png") @db.VarChar(50)
-  idLiga                                          Int?
-  ligas_ligasTousuarios_idLiga                    ligas?            @relation("ligasTousuarios_idLiga", fields: [idLiga], references: [id], onDelete: Cascade, map: "usuarios_ibfk_2")
-  equiposusuarios                                 equiposusuarios[]
-  ligas_ligas_idUsuarioLiderTousuarios            ligas[]           @relation("ligas_idUsuarioLiderTousuarios")
-  traspasos_traspasos_idUsuarioEmisorTousuarios   traspasos[]       @relation("traspasos_idUsuarioEmisorTousuarios")
-  traspasos_traspasos_idusuarioReceptorTousuarios traspasos[]       @relation("traspasos_idusuarioReceptorTousuarios")
-
-  @@index([idLiga], map: "idLiga")
-}
-
-model iconosnoticias {
-  id     Int                 @id @default(autoincrement())
-  tema   iconosnoticias_tema
-  imagen String              @db.VarChar(50)
-}
-
-model noticias {
-  id     Int           @id @default(autoincrement())
-  idLiga Int
-  tema   noticias_tema @default(I)
-  texto  String        @db.VarChar(50)
-  fecha  DateTime      @default(now()) @db.DateTime(0)
-  ligas  ligas         @relation(fields: [idLiga], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "noticias_ibfk_1")
-
-  @@index([idLiga], map: "idLiga")
 }
 
 model equiposreales {
@@ -141,25 +46,53 @@ model equiposreales {
 }
 
 model equiposusuarios {
-  id              Int               @id @default(autoincrement())
-  idUsuario       Int
-  idLiga          Int?
-  nombre          String            @db.VarChar(50)
-  foto            String            @default("equipo.png") @db.VarChar(50)
-  puntos          Int               @default(0)
-  dinero          Int               @default(40000000)
-  numJugadores    Int               @default(15)
-  ligas           ligas?            @relation(fields: [idLiga], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "equiposusuarios_ibfk_2")
-  usuarios        usuarios          @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "equiposusuarios_ibfk_1")
-  jugadoresreales jugadoresreales[]
+  id                                                        Int               @id @default(autoincrement())
+  idUsuario                                                 Int
+  idLiga                                                    Int?
+  nombre                                                    String            @db.VarChar(50)
+  foto                                                      String            @default("equipo.png") @db.VarChar(50)
+  puntos                                                    Int               @default(0)
+  dinero                                                    Int               @default(40000000)
+  numJugadores                                              Int               @default(15)
+  ligas                                                     ligas?            @relation(fields: [idLiga], references: [id], onDelete: Cascade, map: "equiposusuarios_ibfk_4")
+  usuarios                                                  usuarios          @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "equiposusuarios_ibfk_3")
+  jugadoresreales                                           jugadoresreales[]
+  traspasos_equiposusuariosTotraspasos_idEquipoUserEmisor   traspasos[]       @relation("equiposusuariosTotraspasos_idEquipoUserEmisor")
+  traspasos_equiposusuariosTotraspasos_idEquipoUserReceptor traspasos[]       @relation("equiposusuariosTotraspasos_idEquipoUserReceptor")
 
   @@index([idLiga], map: "idLiga")
   @@index([idUsuario], map: "idUsuario")
 }
 
+model iconosnoticias {
+  id     Int                 @id @default(autoincrement())
+  tema   iconosnoticias_tema
+  imagen String              @db.VarChar(50)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model infojugadoresenpartido {
+  idPartido       Int
+  idJugador       Int
+  titular         Boolean                               @default(dbgenerated("(b'0')")) @db.Bit(1)
+  goles           Int                                   @default(0)
+  amarillas       Int                                   @default(0)
+  rojaDirecta     Boolean                               @default(dbgenerated("(b'0')")) @db.Bit(1)
+  juegoEnPartido  infojugadoresenpartido_juegoEnPartido @default(NJ)
+  puntos          Int                                   @default(0)
+  jugadoresreales jugadoresreales                       @relation(fields: [idJugador], references: [id], onDelete: Cascade, map: "infojugadoresenpartido_ibfk_4")
+  calendario      calendario                            @relation(fields: [idPartido], references: [id], onDelete: Cascade, map: "infojugadoresenpartido_ibfk_5")
+
+  @@index([idJugador], map: "idJugador")
+  @@index([idPartido], map: "idPartido")
+  @@ignore
+}
+
 model jugadoresreales {
   id                     Int                      @id @default(autoincrement())
   nombre                 String                   @db.VarChar(50)
+  apellidos              String                   @db.VarChar(50)
+  alias                  String                   @db.VarChar(50)
   puntos                 Int                      @default(0)
   posicion               jugadoresreales_posicion @default(PT)
   valorMercado           Int                      @default(0)
@@ -176,18 +109,56 @@ model jugadoresreales {
   @@index([idEquipoUsuario], map: "idEquipoUsuario")
 }
 
-model calendario {
-  id                                                  Int           @id @default(autoincrement())
-  jornada                                             Int
-  idLocal                                             Int
-  idVisitante                                         Int
-  fecha                                               DateTime      @default(now()) @db.DateTime(0)
-  equiposreales_calendario_idLocalToequiposreales     equiposreales @relation("calendario_idLocalToequiposreales", fields: [idLocal], references: [id], onDelete: Cascade, map: "calendario_ibfk_5")
-  equiposreales_calendario_idVisitanteToequiposreales equiposreales @relation("calendario_idVisitanteToequiposreales", fields: [idVisitante], references: [id], onDelete: Cascade, map: "calendario_ibfk_6")
-  resultados                                          resultados[]  @ignore
+model ligas {
+  id               Int               @id @default(autoincrement())
+  nombre           String            @db.VarChar(50)
+  foto             String            @db.VarChar(50)
+  codigoLiga       String            @db.VarChar(50)
+  abono            Int               @default(100000)
+  numMaxPlantilla  Int               @default(23)
+  numJugMercado    Int               @default(14)
+  diasJugEnMercado Int               @default(2)
+  diasGestionPujas Int               @default(2)
+  idUsuarioLider   Int
+  usuarios         usuarios          @relation(fields: [idUsuarioLider], references: [id], onDelete: Cascade, map: "ligas_ibfk_2")
+  equiposusuarios  equiposusuarios[]
+  noticias         noticias[]
+  puntos           puntos[]          @ignore
 
-  @@index([idLocal], map: "idLocal")
-  @@index([idVisitante], map: "idVisitante")
+  @@index([idUsuarioLider], map: "idUsuarioLider")
+}
+
+model noticias {
+  id     Int           @id @default(autoincrement())
+  idLiga Int
+  tema   noticias_tema @default(I)
+  texto  String        @db.VarChar(50)
+  fecha  DateTime      @default(now()) @db.DateTime(0)
+  ligas  ligas         @relation(fields: [idLiga], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "noticias_ibfk_1")
+
+  @@index([idLiga], map: "idLiga")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model puntos {
+  idLiga           Int
+  titular          Int   @default(2)
+  golDL            Int   @default(3)
+  golMC            Int   @default(4)
+  golDF            Int   @default(5)
+  golPT            Int   @default(6)
+  primeraAmarilla  Int   @default(-1)
+  segundaAmarilla  Int   @default(-3)
+  rojaDirecta      Int   @default(-6)
+  malPartido       Int   @default(-2)
+  noJuegaPartido   Int   @default(0)
+  buenPartido      Int   @default(2)
+  excelentePartido Int   @default(3)
+  perfectoPartido  Int   @default(4)
+  ligas            ligas @relation(fields: [idLiga], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "puntos_ibfk_1")
+
+  @@index([idLiga], map: "idLiga")
+  @@ignore
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
@@ -195,16 +166,38 @@ model resultados {
   idPartido      Int
   golesLocal     Int        @default(0)
   golesVisitante Int        @default(0)
-  calendario     calendario @relation(fields: [idPartido], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "resultados_ibfk_1")
+  calendario     calendario @relation(fields: [idPartido], references: [id], onDelete: Cascade, map: "resultados_ibfk_2")
 
   @@index([idPartido], map: "idPartido")
   @@ignore
 }
 
-enum usuarios_estado {
-  P
-  A
-  B
+model traspasos {
+  id                                                              Int             @id @default(autoincrement())
+  idJugador                                                       Int
+  idEquipoUserEmisor                                              Int
+  idEquipoUserReceptor                                            Int
+  precio                                                          Int
+  equiposusuarios_equiposusuariosTotraspasos_idEquipoUserEmisor   equiposusuarios @relation("equiposusuariosTotraspasos_idEquipoUserEmisor", fields: [idEquipoUserEmisor], references: [id], onDelete: Cascade, map: "traspasos_ibfk_7")
+  equiposusuarios_equiposusuariosTotraspasos_idEquipoUserReceptor equiposusuarios @relation("equiposusuariosTotraspasos_idEquipoUserReceptor", fields: [idEquipoUserReceptor], references: [id], onDelete: Cascade, map: "traspasos_ibfk_8")
+  jugadoresreales                                                 jugadoresreales @relation(fields: [idJugador], references: [id], onDelete: Cascade, map: "traspasos_ibfk_4")
+
+  @@index([idEquipoUserEmisor], map: "idEquipoUserEmisor")
+  @@index([idEquipoUserReceptor], map: "idEquipoUserReceptor")
+  @@index([idJugador], map: "idJugador")
+}
+
+model usuarios {
+  id              Int               @id @default(autoincrement())
+  nombre          String            @db.VarChar(50)
+  apellidos       String?           @db.VarChar(50)
+  usuario         String            @unique(map: "usuario") @db.VarChar(50)
+  email           String            @db.VarChar(50)
+  password        String            @db.Char(32)
+  token           String            @db.VarChar(50)
+  estado          usuarios_estado   @default(P)
+  equiposusuarios equiposusuarios[]
+  ligas           ligas[]
 }
 
 enum iconosnoticias_tema {
@@ -212,9 +205,12 @@ enum iconosnoticias_tema {
   T
 }
 
-enum noticias_tema {
-  I
-  T
+enum infojugadoresenpartido_juegoEnPartido {
+  MP
+  NJ
+  BP
+  EP
+  PP
 }
 
 enum jugadoresreales_posicion {
@@ -229,4 +225,15 @@ enum jugadoresreales_estado {
   L
   EX
   P
+}
+
+enum noticias_tema {
+  I
+  T
+}
+
+enum usuarios_estado {
+  P
+  A
+  B
 }
