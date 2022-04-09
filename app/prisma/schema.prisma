@@ -95,6 +95,7 @@ model jugadoresreales {
   alias                  String                   @db.VarChar(50)
   puntos                 Int                      @default(0)
   posicion               jugadoresreales_posicion @default(PT)
+  titular                Boolean                  @default(dbgenerated("(b'0')")) @db.Bit(1)
   valorMercado           Int                      @default(0)
   estado                 jugadoresreales_estado   @default(P)
   foto                   String?                  @db.VarChar(50)
@@ -200,6 +201,12 @@ model usuarios {
   ligas           ligas[]
 }
 
+model iconosestadojugador {
+  id     Int                        @id @default(autoincrement())
+  imagen String                     @db.VarChar(50)
+  estado iconosestadojugador_estado @unique(map: "estado")
+}
+
 enum iconosnoticias_tema {
   I
   T
@@ -236,4 +243,11 @@ enum usuarios_estado {
   P
   A
   B
+}
+
+enum iconosestadojugador_estado {
+  OK
+  L
+  EX
+  P
 }
