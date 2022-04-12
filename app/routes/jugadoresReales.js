@@ -5,9 +5,11 @@ var prismaclient = require("@prisma/client");
 
 const prisma = new prismaclient.PrismaClient();
 
-router.get("/idE=:id", async function (req, res, next) {
+router.get("/idE=:id", async function (req, res) {
   try {
-    const id = Number(req.params.id); 
+    let id = Number(req.params.id);
+    if (id === 0)
+      id = null;
     const jugadores = await prisma.jugadoresreales.findMany({
       where: {
         idEquipoUsuario: id

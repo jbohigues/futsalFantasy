@@ -100,9 +100,9 @@ model jugadoresreales {
   estado                 jugadoresreales_estado   @default(P)
   foto                   String?                  @db.VarChar(50)
   idEquipoReal           Int
-  idEquipoUsuario        Int
+  idEquipoUsuario        Int?
   equiposreales          equiposreales            @relation(fields: [idEquipoReal], references: [id], onDelete: Cascade, map: "jugadoresreales_ibfk_3")
-  equiposusuarios        equiposusuarios          @relation(fields: [idEquipoUsuario], references: [id], onDelete: Cascade, map: "jugadoresreales_ibfk_5")
+  equiposusuarios        equiposusuarios?         @relation(fields: [idEquipoUsuario], references: [id], onDelete: Cascade, map: "jugadoresreales_ibfk_5")
   infojugadoresenpartido infojugadoresenpartido[] @ignore
   traspasos              traspasos[]
 
