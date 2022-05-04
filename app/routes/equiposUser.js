@@ -4,13 +4,25 @@ var prismaclient = require("@prisma/client");
 
 const prisma = new prismaclient.PrismaClient();
 
-router.get("/u=:id", async function (req, res, next) {
+router.get("/u=:id", async function (req, res) {
   try {
     const id = Number(req.params.id);
     const equipoUser = await prisma.equiposusuarios.findFirst({
       where: {
-          idUsuario: id,
-      }
+        idUsuario: id,
+      },
+      include: {
+        jugadoresrealesencadaliga: {
+          include: {
+            jugadoresreales: true,
+          },
+          orderBy: {
+            jugadoresreales: {
+              posicion: "asc",
+            },
+          },
+        },
+      },
     });
     res.json(equipoUser);
   } catch (error) {
@@ -18,13 +30,23 @@ router.get("/u=:id", async function (req, res, next) {
   }
 });
 
-router.get("/l=:id", async function (req, res, next) {
+//Obtener el equipo del usuario logueado con sus respectivos jugadores
+router.get("/l=:idLiga/e=:idEquipoUser", async function (req, res) {
   try {
-    const id = Number(req.params.id);
+    let { idLiga, idEquipoUser } = req.params;
+    if (idEquipoUser == 0) idEquipoUser = null;
     const equiposLiga = await prisma.equiposusuarios.findMany({
       where: {
-          idLiga: id,
-      }
+        id: Number(idEquipoUser),
+        idLiga: Number(idLiga),
+      },
+      include: {
+        jugadoresrealesencadaliga: {
+          include: {
+            jugadoresreales: true,
+          },
+        },
+      },
     });
     res.json(equiposLiga);
   } catch (error) {
@@ -32,19 +54,24 @@ router.get("/l=:id", async function (req, res, next) {
   }
 });
 
-router.get("/l2=:id", async function (req, res, next) {
+//Obtiene los equiposUser de cierta liga ordenados por puntos
+router.get("/l2=:id", async function (req, res) {
   try {
     const id = Number(req.params.id);
     const equiposLiga = await prisma.equiposusuarios.findMany({
       where: {
-          idLiga: id,
+        idLiga: id,
       },
       orderBy: {
-        puntos: 'desc'
+        puntos: "desc",
       },
-      include:{
-        jugadoresreales: true
-      }
+      include: {
+        jugadoresrealesencadaliga: {
+          include: {
+            jugadoresreales: true,
+          },
+        },
+      },
     });
     res.json(equiposLiga);
   } catch (error) {

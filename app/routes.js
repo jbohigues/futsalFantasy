@@ -8,5 +8,6 @@ module.exports = function (app) {
     app.use("/proxJornada", require("./routes/proxJornada"));
     app.use("/equiposReales", require("./routes/equiposReales"));
     app.use("/jugadoresReales", require("./routes/jugadoresReales"));
+    app.use("/jugadoresRealesEnCadaLiga", require("./routes/jugadoresRealesEnCadaLiga"));
 };
   
