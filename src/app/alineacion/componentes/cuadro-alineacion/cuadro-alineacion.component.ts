@@ -35,6 +35,7 @@ export class CuadroAlineacionComponent implements OnInit {
   //   ["Rojo", [],
   // ]
   // ]);
+
   constructor() {}
 
   ngOnInit(): void {
