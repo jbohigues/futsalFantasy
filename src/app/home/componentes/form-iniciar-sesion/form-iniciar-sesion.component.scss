@@ -1,0 +1,42 @@
+.campo {
+    width: 30vw;
+
+    button{
+        background: none;
+        border: none;
+        transition: transform 250ms;
+    
+        &:hover{
+            transition: transform 250ms;
+            transform: scale(1.5);
+        }
+    }
+}
+
+.enter{
+    margin-top: 3vw;
+    font-size: 2vw;
+    padding: 1vw;
+    width: 20vw;
+    transition: transform 250ms;
+    border: none;
+    border-radius: 1vw;
+    background-color: black;
+    span{
+        background: linear-gradient(90deg, var(--azul), var(--rosa));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;    
+    }
+
+    &:hover{
+        background: var(--degradado);
+        transition: transform 250ms;
+        transform: scale(1.1);
+        border: none;
+        span{
+            background: black;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;  
+        }
+    }
+}

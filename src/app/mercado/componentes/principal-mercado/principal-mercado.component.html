@@ -1,0 +1,15 @@
+<div id="main">
+  <app-header></app-header>
+  <div id="contenido">
+    <div class="info">
+      <h1>Mercado</h1>
+      <h2>
+        Capital: <span>{{ capital }}</span>
+      </h2>
+    </div>
+    <div id="tabs">
+      <app-tabs [miEquipo]="equipoUserLogueado"></app-tabs>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

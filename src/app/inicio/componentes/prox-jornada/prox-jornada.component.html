@@ -1,0 +1,44 @@
+<mat-card class="card" *ngIf="!loading">
+  <div class="header">
+    <h1>JORNADA {{ jornada }}</h1>
+  </div>
+  <mat-card-content class="info">
+    <div id="tiempo">
+      <p>Empieza en:</p>
+      <p>
+        <strong
+          >{{ day }}d : {{ hours }}h : {{ minutes }}' : {{ seconds }}''</strong
+        >
+      </p>
+    </div>
+    <div id="vs">
+      <p>
+        <img src="{{ imagen }}{{ equipoLocal.foto }}.png" alt="equipoLocal" />
+        &nbsp; VS &nbsp;
+        <img
+          src="{{ imagen }}{{ equipoVisitante.foto }}.png"
+          alt="equipoVisitante"
+        />
+      </p>
+      <p>
+        <span class="diaSemana"
+          >{{ diaString }}&nbsp;{{
+            jornadas[0].fecha.getDate()
+          }}&nbsp;|&nbsp;</span
+        >
+        <strong
+          >{{ jornadas[0].fecha.getHours() }}:{{
+            jornadas[0].fecha.getMinutes()
+          }}h</strong
+        >
+      </p>
+    </div>
+  </mat-card-content>
+  <mat-card-footer>
+    <p>Haz tu alineación <a href="/alineacion">aquí</a></p>
+  </mat-card-footer>
+</mat-card>
+
+<mat-card class="card" *ngIf="loading">
+  <app-loading></app-loading>
+</mat-card>

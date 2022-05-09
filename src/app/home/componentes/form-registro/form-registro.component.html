@@ -1,0 +1,94 @@
+<div class="form">
+    <form [formGroup]="registroForm" (ngSubmit)="registrar(registroForm)">
+    <mat-form-field class="campo" appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input name="nombre" matInput placeholder="Escriba su nombre" required formControlName="nombre"/>
+        <mat-error class="alert" *ngIf="registroForm.controls['nombre'].invalid && (registroForm.controls['nombre'].dirty || registroForm.controls['nombre'].touched)">
+        <span *ngIf="registroForm.controls['nombre'].hasError('required')">
+            Debes poner un nombre
+        </span>
+        <span *ngIf="registroForm.controls['nombre'].hasError('minlength')">
+            Mínimo 6 carácteres
+        </span>
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="campo" appearance="outline">
+        <mat-label>Apellidos</mat-label>
+        <input name="apellidos" matInput placeholder="Escriba sus apellidos (opcional)" formControlName="apellidos"/>
+        <mat-error class="alert" *ngIf="registroForm.controls['apellidos'].invalid && (registroForm.controls['apellidos'].dirty || registroForm.controls['apellidos'].touched)">
+        <span *ngIf="registroForm.controls['apellidos'].hasError('minlength')">
+            Mínimo 6 carácteres
+        </span>
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="campo" appearance="outline" (change)="comprobarUsuario(registroForm)">
+        <mat-label>Usuario</mat-label>
+        <input name="nick" matInput placeholder="Escriba su nombre de usuario" required formControlName="usuario"/>
+        <mat-error class="alert" *ngIf="registroForm.controls['usuario'].invalid && (registroForm.controls['usuario'].dirty || registroForm.controls['usuario'].touched)">
+        <span *ngIf="registroForm.controls['usuario'].hasError('required')">
+            Debes poner un nombre de usuario
+        </span>
+        <span *ngIf="registroForm.controls['usuario'].hasError('minlength')">
+            Mínimo 6 carácteres
+        </span>
+        <span *ngIf="registroForm.controls['usuario'].hasError('existeUser')">
+            Este usuario ya existe
+        </span>
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="campo" appearance="outline" (change)="comprobarEmail(registroForm)">
+        <mat-label>Email</mat-label>
+        <input name="email" matInput placeholder="usuario@ejemplo.com" required formControlName="email"/>
+        <mat-error class="alert" *ngIf="registroForm.controls['email'].invalid && (registroForm.controls['email'].dirty || registroForm.controls['email'].touched)">
+        <span *ngIf="registroForm.controls['email'].hasError('required')">
+            Debes poner un email
+        </span>
+        <span *ngIf="registroForm.controls['email'].hasError('email')">
+            Introduce un email válido
+        </span>
+        <span *ngIf="registroForm.controls['email'].hasError('existeEmail')">
+            Este email ya está registrado
+        </span>
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="campo" appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input name="password" matInput [type]="hide ? 'password' : 'text'" required formControlName="password"/>
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon class="password">{{hide ? "visibility_off" : "visibility"}}</mat-icon>
+        </button>
+        <mat-error class="alert" *ngIf="registroForm.controls['password'].invalid && (registroForm.controls['password'].dirty || registroForm.controls['password'].touched)">
+        <span *ngIf="registroForm.controls['password'].hasError('required')">
+            Debes escribir una contraseña
+        </span>
+        <span *ngIf="registroForm.controls['password'].hasError('minlength')">
+            Mínimo 6 carácteres
+        </span>
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="campo" appearance="outline">
+        <mat-label>Repetir contraseña</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" required formControlName="password2" />
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon class="password">{{hide ? "visibility_off" : "visibility"}}</mat-icon>
+        </button>
+        <mat-error class="alert" *ngIf="registroForm.controls['password2'].invalid && (registroForm.controls['password2'].dirty || registroForm.controls['password2'].touched)">
+        <span *ngIf="registroForm.controls['password2'].hasError('required')">
+            Debes escribir una contraseña
+        </span>
+        <span *ngIf="registroForm.controls['password2'].hasError('minlength')">
+            Mínimo 6 carácteres
+        </span>
+        <span *ngIf="registroForm.controls['password2'].hasError('notEqual')">
+            Las contraseñas deben coincidir
+        </span>
+        </mat-error>
+    </mat-form-field>
+    <button type="submit" class="enter" mat-raised-button><span>Registrarme</span></button>
+    </form>
+</div>

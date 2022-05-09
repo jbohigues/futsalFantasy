@@ -1,0 +1,32 @@
+<div id="main">
+    <div class="botonIniciarSesion" *ngIf="!currentUser">
+        <a (click)="scroll()"><button mat-raised-button id="iniciarSesion">Iniciar sesión</button></a>
+    </div>
+    <div class="botonIniciarSesion" *ngIf="currentUser">
+        <a (click)="navigateToInicio()"><button mat-raised-button id="iniciarSesion">Inicio</button></a>
+    </div>
+    <div id="titulo">
+        <img src="/assets/images/textoFutsalFantasy-sinFondo.png" alt="titulo">
+    </div>
+    <div id="contenido">
+        <p class="gradient">El juego que tanto has estado esperando...</p>
+        <div id="cardsHome">
+            <app-cards [cards]="cards"></app-cards>
+        </div>
+        <p>...¿quieres jugar?</p>
+        <div id="cuadroLogin" *ngIf="!currentUser">
+            <app-cuadro-login></app-cuadro-login>
+        </div>
+        <div id="cuadroLogin" *ngIf="currentUser">
+            <div id="logocuadroLogin">
+                <h1>FutsalFantasy</h1>
+                <img src="/assets/images/logoFutsalFantasy.png" alt="logo">
+                <div class="botonIniciarSesion" *ngIf="currentUser">
+                    <a (click)="navigateToInicio()"><button mat-raised-button id="iniciarSesion">¡Empezar juego!</button></a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

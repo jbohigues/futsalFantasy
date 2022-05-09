@@ -1,0 +1,61 @@
+@font-face {
+    font-family: "Henny Penny";
+    src: url("/assets/tipografia/Henny_Penny/HennyPenny-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+#navbar{
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2vw;
+
+    button{
+        border: none;
+        background: none;
+        color: black;
+        margin: 0 0.5vw;
+        font-size: 1.2vw;
+        padding: 1vw;
+
+        &:hover{
+            transition: transform 250ms;
+            transform: translateY(-5px);
+            background-color: white;
+            border-radius: 0.5vw;
+        }
+
+        &#login{
+            background-color: white;
+            padding: 0.5vw;
+            border-radius: 0.5vw;
+            color: black;
+            text-transform: capitalize;
+            font-size: 1.5vw;
+
+            &:hover{
+                background: linear-gradient(90deg, black, var(--rosa));;
+                color: white;
+            }
+        }
+    }
+
+    .logo{
+        margin: 0 10vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        .textLogo{
+            font-size: 3vw;
+            font-family: "Henny Penny";
+        }
+        
+        .imgLogo{
+            width: 5vw;
+            transform: rotate(180deg);
+        }
+    }
+}

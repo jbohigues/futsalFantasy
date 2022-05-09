@@ -1,0 +1,10 @@
+<h1>Liga</h1>
+
+<div id="liga" *ngIf="!loading">
+    <h4>{{liga.nombre}}</h4>
+    <img src="{{imagen}}{{liga.foto}}.png" alt="logoLiga">
+</div>
+
+<div id="liga" *ngIf="loading">
+    <app-loading></app-loading>
+</div>

@@ -1,0 +1,27 @@
+@font-face {
+    font-family: "Henny Penny";
+    src: url("/assets/tipografia/Henny_Penny/HennyPenny-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+#logocuadroLogin{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    h1{
+        font-family: "Henny Penny";
+        font-size: 5vw;
+    }
+    
+    img{
+        width: 12vw;
+        transform: rotate(180deg);
+    }
+}
+
+#tabs{
+    display: flex;
+    justify-content: center;
+}

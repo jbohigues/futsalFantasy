@@ -1,0 +1,52 @@
+@font-face {
+    font-family: "Ultra";
+    src: url("/assets/tipografia/Ultra/Ultra-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Berkshire";
+    src: url("/assets/tipografia/Berkshire_Swash/BerkshireSwash-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Ubuntu";
+    src: url("/assets/tipografia/Ubuntu/Ubuntu-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Anton";
+    src: url("/assets/tipografia/Anton/Anton-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+.card{
+    background-color: transparent;
+    border: none;
+    padding: 1vw 3vw;
+    &:hover{
+        transition: transform 250ms;
+        transform: translateY(-20px);
+        background-color: rgba(0, 0, 0, 0.562);
+        border: 1px solid transparent;
+        border-image: linear-gradient(90deg, var(--azul), var(--rosa)) 1;
+        color: white;
+    }
+    p{
+        font-size: 2vw;
+        line-height: normal;
+        font-family: "Berkshire";
+    } 
+    img{
+        height: 25vw;
+    }
+}
+.mat-card{
+    box-shadow: none;
+}

@@ -1,0 +1,165 @@
+<div id="cuadroPista" *ngIf="!loading">
+  <table aria-describedby="titulares">
+    <th></th>
+    <!-- ALA 1 -->
+    <tr>
+      <td></td>
+      <td colspan="3">
+        <div>
+          <p class="puntos" [ngClass]="hover.get('AL')!">
+            <span *ngIf="map.get('AL')!.puntos < 10"
+              >&nbsp;{{ map.get("AL")?.puntos }}&nbsp;</span
+            >
+            <span *ngIf="map.get('AL')!.puntos > 10">{{
+              map.get("AL")?.puntos
+            }}</span>
+          </p>
+          <p class="jugador">
+            <img
+              src="{{ imagen }}{{ map.get('AL')?.foto }}.png"
+              alt="ala"
+              (click)="abrirSidenav('AL')"
+              matTooltip="Ala"
+              (mouseenter)="enter('AL')"
+              (mouseleave)="leave('AL')"
+            />
+          </p>
+          <p class="estado" [ngClass]="hover.get('AL')!">
+            <img
+              src="{{ imagenEstado }}{{ map.get('AL')?.estado }}.png"
+              alt="ala"
+            />
+          </p>
+        </div>
+      </td>
+    </tr>
+    <!-- PT, CIERRE, PIVOT -->
+    <tr>
+      <td>
+        <div>
+          <p class="puntos" [ngClass]="hover.get('PT')!">
+            <span *ngIf="map.get('PT')!.puntos < 10"
+              >&nbsp;{{ map.get("PT")?.puntos }}&nbsp;</span
+            >
+            <span *ngIf="map.get('PT')!.puntos > 10">{{
+              map.get("PT")?.puntos
+            }}</span>
+          </p>
+          <p class="jugador">
+            <img
+              src="{{ imagen }}{{ map.get('PT')?.foto }}.png"
+              alt="portero"
+              (click)="abrirSidenav('PT')"
+              matTooltip="Portero"
+              (mouseenter)="enter('PT')"
+              (mouseleave)="leave('PT')"
+            />
+          </p>
+          <p class="estado" [ngClass]="hover.get('PT')!">
+            <img
+              src="{{ imagenEstado }}{{ map.get('PT')?.estado }}.png"
+              alt="portero"
+            />
+          </p>
+        </div>
+      </td>
+      <td>
+        <div class="cierre">
+          <p class="puntos" [ngClass]="hover.get('CI')!">
+            <span *ngIf="map.get('CI')!.puntos < 10"
+              >&nbsp;{{ map.get("CI")?.puntos }}&nbsp;</span
+            >
+            <span *ngIf="map.get('CI')!.puntos > 10">{{
+              map.get("CI")?.puntos
+            }}</span>
+          </p>
+          <p class="jugador">
+            <img
+              src="{{ imagen }}{{ map.get('CI')?.foto }}.png"
+              alt="cierre"
+              (click)="abrirSidenav('CI')"
+              matTooltip="Cierre"
+              (mouseenter)="enter('CI')"
+              (mouseleave)="leave('CI')"
+            />
+          </p>
+          <p class="estado" [ngClass]="hover.get('CI')!">
+            <img
+              src="{{ imagenEstado }}{{ map.get('CI')?.estado }}.png"
+              alt="cierre"
+            />
+          </p>
+        </div>
+      </td>
+      <td>
+        <div>
+          <p class="puntos" [ngClass]="hover.get('PV')!">
+            <span *ngIf="map.get('PV')!.puntos < 10"
+              >&nbsp;{{ map.get("PV")?.puntos }}&nbsp;</span
+            >
+            <span *ngIf="map.get('PV')!.puntos > 10">{{
+              map.get("PV")?.puntos
+            }}</span>
+          </p>
+          <p class="jugador">
+            <img
+              src="{{ imagen }}{{ map.get('PV')?.foto }}.png"
+              alt="pivot"
+              (click)="abrirSidenav('PV')"
+              matTooltip="Pivot"
+              (mouseenter)="enter('PV')"
+              (mouseleave)="leave('PV')"
+            />
+          </p>
+          <p class="estado" [ngClass]="hover.get('PV')!">
+            <img
+              src="{{ imagenEstado }}{{ map.get('PV')?.estado }}.png"
+              alt="pivot"
+            />
+          </p>
+        </div>
+      </td>
+    </tr>
+    <!-- ALA 2 -->
+    <tr>
+      <td></td>
+      <td colspan="3">
+        <div class="infoJug">
+          <p class="puntos" [ngClass]="hover.get('AL2')!">
+            <span *ngIf="map.get('AL2')!.puntos < 10"
+              >&nbsp;{{ map.get("AL2")?.puntos }}</span
+            >
+            <span *ngIf="map.get('AL2')!.puntos > 10">{{
+              map.get("AL2")?.puntos
+            }}</span>
+          </p>
+          <p class="jugador">
+            <img
+              src="{{ imagen }}{{ map.get('AL2')?.foto }}.png"
+              alt="ala2"
+              (click)="abrirSidenav('AL2')"
+              matTooltip="Ala"
+              matTooltipPosition="above"
+              (mouseenter)="enter('AL2')"
+              (mouseleave)="leave('AL2')"
+            />
+          </p>
+          <p class="estado" [ngClass]="hover.get('AL2')!">
+            <img
+              src="{{ imagenEstado }}{{ map.get('AL2')?.estado }}.png"
+              alt="ala2"
+            />
+          </p>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="info">
+  <p *ngIf="hayExpulsados" class="expulsados">*Hay jugadores expulsados</p>
+  <p *ngIf="hayLesionados" class="lesionados">*Hay jugadores lesionados</p>
+</div>
+
+<div id="cuadroPista" *ngIf="loading">
+  <app-loading></app-loading>
+</div>

@@ -1,0 +1,45 @@
+<div id="main">
+    <app-header></app-header>
+    <h1>Noticias</h1>
+    <div id="contenido" *ngIf="!loading">
+        <div id="noticiario">
+            <div id="acciones">
+                <div id="filtro">
+                    <form>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Filtrar por TEMA</mat-label>
+                            <mat-select [(ngModel)]="valorSelected" name="tema">
+                            <mat-option (click)="filtrar(valorSelected)" *ngFor="let tema of temas" [value]="tema.value">
+                                {{tema.viewValue}}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+                <div id="verMas">
+                    <button id="botonVerMas" mat-raised-button (click)="cargarMas(hayFiltro)">
+                      {{botonNoticias}}
+                    </button>
+                </div>
+            </div>
+            <div id="noticias">
+                <app-noticia *ngFor="let noticia of noticias" [noticia]="noticia"></app-noticia>
+            </div>
+        </div>
+        <div id="usuario">
+            <div id="info">
+                <app-info-equipo-user [equipoUser]="equipoUser" [ligaUser]="ligaUser"></app-info-equipo-user>
+            </div>
+            <div id="proxJorn">
+                <app-prox-jornada></app-prox-jornada>
+            </div>
+            <div id="clasif">
+                <app-mi-clasificacion [miEquipo]="equipoUser"></app-mi-clasificacion>
+            </div>
+        </div>
+    </div>
+    <div id="contenido" *ngIf="loading">
+        <app-loading></app-loading>
+    </div>
+    <app-footer></app-footer>
+</div>

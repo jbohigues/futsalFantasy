@@ -1,0 +1,97 @@
+h1 {
+  font-size: 3vw;
+  margin-bottom: 2vw;
+  text-align: center;
+}
+
+table {
+  margin-top: 1vh;
+  text-align: center;
+  width: 100%;
+  border-radius: 0.5vw;
+  border: none;
+  overflow: hidden;
+  box-shadow: 6px 8px 2px 0px rgba(0, 0, 0, 0.377);
+
+  th {
+    padding: 1vw;
+    text-align: center;
+    font-size: bold;
+    background: rgb(0, 0, 0);
+    color: white;
+    font-size: 1vw;
+
+    &.headerNombreEquipo {
+      padding-left: 8vw;
+    }
+  }
+
+  tr {
+    background: white;
+    transition: transform 250ms;
+    // border: 5px solid transparent;
+
+    &.fila:hover {
+      transition: transform 250ms;
+      background: var(--degradado);
+      .inferior {
+        content: url("/assets/images/inferior_hover.png");
+      }
+      .superior {
+        content: url("/assets/images/superior_hover.png");
+      }
+    }
+  }
+
+  td {
+    font-size: 1.5vw;
+    padding: 1vw 0;
+    // height: 10vh;
+    // border-collapse: collapse;
+
+    &.nombre {
+      text-transform: capitalize;
+    }
+
+    &.esUserLogueado {
+      background: rgba(0, 0, 0, 0.603);
+      color: white;
+    }
+  }
+
+  .difPuntos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 2vw;
+    }
+  }
+
+  .logoEquipo {
+    img {
+      width: 5vw;
+    }
+  }
+
+  img {
+    width: 10vw;
+
+    &.ultimo {
+      width: 4vw;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+::ng-deep .mat-sort-header-arrow {
+  color: var(--rosa);
+  zoom: 2;
+}
+
+:host ::ng-deep .mat-sort-header-container {
+  display: flex;
+  justify-content: center;
+}

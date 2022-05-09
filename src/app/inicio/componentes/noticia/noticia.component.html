@@ -1,0 +1,13 @@
+<div id="dia" *ngIf="noticia.diaNuevo">
+    <p>{{noticia.fecha | date:'dd-MM-YYYY'}}</p>
+    <hr>
+</div>
+
+<mat-card class="noticia" (mouseenter)="entrar()" (mouseleave)="salir()">
+    <mat-card-content>
+        <img src="{{imagen}}.png" class="icono" alt="icon">
+        <p>{{noticia.texto}}</p>
+        <p class="hora">{{hora}}h</p>
+    </mat-card-content>
+</mat-card>
+  

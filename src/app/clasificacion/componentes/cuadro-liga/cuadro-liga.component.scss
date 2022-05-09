@@ -1,0 +1,23 @@
+h1{
+    font-size: 3vw;
+    margin-bottom: 2vw;
+    text-align: center;
+}
+
+#liga{
+    // background-color: white;
+    border-radius: 1vw;
+    padding: 2vw;
+    // box-shadow: 6px 10px 10px 0px rgba(0, 0, 0, 0.377) !important;
+
+    h4{
+        font-size: 2vw;
+        text-align: center;
+        text-transform: capitalize;
+    }
+    img{
+        width: 20vw;
+        border-radius: 20%;
+        box-shadow: 6px 10px 10px 0px rgba(0, 0, 0, 0.377) !important;
+    }
+}

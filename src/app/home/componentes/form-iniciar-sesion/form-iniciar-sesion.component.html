@@ -1,0 +1,16 @@
+<div class="form">
+  <form [formGroup]="usuarioForm" (ngSubmit)="login(usuarioForm)">
+    <mat-form-field class="campo" appearance="outline">
+      <mat-label>Usuario</mat-label>
+      <input matInput formControlName="usuario" placeholder="Escriba su nombre de usuario" />
+    </mat-form-field><br>
+    <mat-form-field class="campo" appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" placeholder="Escriba su contraseña">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon class="password">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+    </mat-form-field><br>
+    <button type="submit" class="enter" mat-raised-button><span>Entrar</span></button>
+  </form>
+</div>

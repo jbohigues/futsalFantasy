@@ -1,0 +1,47 @@
+.noticia{
+    background-color: rgba(0, 0, 0, 0.116);
+    border: 5px solid transparent;
+    border-radius: 0.5vw;
+    margin: 0.8vw 1vw;
+    box-shadow: 3px 5px 5px 0px rgba(0, 0, 0, 0.377) !important;
+
+    &:hover{
+        transition: transform 250ms;
+        background-color: rgba(0, 0, 0, 0.562);
+        border-image: var(--degradado) 1;
+        color: white;
+    }
+    p{
+        font-size: 1.5vw;
+        line-height: normal;
+    } 
+    .hora{
+        margin-left: 4vw;
+    }
+    .icono{
+        width: 2.2vw;
+        float: left;
+        margin-right: 2vw;
+    }
+}
+
+.mat-card{
+    box-shadow: none;
+}
+
+#dia{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2vw;
+    
+    p{
+        margin-left: 1vw;
+        font-size: 1.2vw;
+    }
+
+    hr{
+        width: 32vw;
+        margin-bottom: 1.5vw;
+    }
+}

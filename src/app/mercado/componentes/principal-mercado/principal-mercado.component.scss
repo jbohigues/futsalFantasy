@@ -1,0 +1,28 @@
+#main{
+    background: linear-gradient(var(--azul), var(--rosa));
+
+    .info{
+        margin: 4vw 10vw 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        h1{
+            font-size: 3vw;
+        }
+        h2{
+            font-size: 2vw;
+            font-weight: 400;
+            span{
+                font-weight: bolder;
+            }
+        }
+    }
+
+    #tabs{
+        margin: 2vw 5vw 3vw;
+        background-color: white;
+        border-radius: 1vw;
+        box-shadow: 6px 8px 2px 0px rgba(0, 0, 0, 0.377);
+        padding: 3vw 1vw 2vw;
+    }
+}
