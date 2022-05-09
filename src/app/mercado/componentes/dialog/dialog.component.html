@@ -1,3 +1,4 @@
+<!-- <div *ngIf="!loading"> -->
 <h1 mat-dialog-title>
   Pujar por <strong> {{ jugador.jugadoresreales.alias }} </strong>
 </h1>
@@ -85,19 +86,60 @@
       *matRowDef="let row; columns: displayedColumns"
     ></tr>
   </table>
+
+  <!-- ValorMercado y ValorVenta -->
   <div id="infoDinero">
-    <h2>Mercado: {{ valorJugador }}</h2>
-    <h2>Precio: {{ puja }}</h2>
+    <h2>Mercado: {{ valorMercado }}</h2>
+    <h2>Precio: {{ precioVenta }}</h2>
   </div>
+
+  <!-- Input para pujar -->
   <div id="puja">
-    <!-- <form action=""> -->
-    <button mat-fab color="azul" aria-label="restar">-</button>
-    <input type="text" [value]="puja" />
-    <button mat-fab color="rosa" aria-label="sumar">+</button>
+    <button mat-fab color="azul" aria-label="restar">
+      <span class="azul">-</span>
+    </button>
+
+    <!-- <form [formGroup]="pujaForm"> -->
+    <!-- <mat-form-field class="example-full-width" appearance="fill"> -->
+    <!-- <mat-label>Puja</mat-label> -->
+    <input
+      matInput
+      disabled
+      readonly
+      type="text"
+      [value]="pujaNumber | thousandsPipe"
+    />
+    <!-- <mat-error
+        class="alert"
+        *ngIf="
+          pujaForm.controls['puja'].invalid &&
+          (pujaForm.controls['puja'].dirty || pujaForm.controls['puja'].touched)
+        "
+      >
+        <span *ngIf="pujaForm.controls['puja'].hasError('pujaMaxima')">
+          Solo puedes pujar un máximo de {{ pujaMaximaFunction() }}€.
+        </span>
+        <span *ngIf="pujaForm.controls['puja'].hasError('pujaMinima')">
+          La mínima puja que puedes hacer es de
+          {{ jugador.jugadoresreales.valorMercado }}€.
+        </span>
+      </mat-error> -->
+    <!-- </mat-form-field> -->
+    <!-- <mat-form-field class="example-full-width" appearance="fill">
+      <input matInput type="hidden" [value]="pujaMaxima" />
+      </mat-form-field> -->
     <!-- </form> -->
+    <button id="suma" mat-fab color="rosa" aria-label="sumar" (click)="sumar()">
+      <span>+</span>
+    </button>
   </div>
+  <p></p>
 </div>
 <mat-dialog-actions align="center">
   <button mat-button mat-dialog-close>Cancel</button>
   <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Pujar</button>
 </mat-dialog-actions>
+<!-- </div>
+<div *ngIf="loading">
+  <app-loading></app-loading>
+</div> -->

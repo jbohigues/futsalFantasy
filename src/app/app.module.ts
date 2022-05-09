@@ -12,9 +12,7 @@ import { AlineacionModule } from './alineacion/alineacion.module';
 import { MercadoModule } from './mercado/mercado.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -24,9 +22,9 @@ import { MercadoModule } from './mercado/mercado.module';
     AlineacionModule,
     MercadoModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

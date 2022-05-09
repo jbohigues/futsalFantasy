@@ -1,51 +1,113 @@
 <mat-card class="card">
-    <div class="header">
-        <h1>CLASIFICACIÓN</h1>
-    </div>
-    <mat-card-content class="info">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table" aria-describedby="clasificacion">
-            <!-- Position Column -->
-            <ng-container matColumnDef="posicion">
-              <th mat-header-cell *matHeaderCellDef> Posición </th>
-              <td mat-cell *matCellDef="let element" [ngClass]="{'esUserLogueado': element.id === miEquipo.id}"> 
-                <img src="{{imagen}}primero.png" alt="primero" *ngIf="element.posicion === 1">
-                <img src="{{imagen}}segundo.png" alt="segundo" *ngIf="element.posicion === 2">
-                <img src="{{imagen}}tercero.png" alt="tercero" *ngIf="element.posicion === 3">
-                <img class="ultimo" src="{{imagen}}ultimo.png" alt="ultimo" *ngIf="element.posicion === equiposUsers.length">
-                <span *ngIf="element.posicion != 1 && element.posicion != 2 && element.posicion != 3 && element.posicion != equiposUsers.length">{{element.posicion}}</span>
-              </td>
-            </ng-container>
-          
-            <!-- Name Column -->
-            <ng-container matColumnDef="nombre">
-              <th mat-header-cell *matHeaderCellDef> Nombre </th>
-              <td mat-cell *matCellDef="let element" class="nombre" [ngClass]="{'esUserLogueado': element.id === miEquipo.id}"> {{element.nombre}} </td>
-            </ng-container>
-          
-            <!-- Weight Column -->
-            <ng-container matColumnDef="puntos">
-              <th mat-header-cell *matHeaderCellDef> Puntos </th>
-              <td mat-cell *matCellDef="let element" class="negro" [ngClass]="{'esUserLogueado': element.id === miEquipo.id}"> {{element.puntos}} </td>
-            </ng-container>
-          
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="difPuntos">
-              <th mat-header-cell *matHeaderCellDef> Dif. Puntos </th>
-              <td mat-cell *matCellDef="let element" class="negro" [ngClass]="{'esUserLogueado': element.id === miEquipo.id}">
-                <div class="difPuntos">
-                  <span *ngIf="element.pos === 1">
-                    <img src="/assets/images/inferior.png" alt="inferior">
-                  </span>
-                  <span *ngIf="element.pos === 3">
-                    <img src="/assets/images/superior.png" alt="superior">
-                  </span> 
-                  {{element.difPuntos}}
-                </div>
-              </td>
-            </ng-container>
-          
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="fila"></tr>
-          </table>
-    </mat-card-content>
+  <div class="header">
+    <h1>CLASIFICACIÓN</h1>
+  </div>
+  <mat-card-content class="info">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="mat-elevation-z8 demo-table"
+      aria-describedby="clasificacion"
+    >
+      <!-- Position Column -->
+      <ng-container matColumnDef="posicion">
+        <th mat-header-cell *matHeaderCellDef>Posición</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [ngClass]="{ esUserLogueado: element.id === miEquipo.id }"
+        >
+          <img
+            src="{{ imagen }}primero.png"
+            alt="primero"
+            *ngIf="element.posicion === 1"
+          />
+          <img
+            src="{{ imagen }}segundo.png"
+            alt="segundo"
+            *ngIf="element.posicion === 2"
+          />
+          <img
+            src="{{ imagen }}tercero.png"
+            alt="tercero"
+            *ngIf="element.posicion === 3"
+          />
+          <img
+            class="ultimo"
+            src="{{ imagen }}ultimo.png"
+            alt="ultimo"
+            *ngIf="element.posicion === equiposUsers.length"
+          />
+          <span
+            *ngIf="
+              element.posicion != 1 &&
+              element.posicion != 2 &&
+              element.posicion != 3 &&
+              element.posicion != equiposUsers.length
+            "
+            >{{ element.posicion }}</span
+          >
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="nombre"
+          [ngClass]="{ esUserLogueado: element.id === miEquipo.id }"
+        >
+          {{ element.nombre }}
+        </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="puntos">
+        <th mat-header-cell *matHeaderCellDef>Puntos</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="negro"
+          [ngClass]="{ esUserLogueado: element.id === miEquipo.id }"
+        >
+          {{ element.puntos }}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="difPuntos">
+        <th mat-header-cell *matHeaderCellDef>Dif. Puntos</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="negro"
+          [ngClass]="{ esUserLogueado: element.id === miEquipo.id }"
+        >
+          <div class="difPuntos">
+            <span *ngIf="element.pos === 1">
+              <img src="/assets/images/inferior.png" alt="inferior" />
+            </span>
+            <span *ngIf="element.pos === 3">
+              <img src="/assets/images/superior.png" alt="superior" />
+            </span>
+            <span *ngIf="element.difPuntos > 9 || element.difPuntos == 0">
+              &nbsp;{{ element.difPuntos }}
+            </span>
+            <span *ngIf="element.difPuntos < 10 && element.difPuntos > 0">
+              &nbsp;&nbsp;&nbsp;{{ element.difPuntos }}
+            </span>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="fila"
+      ></tr>
+    </table>
+  </mat-card-content>
 </mat-card>

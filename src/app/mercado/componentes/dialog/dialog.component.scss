@@ -106,6 +106,29 @@ table {
   }
 }
 
+#puja {
+  margin: 2vw 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    span {
+      font-size: 3vw;
+      &.azul {
+        color: black;
+      }
+    }
+  }
+
+  input {
+    text-align: center;
+    font-size: 2vw;
+    padding: 0;
+    margin: 0 2vw;
+  }
+}
+
 ::ng-deep .mat-sort-header-arrow {
   color: white;
   zoom: 1.5;
@@ -124,4 +147,14 @@ table {
 .mat-rosa {
   background-color: var(--rosa);
   color: #fff;
+}
+
+//Quita las flechas del input number
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }

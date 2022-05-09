@@ -36,6 +36,7 @@ export class TablaFichajesComponent implements OnInit {
   foto: string = '';
   nombreEquipoUser: string = '';
   valorMercado: string = '';
+  dinero: number = 0;
   @Input() miEquipo!: EquipoUser;
 
   imagen: string = 'http://localhost:3000/images/fotosJugadoresReales/';
@@ -67,6 +68,8 @@ export class TablaFichajesComponent implements OnInit {
 
   ngOnInit() {
     this.miEquipo = this.localStorage.getEquipoLocalStorage();
+    this.dinero = this.miEquipo.dinero;
+
     this.jugadoresRealesService
       .getJugadoresMercado(this.miEquipo.idLiga)
       .subscribe((res) => {
@@ -129,13 +132,15 @@ export class TablaFichajesComponent implements OnInit {
 
   abrirModal(id: number) {
     this.jugadoresMercado.forEach((jugador) => {
-      // console.log(jugador);
       if (id === jugador.idJugadorReal) this.jugadorPuja = jugador;
     });
 
     const dialogRef = this.dialog.open(DialogComponent, {
       panelClass: 'custom-dialog-container',
-      data: this.jugadorPuja,
+      data: {
+        jugadorPuja: this.jugadorPuja,
+        pujaMaxima: this.dinero + this.dinero * 0.25,
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
