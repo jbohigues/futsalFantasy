@@ -14,7 +14,12 @@ router.get("/u=:id", async function (req, res) {
       include: {
         jugadoresrealesencadaliga: {
           include: {
-            jugadoresreales: true,
+            jugadoresreales: {
+              include: {
+                equiposreales: true,
+              },
+            },
+            equiposusuarios: true,
           },
           orderBy: {
             jugadoresreales: {

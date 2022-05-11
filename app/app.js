@@ -12,7 +12,11 @@ app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "http://localhost:4200",
+    "always"
+  );
 
   // Request methods you wish to allow
   res.setHeader(
@@ -23,7 +27,7 @@ app.use(function (req, res, next) {
   // Request headers you wish to allow
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
+    "X-Requested-With,content-type,authorization, Origin, X-Auth-Token"
   );
 
   // Set to true if you need the website to include cookies in the requests sent

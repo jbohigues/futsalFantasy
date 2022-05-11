@@ -4,16 +4,12 @@ var prismaclient = require("@prisma/client");
 
 const prisma = new prismaclient.PrismaClient();
 
-router.get("/j=:id", async function (req, res, next) {
+router.get("/", async function (req, res) {
   try {
-    const jornada = Number(req.params.id);
     const jornadas = await prisma.calendario.findMany({
-      where: {
-          jornada: jornada,
-      },
       orderBy: {
-          fecha: 'asc'
-      }
+        fecha: "asc",
+      },
     });
     res.json(jornadas);
   } catch (error) {
