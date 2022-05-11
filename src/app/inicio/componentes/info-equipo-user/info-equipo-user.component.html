@@ -1,14 +1,25 @@
 <mat-card class="card">
-    <div class="header">
-        <img src="{{imagen}}{{equipoUser.foto}}.png" class="logoEquipo" alt="logoEquipo">
-        <div class="equipo">
-            <p>{{equipoUser.nombre}}</p>
-            <p class="liga">{{ligaUser.nombre}}</p>
-        </div>
+  <div class="header">
+    <img
+      src="{{ imagen }}{{ equipoUser.foto }}.png"
+      class="logoEquipo"
+      alt="logoEquipo"
+    />
+    <div class="equipo">
+      <p>{{ equipoUser.nombre }}</p>
+      <p class="liga">{{ ligaUser.nombre }}</p>
     </div>
-    <mat-card-content class="info">
-        <p><strong>{{equipoUser.puntos}}</strong> puntos</p>
-        <p><strong>{{posicion}}</strong>ª posición</p>
-        <p><strong>{{equipoUser.dinero}}</strong>€</p>
-    </mat-card-content>
+  </div>
+  <mat-card-content class="info">
+    <p>
+      <strong>{{ equipoUser.puntos }}</strong> puntos
+    </p>
+    <p>
+      <strong>{{ posicion }}</strong
+      >ª posición
+    </p>
+    <p>
+      <strong>{{ capital }}</strong>
+    </p>
+  </mat-card-content>
 </mat-card>

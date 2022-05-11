@@ -8,17 +8,19 @@ import { ProxJornadaService } from '../../servicios/prox-jornada.service';
 @Component({
   selector: 'app-prox-jornada',
   templateUrl: './prox-jornada.component.html',
-  styleUrls: ['./prox-jornada.component.scss']
+  styleUrls: ['./prox-jornada.component.scss'],
 })
 export class ProxJornadaComponent implements OnInit {
   jornadas: Calendario[] = [];
+  proximaJornada!: Calendario;
+  hoy = new Date();
   loading: boolean = true;
   diaString!: string;
   equipoLocal!: EquipoReal;
   equipoVisitante!: EquipoReal;
   imagen: string = 'http://localhost:3000/images/logosEquiposReales/';
   jornada!: number;
-  
+
   //Variables para hacer la cuenta regresiva
   _second = 1000;
   _minute = this._second * 60;
@@ -35,37 +37,55 @@ export class ProxJornadaComponent implements OnInit {
 
   constructor(
     private proxJornadaService: ProxJornadaService,
-    private equiposRealesService: EquiposRealesService) { }
+    private equiposRealesService: EquiposRealesService
+  ) {}
 
   ngOnInit(): void {
-    //Hay que pasarle el num de jornada
-    this.jornada = 1;
-
-    this.proxJornadaService.getProxJornada(this.jornada).subscribe((res) => {
-      //Obtengo todas las jornadas ordenadas por fecha y me quedo con la primera
+    this.proxJornadaService.getProxJornada().subscribe((res) => {
+      //Obtengo todas las jornadas ordenadas por fecha
       this.jornadas = res;
-      this.jornadas[0].fecha = new Date(this.jornadas[0].fecha.toLocaleString());
-      this.diaString = new Intl.DateTimeFormat('es-Es', {weekday: 'long'}).format(this.jornadas[0].fecha);
-      
-      this.clock = this.source.subscribe(t => {
+      let localDate;
+
+      //Comparo las fechas obtenidas con la fecha actual, para comprobar cual es la primera proxima
+      for (const jornada of this.jornadas) {
+        localDate = new Date(jornada.fecha.toLocaleString());
+
+        if (localDate > this.hoy) {
+          this.proximaJornada = jornada;
+          //La paso a LocaleString para poder realizar la cuenta regresiva
+          this.proximaJornada.fecha = new Date(jornada.fecha.toLocaleString());
+          break;
+        }
+      }
+
+      //Configuracion de la cuenta regresiva
+      this.diaString = new Intl.DateTimeFormat('es-Es', {
+        weekday: 'long',
+      }).format(this.proximaJornada.fecha);
+
+      this.clock = this.source.subscribe((t) => {
         this.now = new Date();
-        this.end = new Date(this.jornadas[0].fecha);
+        this.end = new Date(this.proximaJornada.fecha);
         this.showDate();
       });
 
-      this.equiposRealesService.getEquipoReal(this.jornadas[0].idLocal).subscribe((equipo) => {
-        this.equipoLocal = equipo;
-        
-        this.equiposRealesService.getEquipoReal(this.jornadas[0].idVisitante).subscribe((equipo2) => {
-          this.equipoVisitante = equipo2;
-          this.loading = false;
+      this.equiposRealesService
+        .getEquipoReal(this.proximaJornada.idLocal)
+        .subscribe((equipo) => {
+          this.equipoLocal = equipo;
+
+          this.equiposRealesService
+            .getEquipoReal(this.proximaJornada.idVisitante)
+            .subscribe((equipo2) => {
+              this.equipoVisitante = equipo2;
+              this.loading = false;
+            });
         });
-      });
     });
   }
 
   //Nos permite mostrar cuenta regresiva
-  showDate(){
+  showDate() {
     let distance = this.end - this.now;
     this.day = Math.floor(distance / this._day);
     this.hours = Math.floor((distance % this._day) / this._hour);

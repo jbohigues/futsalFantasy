@@ -12,15 +12,20 @@
     </nav>
 </div> -->
 <mat-toolbar id="navbar">
-    <button (click)="navigate('/inicio')">Inicio</button>
-    <button (click)="navigate('/clasificacion')">Clasificación</button>
-    <button (click)="navigate('/alineacion')">Alineación</button>
-    <span class="logo">
-        <span class="textLogo">FutsalFantasy</span>
-        <img class="imgLogo" src="/assets/images/logoFutsalFantasy.png" alt="logo">
-    </span>
-    <button (click)="navigate('/mercado')">Mercado</button>
-    <button (click)="navigate('/calendario')">Jornada</button>
-    <button mat-raised-button id="login" (click)="logout()">¡Hola {{currentUser.usuario}}!</button>
+  <button (click)="navigate('/inicio')">Inicio</button>
+  <button (click)="navigate('/clasificacion')">Clasificación</button>
+  <button (click)="navigate('/alineacion')">Alineación</button>
+  <span class="logo">
+    <span class="textLogo">FutsalFantasy</span>
+    <img
+      class="imgLogo"
+      src="/assets/images/logoFutsalFantasy.png"
+      alt="logo"
+    />
+  </span>
+  <button (click)="navigate('/mercado')">Mercado</button>
+  <button (click)="navigate('/jornada')">Jornada</button>
+  <button mat-raised-button id="login" (click)="logout()">
+    ¡Hola {{ currentUser.usuario }}!
+  </button>
 </mat-toolbar>
-  

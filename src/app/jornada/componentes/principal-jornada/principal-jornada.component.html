@@ -1,0 +1,21 @@
+<div id="main">
+  <app-header></app-header>
+  <div id="contenido" *ngIf="!loading">
+    <h1>Jornada</h1>
+    <div id="cuadroAlineacion">
+      <h1>
+        <strong> {{ equipoUserLogueado.nombre }}</strong>
+      </h1>
+
+      <div id="cuadroAlineacion2"></div>
+    </div>
+
+    <div id="cuadroPlantilla">
+      <!-- <app-plantilla [miEquipo]="equipoUserLogueado"></app-plantilla> -->
+    </div>
+  </div>
+  <!-- <div *ngIf="loading">
+    <app-loading></app-loading>
+  </div> -->
+  <app-footer></app-footer>
+</div>

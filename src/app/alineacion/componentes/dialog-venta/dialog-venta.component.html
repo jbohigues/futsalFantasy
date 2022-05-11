@@ -1,6 +1,6 @@
 <!-- <div *ngIf="!loading"> -->
 <h1 mat-dialog-title>
-  Pujar por <strong> {{ jugador.jugadoresreales.alias }} </strong>
+  Vender a <strong> {{ jugador.jugadoresreales.alias }} </strong>
 </h1>
 <div mat-dialog-content>
   <table
@@ -90,11 +90,9 @@
   <!-- ValorMercado y ValorVenta -->
   <div id="infoDinero">
     <h2>Mercado: {{ valorMercado }}</h2>
-    <h2>Precio: {{ precioVenta }}</h2>
-    <!-- <h2>Puja máx.: {{ pujaMaximaFormateada }}</h2> -->
   </div>
 
-  <p class="labelPuja">Indique su puja:</p>
+  <p class="labelPuja">Indique el precio de venta:</p>
   <!-- Input para pujar -->
   <div id="puja">
     <button mat-fab color="azul" aria-label="restar" (click)="restar()">
@@ -105,25 +103,19 @@
       matInput
       type="text"
       (keyup)="formatearNum($event)"
-      [value]="pujaNumber | thousandsPipe"
+      [value]="precioVenta | thousandsPipe"
       (keydown)="permitirCiertasTeclas($event)"
     />
     <button id="suma" mat-fab color="rosa" aria-label="sumar" (click)="sumar()">
       <span>+</span>
     </button>
   </div>
-  <p *ngIf="hayError" class="error">{{ error }}</p>
   <p></p>
 </div>
 <mat-dialog-actions align="center" id="actions">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button
-    mat-button
-    [mat-dialog-close]="pujaNumber"
-    cdkFocusInitial
-    [disabled]="hayError"
-  >
-    Pujar
+  <button mat-button [mat-dialog-close]="precioVenta" cdkFocusInitial>
+    Vender
   </button>
 </mat-dialog-actions>
 <!-- </div>

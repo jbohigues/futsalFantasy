@@ -1,46 +1,51 @@
-.card{
-    background-color: white;
-    border-radius: 1vw;
-    margin-bottom: 1vw;
-    box-shadow: 6px 8px 2px 0px rgba(0, 0, 0, 0.377);
-    padding: 1vw;
-    text-align: center;
+.card {
+  background-color: white;
+  border-radius: 1vw;
+  margin-bottom: 1vw;
+  box-shadow: 6px 8px 2px 0px rgba(0, 0, 0, 0.377);
+  padding: 1vw;
+  text-align: center;
 
-    h1{
-        font-size: 1.5vw;
+  h1 {
+    font-size: 1.5vw;
+  }
+  .info {
+    font-size: 1.2vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3vw;
+    .diaSemana {
+      text-transform: capitalize;
     }
-    .info{
-        font-size: 1.2vw;
+    #vs {
+      p {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        padding: 0 3vw;
-        .diaSemana{
-            text-transform: capitalize;
+        justify-content: center;
+        img {
+          transition: transform 250ms;
+          width: 4vw;
+          &:hover {
+            transition: transform 250ms;
+            transform: scale(1.2);
+          }
         }
-        #vs{
-            p{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                img{
-                    width: 4vw;
-                    &:hover{
-                        transition: transform 250ms;
-                        transform: scale(1.2);
-                    }
-                }
-            }
-            
-        }
+      }
     }
+  }
 
-    .mat-card-footer{
-        font-size: 1.2vw;
-        a{
-            text-decoration: none;
-            color: var(--rosa);
-            font-size: bold;
-        }
+  .mat-card-footer {
+    font-size: 1.2vw;
+    a {
+      text-decoration: none;
+      color: var(--rosa);
+      transition: transform 250ms;
+      font-size: bold;
+      & > span:hover {
+        transition: transform 250ms;
+        transform: scale(2);
+      }
     }
+  }
 }

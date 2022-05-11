@@ -7,6 +7,8 @@ import { EquipoUser } from 'src/app/interfaces/equipo-user';
 import { JugadorRealEnCadaLiga } from 'src/app/interfaces/jugador-real-en-cada-liga';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
+import { TraspasosService } from 'src/app/global/servicios/traspasos.service';
+import { Puja } from 'src/app/interfaces/traspaso';
 
 export interface Jugadores {
   id: number;
@@ -37,6 +39,8 @@ export class TablaFichajesComponent implements OnInit {
   nombreEquipoUser: string = '';
   valorMercado: string = '';
   dinero: number = 0;
+  pujaRealizada: number = 0;
+  traspaso!: Puja;
   @Input() miEquipo!: EquipoUser;
 
   imagen: string = 'http://localhost:3000/images/fotosJugadoresReales/';
@@ -61,13 +65,16 @@ export class TablaFichajesComponent implements OnInit {
   constructor(
     private jugadoresRealesService: JugadoresRealesService,
     private localStorage: LocalStorageService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private traspasosService: TraspasosService
   ) {}
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
   ngOnInit() {
     this.miEquipo = this.localStorage.getEquipoLocalStorage();
+    console.log(this.miEquipo);
+
     this.dinero = this.miEquipo.dinero;
 
     this.jugadoresRealesService
@@ -120,7 +127,6 @@ export class TablaFichajesComponent implements OnInit {
             }).format(jugador.jugadoresreales.valorMercado),
           });
         });
-        // console.log(this.jugadores);
 
         this.dataSource = new MatTableDataSource<JugadorRealEnCadaLiga>(
           this.jugadoresMercado
@@ -135,6 +141,8 @@ export class TablaFichajesComponent implements OnInit {
       if (id === jugador.idJugadorReal) this.jugadorPuja = jugador;
     });
 
+    console.log(this.jugadorPuja);
+
     const dialogRef = this.dialog.open(DialogComponent, {
       panelClass: 'custom-dialog-container',
       data: {
@@ -143,8 +151,21 @@ export class TablaFichajesComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+    dialogRef.afterClosed().subscribe((pujaNumber) => {
+      console.log(`Dialog result: ${pujaNumber}`);
+
+      // this.pujaRealizada = pujaNumber;
+
+      this.traspaso = {
+        idJugador: this.jugadorPuja.jugadoresreales.id,
+        idEquipoUserEmisor:
+          this.miEquipo.jugadoresrealesencadaliga[0].idEquipoUser,
+        idEquipoUserReceptor: this.jugadorPuja.idEquipoUser,
+        precio: pujaNumber,
+      };
+      this.traspasosService.traspasarJugador(this.traspaso).subscribe((res) => {
+        console.log(res);
+      });
     });
   }
 }

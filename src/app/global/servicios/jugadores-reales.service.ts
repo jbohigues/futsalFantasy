@@ -37,6 +37,7 @@ export class JugadoresRealesService {
     );
   }
 
+  //Obtiene los jugadores puestos en venta de cierta liga
   getJugadoresMercado(idLiga: number): Observable<JugadorRealEnCadaLiga[]> {
     return this.http.get<JugadorRealEnCadaLiga[]>(
       this.REST_API_SERVER2 + '/l=' + idLiga

@@ -10,6 +10,7 @@ import { InicioModule } from './inicio/inicio.module';
 import { ClasificacionModule } from './clasificacion/clasificacion.module';
 import { AlineacionModule } from './alineacion/alineacion.module';
 import { MercadoModule } from './mercado/mercado.module';
+import { JornadaModule } from './jornada/jornada.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { MercadoModule } from './mercado/mercado.module';
     ClasificacionModule,
     AlineacionModule,
     MercadoModule,
+    JornadaModule,
     BrowserAnimationsModule,
     HttpClientModule,
   ],

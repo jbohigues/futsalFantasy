@@ -37,11 +37,6 @@ export class LocalStorageService {
     this.isLogin = false;
   }
 
-  // //Devuelve el usuario logueado actualmente
-  // getLogUser() {
-  //   return this.currentUser;
-  // }
-
   //Devuelve un boolean segun tengamos la variable isLogin en localStorage o no
   getIsLogin(): boolean {
     const islogin = localStorage.getItem('isLogin');
@@ -70,19 +65,5 @@ export class LocalStorageService {
     return (this.equipoUser = JSON.parse(
       String(localStorage.getItem('equipoUser'))
     ) as EquipoUser);
-    // this.currentUser = this.getUsuarioLocalStorage();
-    // console.log(this.currentUser);
-
-    // this.equipoUserService
-    //   .getEquipoUsuario(this.currentUser.id)
-    //   .subscribe((res) => {
-    //     console.log(this.currentUser);
-    //     console.log(res);
-
-    //     this.equipoUser = res;
-    //     // localStorage.setItem('equipoUser', JSON.stringify(this.equipoUser));
-    //   });
-
-    // return this.equipoUser;
   }
 }

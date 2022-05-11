@@ -1,6 +1,6 @@
 <mat-card class="card" *ngIf="!loading">
   <div class="header">
-    <h1>JORNADA {{ jornada }}</h1>
+    <h1>JORNADA {{ proximaJornada.jornada }}</h1>
   </div>
   <mat-card-content class="info">
     <div id="tiempo">
@@ -23,19 +23,21 @@
       <p>
         <span class="diaSemana"
           >{{ diaString }}&nbsp;{{
-            jornadas[0].fecha.getDate()
+            proximaJornada.fecha.getDate()
           }}&nbsp;|&nbsp;</span
         >
         <strong
-          >{{ jornadas[0].fecha.getHours() }}:{{
-            jornadas[0].fecha.getMinutes()
+          >{{ proximaJornada.fecha.getHours() }}:{{
+            proximaJornada.fecha.getMinutes()
           }}h</strong
         >
       </p>
     </div>
   </mat-card-content>
   <mat-card-footer>
-    <p>Haz tu alineación <a href="/alineacion">aquí</a></p>
+    <p>
+      Haz tu alineación <a href="/alineacion"><span> aquí </span></a>
+    </p>
   </mat-card-footer>
 </mat-card>
 

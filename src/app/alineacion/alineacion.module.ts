@@ -9,12 +9,16 @@ import { MatTableModule } from '@angular/material/table';
 import { PlantillaComponent } from './componentes/plantilla/plantilla.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
+import { DialogVentaComponent } from './componentes/dialog-venta/dialog-venta.component';
+import { PipesModule } from '../pipes/pipes.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     PrincipalAlineacionComponent,
     CuadroAlineacionComponent,
     PlantillaComponent,
+    DialogVentaComponent,
   ],
   imports: [
     CommonModule,
@@ -24,6 +28,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatTableModule,
     MatSortModule,
     MatButtonModule,
+    PipesModule,
+    MatDialogModule,
   ],
 })
 export class AlineacionModule {}
