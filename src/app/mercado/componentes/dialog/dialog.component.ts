@@ -165,6 +165,7 @@ export class DialogComponent implements OnInit {
     } else {
       this.hayError = false;
     }
-    this.pujaNumber = num;
+    this.pujaNumber = parseInt(num);
+    console.log(typeof this.pujaNumber);
   }
 }

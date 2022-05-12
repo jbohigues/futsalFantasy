@@ -26,8 +26,13 @@
             proximaJornada.fecha.getDate()
           }}&nbsp;|&nbsp;</span
         >
-        <strong
-          >{{ proximaJornada.fecha.getHours() }}:{{
+        <strong *ngIf="proximaJornada.fecha.getMinutes() < 9"
+          >{{ proximaJornada.fecha.getHours() - 2 }}:0{{
+            proximaJornada.fecha.getMinutes()
+          }}h</strong
+        >
+        <strong *ngIf="proximaJornada.fecha.getMinutes() > 9"
+          >{{ proximaJornada.fecha.getHours() - 2 }}:{{
             proximaJornada.fecha.getMinutes()
           }}h</strong
         >

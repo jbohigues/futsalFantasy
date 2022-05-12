@@ -1,7 +1,8 @@
 export interface Calendario {
-    id: number,
-    jornada: number,
-    idLocal: number,
-    idVisitante: number,
-    fecha: Date
+  id: number;
+  jornada: number;
+  idLocal: number;
+  idVisitante: number;
+  fecha: Date;
+  jugado: boolean;
 }

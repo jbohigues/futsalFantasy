@@ -8,7 +8,7 @@ import { JugadorRealEnCadaLiga } from 'src/app/interfaces/jugador-real-en-cada-l
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { TraspasosService } from 'src/app/global/servicios/traspasos.service';
-import { Puja } from 'src/app/interfaces/traspaso';
+import { Traspaso, Estado, Puja } from 'src/app/interfaces/traspaso';
 
 export interface Jugadores {
   id: number;
@@ -40,7 +40,8 @@ export class TablaFichajesComponent implements OnInit {
   valorMercado: string = '';
   dinero: number = 0;
   pujaRealizada: number = 0;
-  traspaso!: Puja;
+  traspaso!: Traspaso;
+  puja!: Puja;
   @Input() miEquipo!: EquipoUser;
 
   imagen: string = 'http://localhost:3000/images/fotosJugadoresReales/';
@@ -157,15 +158,49 @@ export class TablaFichajesComponent implements OnInit {
       // this.pujaRealizada = pujaNumber;
 
       this.traspaso = {
+        id: 0,
         idJugador: this.jugadorPuja.jugadoresreales.id,
         idEquipoUserEmisor:
           this.miEquipo.jugadoresrealesencadaliga[0].idEquipoUser,
         idEquipoUserReceptor: this.jugadorPuja.idEquipoUser,
         precio: pujaNumber,
+        estado: Estado.Pendiente,
       };
-      this.traspasosService.traspasarJugador(this.traspaso).subscribe((res) => {
-        console.log(res);
-      });
+      console.log(this.traspaso);
+
+      this.traspasosService
+        .comprobarExistePuja(
+          this.traspaso.idJugador,
+          this.traspaso.idEquipoUserEmisor
+        )
+        .subscribe((res) => {
+          console.log(res);
+
+          if (res.status == 'noHayJugador') {
+            this.puja = {
+              idEquipoUserEmisor: this.traspaso.idEquipoUserEmisor,
+              idEquipoUserReceptor: this.traspaso.idEquipoUserReceptor,
+              idJugador: this.traspaso.idJugador,
+              precio: this.traspaso.precio,
+            };
+            this.traspasosService
+              .pujarPorJugador(this.puja)
+              .subscribe((res) => {
+                alert('Has pujado con exito');
+              });
+          } else {
+            this.traspaso.id = res.traspaso.id;
+            // console.log('no se puere');
+
+            this.traspasosService
+              .actualizarPuja(this.traspaso)
+              .subscribe((res) => {
+                alert('puja actualizada');
+              });
+
+            // FALTA QUE PUEDA RETIRAR LA PUJA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          }
+        });
     });
   }
 }

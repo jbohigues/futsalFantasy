@@ -113,7 +113,7 @@ export class PlantillaComponent implements OnInit {
           precio: precioVenta,
         };
         this.traspasosService
-          .traspasarJugador(this.traspaso)
+          .pujarPorJugador(this.traspaso)
           .subscribe((res) => {
             console.log(res);
           });

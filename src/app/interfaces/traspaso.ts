@@ -14,7 +14,7 @@ export interface Puja {
   precio: number;
 }
 
-enum Estado {
+export enum Estado {
   Pendiente = 'P',
   Aceptada = 'OK',
   Rechazada = 'R',

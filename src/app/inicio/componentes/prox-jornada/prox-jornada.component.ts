@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 import { EquiposRealesService } from 'src/app/global/servicios/equipos-reales.service';
 import { Calendario } from 'src/app/interfaces/calendario';
@@ -37,7 +38,8 @@ export class ProxJornadaComponent implements OnInit {
 
   constructor(
     private proxJornadaService: ProxJornadaService,
-    private equiposRealesService: EquiposRealesService
+    private equiposRealesService: EquiposRealesService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -45,10 +47,13 @@ export class ProxJornadaComponent implements OnInit {
       //Obtengo todas las jornadas ordenadas por fecha
       this.jornadas = res;
       let localDate;
+      console.log(this.hoy);
 
       //Comparo las fechas obtenidas con la fecha actual, para comprobar cual es la primera proxima
       for (const jornada of this.jornadas) {
         localDate = new Date(jornada.fecha.toLocaleString());
+        //Hago esto para poder quitar las 2h de diferencia horaria
+        localDate.setHours(localDate.getHours() - 2);
 
         if (localDate > this.hoy) {
           this.proximaJornada = jornada;
@@ -66,6 +71,7 @@ export class ProxJornadaComponent implements OnInit {
       this.clock = this.source.subscribe((t) => {
         this.now = new Date();
         this.end = new Date(this.proximaJornada.fecha);
+        this.end.setHours(this.end.getHours() - 2);
         this.showDate();
       });
 
@@ -91,5 +97,12 @@ export class ProxJornadaComponent implements OnInit {
     this.hours = Math.floor((distance % this._day) / this._hour);
     this.minutes = Math.floor((distance % this._hour) / this._minute);
     this.seconds = Math.floor((distance % this._minute) / this._second);
+    if (
+      this.day === 0 &&
+      this.hours === 0 &&
+      this.minutes === 0 &&
+      this.seconds === 0
+    )
+      window.location.reload();
   }
 }
