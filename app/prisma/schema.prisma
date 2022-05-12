@@ -13,10 +13,12 @@ model calendario {
   idLocal                                             Int
   idVisitante                                         Int
   fecha                                               DateTime                 @default(now()) @db.DateTime(0)
+  jugado                                              Boolean                  @default(dbgenerated("(b'0')")) @db.Bit(1)
+  golesLocal                                          Int?
+  golesVisitante                                      Int?
   equiposreales_calendario_idLocalToequiposreales     equiposreales            @relation("calendario_idLocalToequiposreales", fields: [idLocal], references: [id], onDelete: Cascade, map: "calendario_ibfk_5")
   equiposreales_calendario_idVisitanteToequiposreales equiposreales            @relation("calendario_idVisitanteToequiposreales", fields: [idVisitante], references: [id], onDelete: Cascade, map: "calendario_ibfk_6")
-  infojugadoresenpartido                              infojugadoresenpartido[] @ignore
-  resultados                                          resultados[]             @ignore
+  infojugadoresenpartido                              infojugadoresenpartido[]
 
   @@index([idLocal], map: "idLocal")
   @@index([idVisitante], map: "idVisitante")
@@ -76,8 +78,8 @@ model iconosnoticias {
   imagen String              @db.VarChar(50)
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model infojugadoresenpartido {
+  id              Int                                   @id @default(autoincrement())
   idPartido       Int
   idJugador       Int
   titular         Boolean                               @default(dbgenerated("(b'0')")) @db.Bit(1)
@@ -89,9 +91,9 @@ model infojugadoresenpartido {
   jugadoresreales jugadoresreales                       @relation(fields: [idJugador], references: [id], onDelete: Cascade, map: "infojugadoresenpartido_ibfk_4")
   calendario      calendario                            @relation(fields: [idPartido], references: [id], onDelete: Cascade, map: "infojugadoresenpartido_ibfk_5")
 
+  @@unique([idPartido, idJugador], map: "idPartido_idJugador")
   @@index([idJugador], map: "idJugador")
   @@index([idPartido], map: "idPartido")
-  @@ignore
 }
 
 model jugadoresreales {
@@ -106,7 +108,7 @@ model jugadoresreales {
   foto                      String?                     @db.VarChar(50)
   idEquipoReal              Int
   equiposreales             equiposreales               @relation(fields: [idEquipoReal], references: [id], onDelete: Cascade, map: "jugadoresreales_ibfk_3")
-  infojugadoresenpartido    infojugadoresenpartido[]    @ignore
+  infojugadoresenpartido    infojugadoresenpartido[]
   jugadoresrealesencadaliga jugadoresrealesencadaliga[]
   traspasos                 traspasos[]
 
@@ -145,7 +147,7 @@ model ligas {
   equiposusuarios           equiposusuarios[]
   jugadoresrealesencadaliga jugadoresrealesencadaliga[]
   noticias                  noticias[]
-  puntos                    puntos[]                    @ignore
+  puntosliga                puntosliga?
 
   @@index([idUsuarioLider], map: "idUsuarioLider")
 }
@@ -161,9 +163,9 @@ model noticias {
   @@index([idLiga], map: "idLiga")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model puntos {
-  idLiga           Int
+model puntosliga {
+  id               Int   @id @default(autoincrement())
+  idLiga           Int   @unique(map: "idLiga")
   titular          Int   @default(2)
   golDL            Int   @default(3)
   golMC            Int   @default(4)
@@ -177,34 +179,21 @@ model puntos {
   buenPartido      Int   @default(2)
   excelentePartido Int   @default(3)
   perfectoPartido  Int   @default(4)
-  ligas            ligas @relation(fields: [idLiga], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "puntos_ibfk_1")
-
-  @@index([idLiga], map: "idLiga")
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model resultados {
-  idPartido      Int
-  golesLocal     Int        @default(0)
-  golesVisitante Int        @default(0)
-  calendario     calendario @relation(fields: [idPartido], references: [id], onDelete: Cascade, map: "resultados_ibfk_2")
-
-  @@index([idPartido], map: "idPartido")
-  @@ignore
+  ligas            ligas @relation(fields: [idLiga], references: [id], onDelete: Cascade, map: "puntosliga_ibfk_2")
 }
 
 model traspasos {
   id                                                              Int              @id @default(autoincrement())
   idJugador                                                       Int
   idEquipoUserEmisor                                              Int
-  idEquipoUserReceptor                                            Int
+  idEquipoUserReceptor                                            Int?
   precio                                                          Int
   estado                                                          traspasos_estado @default(P)
   equiposusuarios_equiposusuariosTotraspasos_idEquipoUserEmisor   equiposusuarios  @relation("equiposusuariosTotraspasos_idEquipoUserEmisor", fields: [idEquipoUserEmisor], references: [id], onDelete: Cascade, map: "traspasos_ibfk_7")
-  equiposusuarios_equiposusuariosTotraspasos_idEquipoUserReceptor equiposusuarios  @relation("equiposusuariosTotraspasos_idEquipoUserReceptor", fields: [idEquipoUserReceptor], references: [id], onDelete: Cascade, map: "traspasos_ibfk_8")
+  equiposusuarios_equiposusuariosTotraspasos_idEquipoUserReceptor equiposusuarios? @relation("equiposusuariosTotraspasos_idEquipoUserReceptor", fields: [idEquipoUserReceptor], references: [id], onDelete: Cascade, map: "traspasos_ibfk_8")
   jugadoresreales                                                 jugadoresreales  @relation(fields: [idJugador], references: [id], onDelete: Cascade, map: "traspasos_ibfk_4")
 
+  @@unique([idJugador, idEquipoUserEmisor], map: "idJugador_idEquipoUserEmisor")
   @@index([idEquipoUserEmisor], map: "idEquipoUserEmisor")
   @@index([idEquipoUserReceptor], map: "idEquipoUserReceptor")
   @@index([idJugador], map: "idJugador")
@@ -262,14 +251,14 @@ enum noticias_tema {
   T
 }
 
-enum usuarios_estado {
-  P
-  A
-  B
-}
-
 enum traspasos_estado {
   P
   OK
   R
+}
+
+enum usuarios_estado {
+  P
+  A
+  B
 }
