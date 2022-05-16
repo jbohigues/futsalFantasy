@@ -5,7 +5,7 @@ import { EquipoUser } from 'src/app/interfaces/equipo-user';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EquiposUserService {
   private REST_API_SERVER = environment.REST_API_SERVER + 'equiposUser';
@@ -13,18 +13,22 @@ export class EquiposUserService {
   constructor(private http: HttpClient) {}
 
   getEquipoUsuario(id: number): Observable<EquipoUser> {
-    return this.http.get<EquipoUser>(this.REST_API_SERVER + "/u=" + id);
+    return this.http.get<EquipoUser>(this.REST_API_SERVER + '/u=' + id);
   }
 
   getEquiposLiga(id: number): Observable<EquipoUser[]> {
-    return this.http.get<EquipoUser[]>(this.REST_API_SERVER + "/l=" + id);
+    return this.http.get<EquipoUser[]>(this.REST_API_SERVER + '/l=' + id);
   }
 
   getEquiposLigaOrdenados(id: number): Observable<EquipoUser[]> {
-    return this.http.get<EquipoUser[]>(this.REST_API_SERVER + "/l2=" + id);
+    return this.http.get<EquipoUser[]>(this.REST_API_SERVER + '/l2=' + id);
   }
 
-  getEquipoUsuarioLogueado(idLiga: number, idEquipoUser: number): Observable<EquipoUser> {
-    return this.http.get<EquipoUser>(this.REST_API_SERVER + "/l=" + idLiga + "/e=" + idEquipoUser);
+  getEquipoUsuarioPorIDEquipoUser(
+    idEquipoUser: number
+  ): Observable<EquipoUser> {
+    return this.http.get<EquipoUser>(
+      this.REST_API_SERVER + '/e=' + idEquipoUser
+    );
   }
 }

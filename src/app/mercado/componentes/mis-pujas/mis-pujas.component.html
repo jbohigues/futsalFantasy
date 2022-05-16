@@ -105,31 +105,17 @@
 
     <!-- PRECIO VENTA -->
     <ng-container matColumnDef="precioVenta">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">
-        Precio venta
-      </th>
+      <th mat-header-cell *matHeaderCellDef class="header">Puja realizada</th>
       <td mat-cell *matCellDef="let element">
         <button
           mat-raised-button
           matTooltip="Pujar por {{ element.alias }}"
           matTooltipPosition="right"
           color="basic"
-          *ngIf="element.precioVenta != null"
           (click)="abrirModal(element)"
           [ngClass]="element.clasePuja"
         >
           {{ element.precioVenta }}
-        </button>
-        <button
-          mat-raised-button
-          matTooltip="Pujar por {{ element.alias }}"
-          matTooltipPosition="right"
-          color="basic"
-          *ngIf="element.precioVenta == null"
-          (click)="abrirModal(element)"
-          [ngClass]="element.clasePuja"
-        >
-          {{ element.valor }}
         </button>
       </td>
     </ng-container>

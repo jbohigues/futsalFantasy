@@ -14,6 +14,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../pipes/pipes.module';
+import { MisPujasComponent } from './componentes/mis-pujas/mis-pujas.component';
+import { VentasComponent } from './componentes/ventas/ventas.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { PipesModule } from '../pipes/pipes.module';
     TabsComponent,
     TablaFichajesComponent,
     DialogComponent,
+    MisPujasComponent,
+    VentasComponent,
   ],
   imports: [
     CommonModule,

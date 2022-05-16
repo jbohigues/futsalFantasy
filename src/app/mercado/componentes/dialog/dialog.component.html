@@ -94,7 +94,9 @@
     <!-- <h2>Puja máx.: {{ pujaMaximaFormateada }}</h2> -->
   </div>
 
-  <p class="labelPuja">Indique su puja:</p>
+  <p class="labelPuja" *ngIf="!hayPuja">Indique su puja:</p>
+  <p class="labelPuja" *ngIf="hayPuja">Su última puja:</p>
+
   <!-- Input para pujar -->
   <div id="puja">
     <button mat-fab color="azul" aria-label="restar" (click)="restar()">
@@ -116,12 +118,27 @@
   <p></p>
 </div>
 <mat-dialog-actions align="center" id="actions">
-  <button mat-button mat-dialog-close>Cancel</button>
   <button
     mat-button
-    [mat-dialog-close]="pujaNumber"
+    [mat-dialog-close]="data"
+    (click)="data.tipoPuja = 'cancel'"
+  >
+    Cancel
+  </button>
+  <button
+    mat-button
+    [mat-dialog-close]="data"
+    *ngIf="hayPuja"
+    (click)="retirarPuja()"
+  >
+    Retirar
+  </button>
+  <button
+    mat-button
+    [mat-dialog-close]="data"
     cdkFocusInitial
     [disabled]="hayError"
+    (click)="obtenerPuja()"
   >
     Pujar
   </button>

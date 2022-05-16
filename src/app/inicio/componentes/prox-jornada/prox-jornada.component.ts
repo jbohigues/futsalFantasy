@@ -16,6 +16,8 @@ export class ProxJornadaComponent implements OnInit {
   proximaJornada!: Calendario;
   hoy = new Date();
   loading: boolean = true;
+  hayMasJornadas: boolean = true;
+  hayMasJornadasParrafo: string = 'No quedan más jornadas por disputar';
   diaString!: string;
   equipoLocal!: EquipoReal;
   equipoVisitante!: EquipoReal;
@@ -63,30 +65,37 @@ export class ProxJornadaComponent implements OnInit {
         }
       }
 
-      //Configuracion de la cuenta regresiva
-      this.diaString = new Intl.DateTimeFormat('es-Es', {
-        weekday: 'long',
-      }).format(this.proximaJornada.fecha);
+      if (this.proximaJornada != undefined) {
+        console.log(this.proximaJornada);
 
-      this.clock = this.source.subscribe((t) => {
-        this.now = new Date();
-        this.end = new Date(this.proximaJornada.fecha);
-        this.end.setHours(this.end.getHours() - 2);
-        this.showDate();
-      });
+        //Configuracion de la cuenta regresiva
+        this.diaString = new Intl.DateTimeFormat('es-Es', {
+          weekday: 'long',
+        }).format(this.proximaJornada.fecha);
 
-      this.equiposRealesService
-        .getEquipoReal(this.proximaJornada.idLocal)
-        .subscribe((equipo) => {
-          this.equipoLocal = equipo;
-
-          this.equiposRealesService
-            .getEquipoReal(this.proximaJornada.idVisitante)
-            .subscribe((equipo2) => {
-              this.equipoVisitante = equipo2;
-              this.loading = false;
-            });
+        this.clock = this.source.subscribe((t) => {
+          this.now = new Date();
+          this.end = new Date(this.proximaJornada.fecha);
+          this.end.setHours(this.end.getHours() - 2);
+          this.showDate();
         });
+
+        this.equiposRealesService
+          .getEquipoReal(this.proximaJornada.idLocal)
+          .subscribe((equipo) => {
+            this.equipoLocal = equipo;
+
+            this.equiposRealesService
+              .getEquipoReal(this.proximaJornada.idVisitante)
+              .subscribe((equipo2) => {
+                this.equipoVisitante = equipo2;
+                this.loading = false;
+              });
+          });
+      } else {
+        this.loading = false;
+        this.hayMasJornadas = false;
+      }
     });
   }
 

@@ -1,8 +1,8 @@
 <mat-card class="card" *ngIf="!loading">
-  <div class="header">
+  <div class="header" *ngIf="hayMasJornadas">
     <h1>JORNADA {{ proximaJornada.jornada }}</h1>
   </div>
-  <mat-card-content class="info">
+  <mat-card-content class="info" *ngIf="hayMasJornadas">
     <div id="tiempo">
       <p>Empieza en:</p>
       <p>
@@ -39,11 +39,15 @@
       </p>
     </div>
   </mat-card-content>
-  <mat-card-footer>
+  <mat-card-footer *ngIf="hayMasJornadas">
     <p>
       Haz tu alineación <a href="/alineacion"><span> aquí </span></a>
     </p>
   </mat-card-footer>
+  <div *ngIf="!hayMasJornadas">
+    <h1>¡Se ha terminado la liga!</h1>
+    <h2>{{ hayMasJornadasParrafo }}</h2>
+  </div>
 </mat-card>
 
 <mat-card class="card" *ngIf="loading">

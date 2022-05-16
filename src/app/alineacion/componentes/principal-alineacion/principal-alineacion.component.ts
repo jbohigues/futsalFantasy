@@ -5,8 +5,9 @@ import { LocalStorageService } from 'src/app/global/servicios/local-storage.serv
 import { EquipoUser } from 'src/app/interfaces/equipo-user';
 import { JugadorReal } from 'src/app/interfaces/jugador-real';
 import { Usuario } from 'src/app/interfaces/usuario';
+import { Jugadores } from 'src/app/mercado/componentes/tabla-fichajes/tabla-fichajes.component';
 
-export interface Jugadores {
+export interface Jugadores2 {
   id: number;
   jugador: string;
   estado: string;
@@ -29,11 +30,11 @@ export class PrincipalAlineacionComponent implements OnInit {
   posicionJugador: string = ''; //posicion bien escrita para mostrarla en pantalla
   posicion: string = ''; //abreviatura de la posicion del jugador
   misJugadores: JugadorReal[] = []; //array con todos los jugadores de mi equipo
-  jugadores: Jugadores[] = []; //array con los jugadores suplentes en la interfaz deseada
+  jugadores: Jugadores2[] = []; //array con los jugadores suplentes en la interfaz deseada
   imagen: string = 'http://localhost:3000/images/fotosJugadoresReales/';
   imagenEstado: string = 'http://localhost:3000/images/iconsEstadoJugador/';
   jugadorSeleccionado!: JugadorReal; //jugador titular seleccionado para cambiarlo por un suplente
-  jugadorSelec: Jugadores[] = []; //jugador seleccionado con la interfaz deseada para mostrarla por pantalla (array para poder meterlo en el dataSource de la tabla)
+  jugadorSelec: Jugadores2[] = []; //jugador seleccionado con la interfaz deseada para mostrarla por pantalla (array para poder meterlo en el dataSource de la tabla)
   titulares: JugadorReal[] = [];
   equipoUserLogueado!: EquipoUser;
   usuarioLogueado!: Usuario;

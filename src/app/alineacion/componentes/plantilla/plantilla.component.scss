@@ -56,6 +56,16 @@ table {
           border: 2px solid white;
           color: white;
         }
+
+        &.enVenta {
+          transition: transform 250ms;
+          background-color: rgba(7, 250, 242, 0.608);
+          color: black;
+          &:hover {
+            transition: transform 250ms;
+            background-color: rgba(1, 185, 179, 0.818);
+          }
+        }
       }
 
       img {

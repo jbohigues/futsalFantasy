@@ -43,4 +43,24 @@ export class JugadoresRealesService {
       this.REST_API_SERVER2 + '/l=' + idLiga
     );
   }
+
+  //Obtiene la informacion de cierto jugador
+  getInfoJugador(idJugadorReal: number): Observable<any> {
+    return this.http.get<any>(this.REST_API_SERVER2 + '/j=' + idJugadorReal);
+  }
+
+  //Modificar jugador: ponerlo (en venta) o quitarlo del mercado de fichajes
+  modificarJugadorVenta(
+    idLiga: number,
+    jugadorReal: JugadorRealEnCadaLiga
+  ): Observable<any> {
+    return this.http.put<any>(
+      this.REST_API_SERVER2 +
+        '/vender/idL=' +
+        idLiga +
+        '/idJ=' +
+        jugadorReal.idJugadorReal,
+      jugadorReal
+    );
+  }
 }

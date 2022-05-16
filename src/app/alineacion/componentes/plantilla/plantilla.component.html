@@ -71,9 +71,25 @@
         <button
           mat-raised-button
           color="basic"
-          (click)="abrirModal(element.id)"
+          matTooltip="Quitar del mercado a {{ element.alias }}"
+          matTooltipPosition="right"
+          [ngClass]="element.clasePuja"
+          (click)="abrirModal(element)"
+          *ngIf="element.hayPuja"
         >
-          Vender
+          <span> En venta </span>
+        </button>
+
+        <button
+          mat-raised-button
+          color="basic"
+          matTooltip="Vender a {{ element.alias }}"
+          matTooltipPosition="right"
+          [ngClass]="element.clasePuja"
+          (click)="abrirModal(element)"
+          *ngIf="!element.hayPuja"
+        >
+          <span> Vender </span>
         </button>
       </td>
     </ng-container>

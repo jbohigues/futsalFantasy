@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { EquipoUser } from 'src/app/interfaces/equipo-user';
 import { JugadorRealEnCadaLiga } from 'src/app/interfaces/jugador-real-en-cada-liga';
 
 export interface JugadoresAlineacion {
@@ -23,11 +24,17 @@ export interface JugadoresAlineacion {
 })
 export class DialogVentaComponent implements OnInit {
   //Variables
-  jugador!: JugadorRealEnCadaLiga;
+  jugador!: any;
   jugadorVenta: JugadoresAlineacion[] = [];
   nombreEquipoUser: string = '';
   valorMercado: string = '';
+  foto: string = '';
   precioVenta: number = 0;
+  hayError: boolean = false;
+  error: string = '';
+  miEquipo!: EquipoUser;
+  precioMaximo: number = 0;
+  precioMaximoFormateado: string = '';
 
   //Imagenes
   imagen: string = 'http://localhost:3000/images/fotosJugadoresReales/';
@@ -50,13 +57,29 @@ export class DialogVentaComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogVentaComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { jugadorVenta: JugadorRealEnCadaLiga }
+    public data: {
+      precioVenta: number;
+      hayPuja: boolean;
+      jugadorVenta: JugadorRealEnCadaLiga;
+      tipoPuja: string;
+      vista: string;
+      propietario: EquipoUser;
+    }
   ) {}
 
   ngOnInit(): void {
     //Obtengo el jugador
     this.jugador = this.data.jugadorVenta;
-    this.precioVenta = this.jugador.jugadoresreales.valorMercado;
+    if (this.data.hayPuja) this.precioVenta = this.data.precioVenta;
+    else this.precioVenta = this.jugador.valorMercado;
+    this.miEquipo = this.data.propietario;
+    this.precioMaximo = this.jugador.valorMercado * 1.5;
+    this.precioMaximoFormateado = new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 0,
+      currencySign: 'accounting',
+    }).format(this.precioMaximo);
     this.jugadorVenta = [];
 
     //Formateo sus valores de 'precio de venta', 'precio de mercado' y 'la puja maxima'
@@ -65,18 +88,18 @@ export class DialogVentaComponent implements OnInit {
       currency: 'EUR',
       maximumFractionDigits: 0,
       currencySign: 'accounting',
-    }).format(this.jugador.jugadoresreales.valorMercado);
+    }).format(this.jugador.valorMercado);
 
     this.jugadorVenta.push({
-      id: this.jugador.idJugadorReal,
-      jugador: this.jugador.jugadoresreales.foto,
-      equipoReal: this.jugador.jugadoresreales.equiposreales.foto,
-      posicion: this.jugador.jugadoresreales.posicion,
-      alias: this.jugador.jugadoresreales.alias,
-      estado: this.jugador.jugadoresreales.estado,
-      propietario: this.jugador.equiposusuarios.foto,
-      nombreEquipoUser: this.nombreEquipoUser.toUpperCase(),
-      puntos: this.jugador.jugadoresreales.puntos,
+      id: this.jugador.id,
+      jugador: this.jugador.foto,
+      equipoReal: this.jugador.equiposreales.foto,
+      posicion: this.jugador.posicion,
+      alias: this.jugador.alias,
+      estado: this.jugador.estado,
+      propietario: this.miEquipo.foto,
+      nombreEquipoUser: this.miEquipo.nombre.toUpperCase(),
+      puntos: this.jugador.puntos,
       titular: this.jugador.titular,
     });
 
@@ -114,16 +137,58 @@ export class DialogVentaComponent implements OnInit {
 
   restar() {
     this.precioVenta--;
+    if (this.precioVenta > this.precioMaximo) {
+      this.hayError = true;
+      this.error =
+        'El precio de venta máximo es de ' + this.precioMaximoFormateado + ' *';
+    } else if (this.precioVenta < this.jugador.valorMercado) {
+      this.hayError = true;
+      this.error =
+        'El precio de venta mínimo es de ' + this.valorMercado + ' *';
+    } else {
+      this.hayError = false;
+    }
   }
 
   sumar() {
     this.precioVenta++;
+    if (this.precioVenta > this.precioMaximo) {
+      this.hayError = true;
+      this.error =
+        'El precio de venta máximo es de ' + this.precioMaximoFormateado + ' *';
+    } else if (this.precioVenta < this.jugador.valorMercado) {
+      this.hayError = true;
+      this.error =
+        'El precio de venta mínimo es de ' + this.valorMercado + ' *';
+    } else {
+      this.hayError = false;
+    }
   }
 
   //Muestra el numero de la venta con el formato deseado, aunque modifique dicho numero
   formatearNum(event: any) {
     let num = event.target.value;
     num = num.replace(/[.]/g, '');
+
+    if (num > this.precioMaximo) {
+      this.hayError = true;
+      this.error =
+        'El precio de venta máximo es de ' + this.precioMaximoFormateado + ' *';
+    } else if (num < this.jugador.valorMercado) {
+      this.hayError = true;
+      this.error =
+        'El precio de venta mínimo es de ' + this.valorMercado + ' *';
+    } else {
+      this.hayError = false;
+    }
     this.precioVenta = num;
+  }
+
+  venderJugador() {
+    this.data.precioVenta = this.precioVenta;
+  }
+
+  retirarVenta() {
+    this.data.tipoPuja = 'retirar';
   }
 }

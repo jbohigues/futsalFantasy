@@ -1,6 +1,6 @@
 <!-- <div *ngIf="!loading"> -->
 <h1 mat-dialog-title>
-  Vender a <strong> {{ jugador.jugadoresreales.alias }} </strong>
+  Vender a <strong> {{ jugador.alias }} </strong>
 </h1>
 <div mat-dialog-content>
   <table
@@ -92,7 +92,9 @@
     <h2>Mercado: {{ valorMercado }}</h2>
   </div>
 
-  <p class="labelPuja">Indique el precio de venta:</p>
+  <p class="labelPuja" *ngIf="!data.hayPuja">Indique el precio de venta:</p>
+  <p class="labelPuja" *ngIf="data.hayPuja">Modifique el precio de venta:</p>
+
   <!-- Input para pujar -->
   <div id="puja">
     <button mat-fab color="azul" aria-label="restar" (click)="restar()">
@@ -110,11 +112,33 @@
       <span>+</span>
     </button>
   </div>
+  <p *ngIf="hayError" class="error">{{ error }}</p>
   <p></p>
 </div>
 <mat-dialog-actions align="center" id="actions">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="precioVenta" cdkFocusInitial>
+  <button
+    mat-button
+    [mat-dialog-close]="data"
+    (click)="data.tipoPuja = 'cancel'"
+  >
+    Cancel
+  </button>
+  <button
+    mat-button
+    [mat-dialog-close]="data"
+    *ngIf="data.hayPuja"
+    (click)="retirarVenta()"
+  >
+    Retirar
+  </button>
+  <button
+    mat-button
+    mat-button
+    [mat-dialog-close]="data"
+    cdkFocusInitial
+    [disabled]="hayError"
+    (click)="venderJugador()"
+  >
     Vender
   </button>
 </mat-dialog-actions>

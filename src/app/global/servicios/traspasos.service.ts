@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Puja, Traspaso } from 'src/app/interfaces/traspaso';
@@ -13,8 +13,8 @@ export class TraspasosService {
   constructor(private http: HttpClient) {}
 
   //Pujar por un jugador
-  pujarPorJugador(traspaso: Puja): Observable<Traspaso> {
-    return this.http.post<Traspaso>(this.REST_API_SERVER + '/puja', traspaso);
+  pujarPorJugador(traspaso: Puja): Observable<any> {
+    return this.http.post<any>(this.REST_API_SERVER + '/puja', traspaso);
   }
 
   //Comprobar si un usuario ya ha pujado por cierto jugador
@@ -30,5 +30,17 @@ export class TraspasosService {
       this.REST_API_SERVER + '/update/p=' + puja.id,
       puja
     );
+  }
+
+  //Cambia la puja de un jugador real
+  retirarPuja(traspaso: Traspaso): Observable<any> {
+    return this.http.delete<any>(
+      this.REST_API_SERVER + '/retirarPuja/p=' + traspaso.id
+    );
+  }
+
+  //Obtener pujas de un usuario
+  getMisPujas(idUser: number): Observable<any> {
+    return this.http.get<any>(this.REST_API_SERVER + '/pujas/j=' + idUser);
   }
 }

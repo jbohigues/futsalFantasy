@@ -1,7 +1,11 @@
 <mat-tab-group mat-align-tabs="center">
-  <mat-tab label="Mercado"
-    ><app-tabla-fichajes [miEquipo]="miEquipo"></app-tabla-fichajes
-  ></mat-tab>
-  <mat-tab label="Pujas"> </mat-tab>
-  <mat-tab label="Ventas"> </mat-tab>
+  <mat-tab label="Mercado">
+    <app-tabla-fichajes></app-tabla-fichajes>
+  </mat-tab>
+  <!-- <mat-tab label="Pujas">
+    <app-mis-pujas [miEquipo]="miEquipo"></app-mis-pujas>
+  </mat-tab> -->
+  <mat-tab label="Ventas">
+    <app-ventas></app-ventas>
+  </mat-tab>
 </mat-tab-group>

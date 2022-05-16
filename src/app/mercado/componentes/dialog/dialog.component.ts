@@ -20,6 +20,9 @@ export class DialogComponent implements OnInit {
   pujaMaximaFormateada: string = '';
   hayError: boolean = false;
   error: string = '';
+  hayPuja!: boolean;
+  precioPuja!: number;
+  tipoPuja: string = '';
 
   //Variables para la puja
   puja: string = ''; //puja que realizará el usuario por el jugador
@@ -47,27 +50,48 @@ export class DialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { pujaMaxima: number; jugadorPuja: JugadorRealEnCadaLiga }
+    public data: {
+      precioPuja: number;
+      hayPuja: boolean;
+      pujaMaxima: number;
+      jugadorPuja: any;
+      tipoPuja: string;
+      vista: string;
+    }
   ) {}
 
   ngOnInit(): void {
+    //Obtengo un boleano diciendome si ya he realizado una puja sobre ese jugador
+    this.hayPuja = this.data.hayPuja;
     //Obtengo la puja maxima que puede realizar el usuario
     this.pujaMaxima = this.data.pujaMaxima;
     //Obtengo el jugador
     this.jugador = this.data.jugadorPuja;
+    console.log(this.data);
 
     this.jugadorPuja = [];
-    if (this.jugador.valorTransferencia != null)
+    //Obtengo el precio de la puja en caso de que ya haya realizado una a ese jugador
+    if (this.hayPuja) this.pujaNumber = this.data.precioPuja;
+    //Si no hay puja, obtengo su valor de transferencia o de mercado
+    else if (this.jugador.valorTransferencia != null)
       this.pujaNumber = this.jugador.valorTransferencia;
     else this.pujaNumber = this.jugador.jugadoresreales.valorMercado;
 
     //Formateo sus valores de 'precio de venta', 'precio de mercado' y 'la puja maxima'
-    this.precioVenta = new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'EUR',
-      maximumFractionDigits: 0,
-      currencySign: 'accounting',
-    }).format(this.pujaNumber);
+    if (this.jugador.valorTransferencia != null)
+      this.precioVenta = new Intl.NumberFormat('de-DE', {
+        style: 'currency',
+        currency: 'EUR',
+        maximumFractionDigits: 0,
+        currencySign: 'accounting',
+      }).format(this.jugador.valorTransferencia);
+    else
+      this.precioVenta = new Intl.NumberFormat('de-DE', {
+        style: 'currency',
+        currency: 'EUR',
+        maximumFractionDigits: 0,
+        currencySign: 'accounting',
+      }).format(this.jugador.jugadoresreales.valorMercado);
 
     this.valorMercado = new Intl.NumberFormat('de-DE', {
       style: 'currency',
@@ -83,13 +107,26 @@ export class DialogComponent implements OnInit {
       currencySign: 'accounting',
     }).format(this.pujaMaxima);
 
-    //Si no tiene equipo, le metemos foto y nombre de equipo de Mercado
-    if (this.jugador.idEquipoUser === null) {
-      this.foto = 'logoMercado';
-      this.nombreEquipoUser = 'mercado';
+    if (this.data.vista === 'misPujas') {
+      if (this.data.jugadorPuja.idEquipoUserReceptor === null) {
+        //Si no tiene equipo, le metemos foto y nombre de equipo de Mercado
+        this.foto = 'logoMercado';
+        this.nombreEquipoUser = 'mercado';
+      } else {
+        this.foto =
+          this.data.jugadorPuja.equiposusuarios_equiposusuariosTotraspasos_idEquipoUserReceptor.foto;
+        this.nombreEquipoUser =
+          this.data.jugadorPuja.equiposusuarios_equiposusuariosTotraspasos_idEquipoUserReceptor.nombre;
+      }
     } else {
-      this.foto = this.jugador.equiposusuarios.foto;
-      this.nombreEquipoUser = this.jugador.equiposusuarios.nombre;
+      if (this.jugador.idEquipoUser === null) {
+        //Si no tiene equipo, le metemos foto y nombre de equipo de Mercado
+        this.foto = 'logoMercado';
+        this.nombreEquipoUser = 'mercado';
+      } else {
+        this.foto = this.jugador.equiposusuarios.foto;
+        this.nombreEquipoUser = this.jugador.equiposusuarios.nombre;
+      }
     }
 
     this.jugadorPuja.push({
@@ -110,6 +147,11 @@ export class DialogComponent implements OnInit {
         maximumFractionDigits: 0,
         currencySign: 'accounting',
       }).format(this.jugador.jugadoresreales.valorMercado),
+      // hayPuja: this.hayPuja,
+      clasePuja: '',
+      hayPuja: false,
+      precioMiPuja: 0,
+      idTraspaso: 0,
     });
 
     this.dataSource = new MatTableDataSource<Jugadores>(this.jugadorPuja);
@@ -123,7 +165,6 @@ export class DialogComponent implements OnInit {
   permitirCiertasTeclas(evento: any) {
     //sacamos el codigo ASCII de la tecla pulsada
     var code = evento.which ? evento.which : evento.keyCode;
-    console.log(code);
 
     if (code == 8 || code == 46) {
       //si pulsa borrar o suprimir
@@ -166,6 +207,13 @@ export class DialogComponent implements OnInit {
       this.hayError = false;
     }
     this.pujaNumber = parseInt(num);
-    console.log(typeof this.pujaNumber);
+  }
+
+  retirarPuja() {
+    this.data.tipoPuja = 'retirar';
+  }
+
+  obtenerPuja() {
+    this.data.precioPuja = this.pujaNumber;
   }
 }
