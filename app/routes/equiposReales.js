@@ -9,8 +9,8 @@ router.get("/eq=:id", async function (req, res, next) {
     const id = Number(req.params.id);
     const equipoReal = await prisma.equiposreales.findFirst({
       where: {
-          id: id,
-      }
+        id: id,
+      },
     });
     res.json(equipoReal);
   } catch (error) {

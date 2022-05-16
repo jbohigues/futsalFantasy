@@ -5,6 +5,28 @@ var prismaclient = require("@prisma/client");
 
 const prisma = new prismaclient.PrismaClient();
 
+//Obtiene la informacion de un jugador dado su id
+router.get("/j=:idJugador", async function (req, res) {
+  try {
+    const jugadores = await prisma.jugadoresrealesencadaliga.findFirst({
+      where: {
+        idJugadorReal: Number(req.params.idJugador),
+      },
+      include: {
+        jugadoresreales: {
+          include: {
+            equiposreales: true,
+          },
+        },
+        equiposusuarios: true,
+      },
+    });
+    res.json(jugadores);
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
 //Obtiene los jugadores puestos en el mercado de cierta liga
 router.get("/l=:idLiga", async function (req, res) {
   try {
@@ -77,6 +99,26 @@ router.put("/update/idL=:idLiga/idJ=:idJugadorReal", async function (req, res) {
     },
   });
   let status = jugador == null ? "mal" : "update";
+  res.json({ jugador: jugador, status: status });
+});
+
+//Modificar jugador: ponerlo (en venta) o quitarlo del mercado de fichajes
+router.put("/vender/idL=:idLiga/idJ=:idJugadorReal", async function (req, res) {
+  const { mercado, valorTransferencia } = req.body;
+
+  const jugador = await prisma.jugadoresrealesencadaliga.update({
+    where: {
+      idJugadorReal_idLiga: {
+        idJugadorReal: Number(req.params.idJugadorReal),
+        idLiga: Number(req.params.idLiga),
+      },
+    },
+    data: {
+      mercado: mercado,
+      valorTransferencia: Number(valorTransferencia),
+    },
+  });
+  let status = jugador == null ? "mal" : "exito";
   res.json({ jugador: jugador, status: status });
 });
 
