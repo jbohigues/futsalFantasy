@@ -162,17 +162,6 @@ export class TablaFichajesComponent implements OnInit {
                 jugador.idTraspaso = res2.traspaso.id;
               }
             });
-          // this.jugadoresRealesService
-          //   .getInfoJugador(jugador.id)
-          //   .subscribe((res3) => {
-          //     if (
-          //       res3.mercado === true &&
-          //       res3.idEquipoUser === this.miEquipo.id
-          //     ) {
-          //       jugador.clasePuja = 'enVenta';
-          //       jugador.hayPuja = true;
-          //     }
-          //   });
         });
 
         this.dataSource = new MatTableDataSource<Jugadores>(this.jugadores);
@@ -197,7 +186,8 @@ export class TablaFichajesComponent implements OnInit {
         precioPuja: this.jugadorPujaFormateado.precioMiPuja,
         hayPuja: this.jugadorPujaFormateado.hayPuja,
         jugadorPuja: this.jugadorPuja,
-        pujaMaxima: this.dinero + this.dinero * 0.25,
+        pujaMaxima: this.dinero + this.dinero * 0.75,
+        propietario: this.miEquipo,
       },
     });
 

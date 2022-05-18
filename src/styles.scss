@@ -36,13 +36,9 @@ $angular-theme: mat.define-light-theme(
 
 /* You can add global styles to this file, and also import other style files */
 
-html,
-body {
-  height: 100%;
-}
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  height: 100vh;
 }
 :root {
   --rosa: #ff00d4;
@@ -50,16 +46,16 @@ body {
   --degradado: linear-gradient(90deg, var(--azul), var(--rosa));
 }
 
+.mat-tab-group.mat-primary .mat-ink-bar {
+  background: var(--degradado) !important;
+}
+
 .custom-dialog-container .mat-dialog-container {
   padding: 2vw 4vw;
   border: 2px solid var(--degradado);
 }
 
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+  background-color: rgba(128, 128, 128, 0.499);
+  //   font-size: 1.5vw;
 }

@@ -47,6 +47,11 @@ table {
       font-size: 1.2vw;
       padding: 0;
 
+      &.titular {
+        background-color: rgba(0, 0, 0, 0.299);
+        // color: white;
+      }
+
       button {
         transition: transform 250ms;
         &:hover {
@@ -82,7 +87,7 @@ table {
       &.PT {
         span {
           border: 1px solid black;
-          background-color: yellow;
+          background-color: yellow !important;
           padding: 1vw;
           border-radius: 50%;
         }

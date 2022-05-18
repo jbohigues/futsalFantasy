@@ -2,10 +2,10 @@
   <mat-tab label="Mercado">
     <app-tabla-fichajes></app-tabla-fichajes>
   </mat-tab>
-  <!-- <mat-tab label="Pujas">
-    <app-mis-pujas [miEquipo]="miEquipo"></app-mis-pujas>
-  </mat-tab> -->
-  <mat-tab label="Ventas">
+  <mat-tab label="Ventas" *ngIf="hayPujas">
     <app-ventas></app-ventas>
+  </mat-tab>
+  <mat-tab label="Ofertas" *ngIf="hayOfertas">
+    <app-ofertas [ofertas]="ofertas"></app-ofertas>
   </mat-tab>
 </mat-tab-group>

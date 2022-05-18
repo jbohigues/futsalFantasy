@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { JugadorReal } from 'src/app/interfaces/jugador-real';
+import { JugadorRealEnCadaLiga } from 'src/app/interfaces/jugador-real-en-cada-liga';
 import { Puja, Traspaso } from 'src/app/interfaces/traspaso';
 import { environment } from 'src/environments/environment.prod';
 
@@ -42,5 +44,18 @@ export class TraspasosService {
   //Obtener pujas de un usuario
   getMisPujas(idUser: number): Observable<any> {
     return this.http.get<any>(this.REST_API_SERVER + '/pujas/j=' + idUser);
+  }
+
+  //Obtener ofertas de un usuario
+  getOfertas(idUser: number): Observable<any> {
+    return this.http.get<any>(this.REST_API_SERVER + '/ofertas/j=' + idUser);
+  }
+
+  //Aceptar oferta por un jugador: pasa el estado de traspaso a Aceptada
+  aceptarOferta(puja: Traspaso): Observable<any> {
+    return this.http.put<any>(
+      this.REST_API_SERVER + '/aceptarOferta/p=' + puja.id,
+      puja
+    );
   }
 }

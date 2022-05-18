@@ -3,13 +3,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { DialogVentaComponent } from 'src/app/alineacion/componentes/dialog-venta/dialog-venta.component';
 import { JugadoresRealesService } from 'src/app/global/servicios/jugadores-reales.service';
 import { LocalStorageService } from 'src/app/global/servicios/local-storage.service';
 import { TraspasosService } from 'src/app/global/servicios/traspasos.service';
 import { EquipoUser } from 'src/app/interfaces/equipo-user';
 import { JugadorRealEnCadaLiga } from 'src/app/interfaces/jugador-real-en-cada-liga';
-import { Estado, Puja, Traspaso } from 'src/app/interfaces/traspaso';
-import { DialogComponent } from '../dialog/dialog.component';
+import { Puja, Traspaso } from 'src/app/interfaces/traspaso';
 import { Jugadores } from '../tabla-fichajes/tabla-fichajes.component';
 
 @Component({
@@ -19,9 +20,10 @@ import { Jugadores } from '../tabla-fichajes/tabla-fichajes.component';
 })
 export class VentasComponent implements OnInit {
   jugadoresMercado: JugadorRealEnCadaLiga[] = [];
-  jugadores: Jugadores[] = [];
+  jugadores: any[] = [];
   misPujas: Jugadores[] = [];
-  jugadorPuja!: JugadorRealEnCadaLiga;
+  jugadorVenta!: JugadorRealEnCadaLiga;
+  jugadorParaVender!: JugadorRealEnCadaLiga;
   jugadorPujaFormateado!: Jugadores;
   loading: boolean = true;
   foto: string = '';
@@ -56,7 +58,8 @@ export class VentasComponent implements OnInit {
     private localStorage: LocalStorageService,
     public dialog: MatDialog,
     private traspasosService: TraspasosService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
@@ -105,7 +108,7 @@ export class VentasComponent implements OnInit {
               currencySign: 'accounting',
             }).format(jugador.valorTransferencia);
 
-          //Guardo todos los jugadores del mercado, excepto los mios, que los veré en el apartado de ventas
+          //Guardo todos los jugadores del mercado que el usuario logueado haya puesto en venta
           if (jugador.idEquipoUser === this.miEquipo.id) {
             this.jugadores.push({
               id: jugador.idJugadorReal,
@@ -144,85 +147,180 @@ export class VentasComponent implements OnInit {
 
     for (const jugador of this.jugadoresMercado) {
       if (this.jugadorPujaFormateado.id === jugador.idJugadorReal) {
-        this.jugadorPuja = jugador;
+        this.jugadorVenta = jugador;
         break;
       }
     }
 
-    const dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(DialogVentaComponent, {
       panelClass: 'custom-dialog-container',
       data: {
         precioPuja: this.jugadorPujaFormateado.precioMiPuja,
         hayPuja: this.jugadorPujaFormateado.hayPuja,
-        jugadorPuja: this.jugadorPuja,
-        pujaMaxima: this.dinero + this.dinero * 0.25,
+        jugadorVenta: this.jugadorVenta,
+        propietario: this.miEquipo,
+        vista: 'mercado',
       },
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      //Si lo que recibo del dialog tiene valores y no pulso sobre cancelar, creo una instancia de traspaso
       if (data != undefined && data.tipoPuja != 'cancel') {
-        this.traspaso = {
-          id: 0,
-          idJugador: data.jugadorPuja.idJugadorReal,
-          idEquipoUserEmisor:
-            this.miEquipo.jugadoresrealesencadaliga[0].idEquipoUser,
-          idEquipoUserReceptor: data.jugadorPuja.idEquipoUser,
-          precio: data.precioPuja,
-          estado: Estado.Pendiente,
-        };
+        if (data.vista === 'mercado') {
+          //Obtenemos la informacion del jugador real
+          this.jugadoresRealesService
+            .getInfoJugador(data.jugadorVenta.idJugadorReal)
+            .subscribe((res) => {
+              //Retirar jugador de la venta
+              if (data.tipoPuja === 'retirar') {
+                //Lo ponemos con la interfaz deseada y cambiamos los valores
+                this.jugadorParaVender = {
+                  ...res,
+                  mercado: false,
+                  valorTransferencia: null,
+                };
 
-        //Si he pulsado sobre retirar puja, realizo la operacion pertinente
-        if (data.tipoPuja === 'retirar') {
-          this.traspaso.id = this.jugadorPujaFormateado.idTraspaso;
-          this.traspasosService.retirarPuja(this.traspaso).subscribe((res) => {
-            if (res.status === 'puja retirada') {
-              this.openSnackBar('Puja retirada con éxito');
-              this.jugadorPujaFormateado.hayPuja = false;
-              this.jugadorPujaFormateado.clasePuja = '';
-            } else this.openSnackBar('No se ha podido retirar la puja');
-          });
-          //Si no he pulsado sobre retirar puja, compruebo si ya he pujado sobre este jugador para hacer update o put
+                //Quitamos al jugador del mercado
+                this.jugadoresRealesService
+                  .modificarJugadorVenta(
+                    this.miEquipo.idLiga,
+                    this.jugadorParaVender
+                  )
+                  .subscribe((res2) => {
+                    if (res2.status === 'exito') {
+                      this.jugadores.forEach((jugador) => {
+                        if (jugador.id === res2.jugador.idJugadorReal) {
+                          this.openSnackBar(
+                            'Se ha eliminado a ' +
+                              jugador.alias.toUpperCase() +
+                              ' del mercado de fichajes'
+                          );
+                        }
+                      });
+                      //Mensaje de error
+                    } else
+                      this.openSnackBar(
+                        'No se ha podido poner al jugador en el mercado'
+                      );
+                  });
+
+                //Poner jugador a la venta
+              } else {
+                //Lo ponemos con la interfaz deseada y cambiamos los valores
+                this.jugadorParaVender = {
+                  ...res,
+                  mercado: true,
+                  valorTransferencia: data.precioVenta,
+                };
+
+                //Ponemos a la venta el jugador
+                this.jugadoresRealesService
+                  .modificarJugadorVenta(
+                    this.miEquipo.idLiga,
+                    this.jugadorParaVender
+                  )
+                  .subscribe((res3) => {
+                    //Mensaje de exito
+                    if (res3.status === 'exito') {
+                      this.jugadores.forEach((jugador) => {
+                        if (jugador.id === res3.jugador.idJugadorReal) {
+                          jugador.hayPuja = true;
+                          jugador.clasePuja = 'enVenta';
+                          jugador.precioVenta = res3.jugador.valorTransferencia;
+                          this.openSnackBar(
+                            jugador.alias.toUpperCase() +
+                              ' ha sido añadido al mercado de fichajes'
+                          );
+                        }
+                      });
+                      //Mensaje de error
+                    } else
+                      this.openSnackBar(
+                        'No se ha podido poner al jugador en el mercado'
+                      );
+                  });
+              }
+              this.router
+                .navigateByUrl('/alineacion', {
+                  skipLocationChange: true,
+                })
+                .then(() => this.router.navigate(['mercado']));
+            });
         } else {
-          //Si no hay puja, hago put
-          if (this.jugadorPujaFormateado.hayPuja === false) {
-            this.puja = {
-              idEquipoUserEmisor: this.traspaso.idEquipoUserEmisor,
-              idEquipoUserReceptor: this.traspaso.idEquipoUserReceptor,
-              idJugador: this.traspaso.idJugador,
-              precio: this.traspaso.precio,
-            };
-            this.traspasosService
-              .pujarPorJugador(this.puja)
-              .subscribe((res) => {
-                if (res.status === 'hayTraspaso')
-                  this.openSnackBar('Puja realizada con éxito');
-                else this.openSnackBar('No se ha podido realizar la puja');
-                this.jugadores.forEach((jugador) => {
-                  if (jugador.id === this.puja.idJugador) {
-                    jugador.idTraspaso = res.traspaso.id;
-                    jugador.hayPuja = true;
-                    jugador.clasePuja = 'hayPuja';
-                    jugador.precioMiPuja = this.puja.precio;
-                  }
-                });
-              });
-            //Si hay puja, hago update
-          } else {
-            this.traspaso.id = this.jugadorPujaFormateado.idTraspaso;
-            this.jugadores.forEach((jugador) => {
-              if (jugador.id === this.traspaso.idJugador) {
-                jugador.precioMiPuja = data.precioPuja;
+          //Obtenemos la informacion del jugador real
+          this.jugadoresRealesService
+            .getInfoJugador(data.jugadorVenta.id)
+            .subscribe((res) => {
+              //Retirar jugador de la venta
+              if (data.tipoPuja === 'retirar') {
+                //Lo ponemos con la interfaz deseada y cambiamos los valores
+                this.jugadorParaVender = {
+                  ...res,
+                  mercado: false,
+                  valorTransferencia: null,
+                };
+                //Quitamos al jugador del mercado
+                this.jugadoresRealesService
+                  .modificarJugadorVenta(
+                    this.miEquipo.idLiga,
+                    this.jugadorParaVender
+                  )
+                  .subscribe((res2) => {
+                    if (res2.status === 'exito') {
+                      this.jugadores.forEach((jugador) => {
+                        if (jugador.id === res2.jugador.idJugadorReal) {
+                          jugador.hayPuja = false;
+                          jugador.clasePuja = '';
+                          jugador.precioVenta = null;
+                          this.openSnackBar(
+                            'Se ha eliminado a ' +
+                              jugador.alias.toUpperCase() +
+                              ' del mercado de fichajes'
+                          );
+                        }
+                      });
+                      //Mensaje de error
+                    } else
+                      this.openSnackBar(
+                        'No se ha podido poner al jugador en el mercado'
+                      );
+                  });
+
+                //Poner jugador a la venta
+              } else {
+                //Lo ponemos con la interfaz deseada y cambiamos los valores
+                this.jugadorParaVender = {
+                  ...res,
+                  mercado: true,
+                  valorTransferencia: data.precioVenta,
+                };
+                //Ponemos a la venta el jugador
+                this.jugadoresRealesService
+                  .modificarJugadorVenta(
+                    this.miEquipo.idLiga,
+                    this.jugadorParaVender
+                  )
+                  .subscribe((res2) => {
+                    //Mensaje de exito
+                    if (res2.status === 'exito') {
+                      this.jugadores.forEach((jugador) => {
+                        if (jugador.id === res2.jugador.idJugadorReal) {
+                          jugador.hayPuja = true;
+                          jugador.clasePuja = 'enVenta';
+                          jugador.precioVenta = res2.jugador.valorTransferencia;
+                          this.openSnackBar(
+                            jugador.alias.toUpperCase() +
+                              ' ha sido añadido al mercado de fichajes'
+                          );
+                        }
+                      });
+                      //Mensaje de error
+                    } else
+                      this.openSnackBar(
+                        'No se ha podido poner al jugador en el mercado'
+                      );
+                  });
               }
             });
-            this.traspasosService
-              .actualizarPuja(this.traspaso)
-              .subscribe((res) => {
-                if (res.status === 'update')
-                  this.openSnackBar('Puja actualizada con éxito');
-                else this.openSnackBar('No se ha podido actualizar la puja');
-              });
-          }
         }
       }
     });
@@ -237,223 +335,3 @@ export class VentasComponent implements OnInit {
     });
   }
 }
-
-// import { Component, Input, OnInit, ViewChild } from '@angular/core';
-// import { MatDialog } from '@angular/material/dialog';
-// import { MatSnackBar } from '@angular/material/snack-bar';
-// import { MatSort } from '@angular/material/sort';
-// import { MatTableDataSource } from '@angular/material/table';
-// import { DialogVentaComponent } from 'src/app/alineacion/componentes/dialog-venta/dialog-venta.component';
-// import { Jugadores2 } from 'src/app/alineacion/componentes/principal-alineacion/principal-alineacion.component';
-// import { JugadoresRealesService } from 'src/app/global/servicios/jugadores-reales.service';
-// import { LocalStorageService } from 'src/app/global/servicios/local-storage.service';
-// import { TraspasosService } from 'src/app/global/servicios/traspasos.service';
-// import { EquipoUser } from 'src/app/interfaces/equipo-user';
-// import { JugadorReal } from 'src/app/interfaces/jugador-real';
-// import { JugadorRealEnCadaLiga } from 'src/app/interfaces/jugador-real-en-cada-liga';
-// import { Estado, Puja, Traspaso } from 'src/app/interfaces/traspaso';
-// import { DialogComponent } from '../dialog/dialog.component';
-// import { Jugadores } from '../tabla-fichajes/tabla-fichajes.component';
-
-// @Component({
-//   selector: 'app-ventas',
-//   templateUrl: './ventas.component.html',
-//   styleUrls: ['./ventas.component.scss'],
-// })
-// export class VentasComponent implements OnInit {
-//   titular: boolean = false;
-//   valor: number = 0;
-//   valorString: string = '';
-//   misJugadores: any = [];
-//   jugadores: any[] = [];
-//   jugadorVenta!: JugadorRealEnCadaLiga;
-//   jugadorParaVender!: JugadorRealEnCadaLiga;
-//   jugadorPujaFormateado!: Jugadores;
-//   puja!: Puja;
-//   traspaso!: Traspaso;
-//   miEquipo!: EquipoUser;
-
-//   imagen: string = 'http://localhost:3000/images/fotosJugadoresReales/';
-//   imagenEstado: string = 'http://localhost:3000/images/iconsEstadoJugador/';
-//   equipoRealLogo: string = 'http://localhost:3000/images/logosEquiposReales/';
-//   equipoUserLogo: string = 'http://localhost:3000/images/logosEquiposUsers/';
-
-//   //TABLA
-//   displayedColumns: string[] = [
-//     'jugador',
-//     'estado',
-//     'posicion',
-//     'alias',
-//     'capital',
-//     'puntos',
-//     'accion',
-//   ];
-//   dataSource: any;
-
-//   constructor(
-//     public dialog: MatDialog,
-//     private _snackBar: MatSnackBar,
-//     private jugadoresRealesService: JugadoresRealesService,
-//     private localStorage: LocalStorageService
-//   ) {}
-
-//   @ViewChild(MatSort, { static: true }) sort!: MatSort;
-
-//   ngOnInit(): void {
-//     //Obtengo mi equipo
-//     this.miEquipo = this.localStorage.getEquipoLocalStorage();
-
-//     //Me guardo en un array los jugadores del equipo del usuario logueado
-//     this.miEquipo.jugadoresrealesencadaliga.forEach((element) => {
-//       this.titular = element.titular;
-//       this.misJugadores.push(element.jugadoresreales);
-//     });
-
-//     //Guardo en un array los jugadores con el formato Jugadores
-//     this.misJugadores.forEach((jugador: JugadorReal) => {
-//       this.jugadores.push({
-//         id: jugador.id,
-//         jugador: jugador.foto,
-//         estado: jugador.estado,
-//         posicion: jugador.posicion,
-//         alias: jugador.alias,
-//         puntos: jugador.puntos,
-//         capital: new Intl.NumberFormat('de-DE', {
-//           style: 'currency',
-//           currency: 'EUR',
-//           maximumFractionDigits: 0,
-//           currencySign: 'accounting',
-//         }).format(jugador.valorMercado),
-//         titular: this.titular,
-//         precioVenta: null,
-//       });
-//       this.valor += jugador.valorMercado;
-//     });
-
-//     this.jugadores.forEach((jugador) => {
-//       this.jugadoresRealesService
-//         .getInfoJugador(jugador.id)
-//         .subscribe((res) => {
-//           if (res.mercado === true) {
-//             jugador.clasePuja = 'enVenta';
-//             jugador.hayPuja = true;
-//             jugador.precioVenta = res.valorTransferencia;
-//           }
-//         });
-//     });
-
-//     this.valorString = new Intl.NumberFormat('de-DE', {
-//       style: 'currency',
-//       currency: 'EUR',
-//       maximumFractionDigits: 0,
-//       currencySign: 'accounting',
-//     }).format(this.valor);
-
-//     this.dataSource = new MatTableDataSource<Jugadores2>(this.jugadores);
-//     this.dataSource.sort = this.sort;
-//   }
-
-//   abrirModal(element: Jugadores) {
-//     this.jugadorPujaFormateado = element;
-//     //Obtengo el jugador que voy a vender
-//     for (const jugador of this.misJugadores) {
-//       if (this.jugadorPujaFormateado.id === jugador.id) {
-//         this.jugadorVenta = jugador;
-//         break;
-//       }
-//     }
-
-//     const dialogRef = this.dialog.open(DialogVentaComponent, {
-//       panelClass: 'custom-dialog-container',
-//       data: {
-//         precioVenta: this.jugadorPujaFormateado.precioVenta,
-//         hayPuja: this.jugadorPujaFormateado.hayPuja,
-//         jugadorVenta: this.jugadorVenta,
-//         propietario: this.miEquipo,
-//       },
-//     });
-
-//     dialogRef.afterClosed().subscribe((data) => {
-//       if (data != undefined && data.tipoPuja != 'cancel') {
-//         //Obtenemos la informacion del jugador real
-//         this.jugadoresRealesService
-//           .getInfoJugador(data.jugadorVenta.id)
-//           .subscribe((res) => {
-//             //Retirar jugador de la venta
-//             if (data.tipoPuja === 'retirar') {
-//               //Lo ponemos con la interfaz deseada y cambiamos los valores
-//               this.jugadorParaVender = {
-//                 ...res,
-//                 mercado: false,
-//                 valorTransferencia: null,
-//               };
-//               //Quitamos al jugador del mercado
-//               this.jugadoresRealesService
-//                 .modificarJugadorVenta(
-//                   this.miEquipo.idLiga,
-//                   this.jugadorParaVender
-//                 )
-//                 .subscribe((res2) => {
-//                   if (res2.status === 'exito') {
-//                     this.jugadores.forEach((jugador) => {
-//                       if (jugador.id === res2.jugador.idJugadorReal) {
-//                         jugador.hayPuja = false;
-//                         jugador.clasePuja = '';
-//                         jugador.precioVenta = null;
-//                       }
-//                       this.openSnackBar(
-//                         'Se ha eliminado al jugador del mercado con éxito'
-//                       );
-//                     });
-//                     //Mensaje de error
-//                   } else
-//                     this.openSnackBar(
-//                       'No se ha podido poner al jugador en el mercado'
-//                     );
-//                 });
-
-//               //Poner jugador a la venta
-//             } else {
-//               //Lo ponemos con la interfaz deseada y cambiamos los valores
-//               this.jugadorParaVender = {
-//                 ...res,
-//                 mercado: true,
-//                 valorTransferencia: data.precioVenta,
-//               };
-//               //Ponemos a la venta el jugador
-//               this.jugadoresRealesService
-//                 .modificarJugadorVenta(
-//                   this.miEquipo.idLiga,
-//                   this.jugadorParaVender
-//                 )
-//                 .subscribe((res2) => {
-//                   //Mensaje de exito
-//                   if (res2.status === 'exito') {
-//                     this.jugadores.forEach((jugador) => {
-//                       if (jugador.id === res2.jugador.idJugadorReal) {
-//                         jugador.hayPuja = true;
-//                         jugador.clasePuja = 'enVenta';
-//                         jugador.precioVenta = res2.jugador.valorTransferencia;
-//                       }
-//                       this.openSnackBar('Jugador puesto en venta con éxito');
-//                     });
-//                     //Mensaje de error
-//                   } else
-//                     this.openSnackBar(
-//                       'No se ha podido poner al jugador en el mercado'
-//                     );
-//                 });
-//             }
-//           });
-//       }
-//     });
-//   }
-//   //Muestra un mensaje
-//   openSnackBar(mensaje: string) {
-//     this._snackBar.open(mensaje, 'Cerrar', {
-//       horizontalPosition: 'right',
-//       verticalPosition: 'bottom',
-//       duration: 5 * 1000,
-//     });
-//   }
-// }

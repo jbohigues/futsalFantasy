@@ -33,6 +33,10 @@ h1 {
       &.filaHover:hover {
         background: var(--degradado);
         transition: transform 250ms;
+        .oferta {
+          background-color: white;
+          color: black;
+        }
       }
 
       td {
@@ -51,6 +55,28 @@ h1 {
           &.hayPuja {
             background-color: black;
             color: white;
+            &:hover {
+              background-color: rgb(120, 119, 119);
+              color: white;
+            }
+          }
+          &.enVenta {
+            transition: transform 250ms;
+            background-color: rgb(0, 223, 216);
+            color: black;
+            &:hover {
+              background-color: rgb(120, 119, 119);
+              color: white;
+            }
+          }
+          &.oferta {
+            transition: transform 250ms;
+            background-color: rgb(223, 0, 0);
+            color: white;
+            &:hover {
+              background-color: rgb(120, 119, 119);
+              color: white;
+            }
           }
         }
 
@@ -62,6 +88,7 @@ h1 {
           &.imagenJugador {
             border-radius: 50%;
             width: 6vw;
+            padding: 0 0.5vw;
           }
         }
 

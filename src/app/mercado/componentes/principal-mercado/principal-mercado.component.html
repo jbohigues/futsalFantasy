@@ -7,8 +7,11 @@
         Capital: <span>{{ capital }}</span>
       </h2>
     </div>
-    <div id="tabs">
+    <div id="tabs" *ngIf="!loading">
       <app-tabs [miEquipo]="equipoUserLogueado"></app-tabs>
+    </div>
+    <div *ngIf="loading">
+      <app-loading></app-loading>
     </div>
   </div>
   <app-footer></app-footer>

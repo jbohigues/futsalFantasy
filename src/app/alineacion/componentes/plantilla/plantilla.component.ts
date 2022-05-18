@@ -2,11 +2,9 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { TraspasosService } from 'src/app/global/servicios/traspasos.service';
 import { EquipoUser } from 'src/app/interfaces/equipo-user';
 import { JugadorReal } from 'src/app/interfaces/jugador-real';
 import { JugadorRealEnCadaLiga } from 'src/app/interfaces/jugador-real-en-cada-liga';
-import { Puja, Traspaso } from 'src/app/interfaces/traspaso';
 import { DialogVentaComponent } from '../dialog-venta/dialog-venta.component';
 import { Jugadores } from 'src/app/mercado/componentes/tabla-fichajes/tabla-fichajes.component';
 import { Jugadores2 } from '../principal-alineacion/principal-alineacion.component';
@@ -27,8 +25,6 @@ export class PlantillaComponent implements OnInit {
   jugadorVenta!: JugadorRealEnCadaLiga;
   jugadorParaVender!: JugadorRealEnCadaLiga;
   jugadorPujaFormateado!: Jugadores;
-  puja!: Puja;
-  traspaso!: Traspaso;
   @Input() miEquipo!: EquipoUser;
   imagen: string = 'http://localhost:3000/images/fotosJugadoresReales/';
   imagenEstado: string = 'http://localhost:3000/images/iconsEstadoJugador/';
@@ -55,13 +51,18 @@ export class PlantillaComponent implements OnInit {
 
   ngOnInit(): void {
     //Me guardo en un array los jugadores del equipo del usuario logueado
-    this.miEquipo.jugadoresrealesencadaliga.forEach((element) => {
+    this.miEquipo.jugadoresrealesencadaliga.forEach((element: any) => {
       this.titular = element.titular;
+      if (element.titular) element.jugadoresreales.claseTitular = 'titular';
+      else element.jugadoresreales.claseTitular = '';
+      // console.log(element);
       this.misJugadores.push(element.jugadoresreales);
     });
 
     //Guardo en un array los jugadores con el formato Jugadores
-    this.misJugadores.forEach((jugador: JugadorReal) => {
+    this.misJugadores.forEach((jugador: any) => {
+      console.log(jugador);
+
       this.jugadores.push({
         id: jugador.id,
         jugador: jugador.foto,
@@ -77,10 +78,12 @@ export class PlantillaComponent implements OnInit {
         }).format(jugador.valorMercado),
         titular: this.titular,
         precioVenta: null,
+        claseTitular: jugador.claseTitular,
       });
       this.valor += jugador.valorMercado;
     });
 
+    //Formateo aquellos que están en venta y los titulares
     this.jugadores.forEach((jugador) => {
       this.jugadoresRealesService
         .getInfoJugador(jugador.id)
@@ -93,6 +96,7 @@ export class PlantillaComponent implements OnInit {
         });
     });
 
+    //Formateo el valor del equipo
     this.valorString = new Intl.NumberFormat('de-DE', {
       style: 'currency',
       currency: 'EUR',
@@ -104,6 +108,7 @@ export class PlantillaComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+  //Abre dialog para realizar operaciones con el jugador seleccionado
   abrirModal(element: Jugadores) {
     this.jugadorPujaFormateado = element;
     //Obtengo el jugador que voy a vender
@@ -151,10 +156,12 @@ export class PlantillaComponent implements OnInit {
                         jugador.hayPuja = false;
                         jugador.clasePuja = '';
                         jugador.precioVenta = null;
+                        this.openSnackBar(
+                          'Se ha eliminado a ' +
+                            jugador.alias.toUpperCase() +
+                            ' del mercado de fichajes'
+                        );
                       }
-                      this.openSnackBar(
-                        'Se ha eliminado al jugador del mercado con éxito'
-                      );
                     });
                     //Mensaje de error
                   } else
@@ -185,8 +192,11 @@ export class PlantillaComponent implements OnInit {
                         jugador.hayPuja = true;
                         jugador.clasePuja = 'enVenta';
                         jugador.precioVenta = res2.jugador.valorTransferencia;
+                        this.openSnackBar(
+                          jugador.alias.toUpperCase() +
+                            ' ha sido añadido al mercado de fichajes'
+                        );
                       }
-                      this.openSnackBar('Jugador puesto en venta con éxito');
                     });
                     //Mensaje de error
                   } else

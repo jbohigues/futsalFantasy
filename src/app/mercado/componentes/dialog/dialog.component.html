@@ -1,6 +1,8 @@
-<!-- <div *ngIf="!loading"> -->
-<h1 mat-dialog-title>
+<h1 mat-dialog-title *ngIf="data.vista != 'oferta'">
   Pujar por <strong> {{ jugador.jugadoresreales.alias }} </strong>
+</h1>
+<h1 mat-dialog-title *ngIf="data.vista === 'oferta'">
+  Oferta por <strong> {{ jugador.alias }} </strong>
 </h1>
 <div mat-dialog-content>
   <table
@@ -91,14 +93,20 @@
   <div id="infoDinero">
     <h2>Mercado: {{ valorMercado }}</h2>
     <h2>Precio: {{ precioVenta }}</h2>
-    <!-- <h2>Puja máx.: {{ pujaMaximaFormateada }}</h2> -->
   </div>
 
-  <p class="labelPuja" *ngIf="!hayPuja">Indique su puja:</p>
-  <p class="labelPuja" *ngIf="hayPuja">Su última puja:</p>
+  <div *ngIf="data.vista != 'oferta'">
+    <p class="labelPuja" *ngIf="!hayPuja">Indique su puja:</p>
+    <p class="labelPuja" *ngIf="hayPuja">Su última puja:</p>
+  </div>
+
+  <div id="oferta" *ngIf="data.vista === 'oferta'">
+    <p class="labelPuja">Le ofrecen:</p>
+    <input type="text" disabled readonly value="{{ data.precioPuja }}" />
+  </div>
 
   <!-- Input para pujar -->
-  <div id="puja">
+  <div id="puja" *ngIf="data.vista != 'oferta'">
     <button mat-fab color="azul" aria-label="restar" (click)="restar()">
       <span>-</span>
     </button>
@@ -118,32 +126,53 @@
   <p></p>
 </div>
 <mat-dialog-actions align="center" id="actions">
-  <button
-    mat-button
-    [mat-dialog-close]="data"
-    (click)="data.tipoPuja = 'cancel'"
-  >
-    Cancel
-  </button>
-  <button
-    mat-button
-    [mat-dialog-close]="data"
-    *ngIf="hayPuja"
-    (click)="retirarPuja()"
-  >
-    Retirar
-  </button>
-  <button
-    mat-button
-    [mat-dialog-close]="data"
-    cdkFocusInitial
-    [disabled]="hayError"
-    (click)="obtenerPuja()"
-  >
-    Pujar
-  </button>
+  <!-- ACTIONS PARA PUJA NORMAL -->
+  <div *ngIf="data.vista != 'oferta'">
+    <button
+      mat-button
+      [mat-dialog-close]="data"
+      (click)="data.tipoPuja = 'cancel'"
+    >
+      Cancel
+    </button>
+    <button
+      mat-button
+      [mat-dialog-close]="data"
+      *ngIf="hayPuja"
+      (click)="retirarPuja()"
+    >
+      Retirar
+    </button>
+    <button
+      mat-button
+      [mat-dialog-close]="data"
+      cdkFocusInitial
+      [disabled]="hayError"
+      (click)="obtenerPuja()"
+    >
+      Pujar
+    </button>
+  </div>
+
+  <!-- ACTIONS PARA OFERTA -->
+  <div *ngIf="data.vista == 'oferta'">
+    <button
+      mat-button
+      [mat-dialog-close]="data"
+      (click)="data.tipoPuja = 'cancel'"
+    >
+      Cancel
+    </button>
+    <button mat-button [mat-dialog-close]="data" (click)="rechazarOferta()">
+      Rechazar
+    </button>
+    <button
+      mat-button
+      [mat-dialog-close]="data"
+      cdkFocusInitial
+      (click)="aceptarOferta()"
+    >
+      Aceptar
+    </button>
+  </div>
 </mat-dialog-actions>
-<!-- </div>
-<div *ngIf="loading">
-  <app-loading></app-loading>
-</div> -->

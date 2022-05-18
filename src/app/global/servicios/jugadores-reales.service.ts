@@ -63,4 +63,16 @@ export class JugadoresRealesService {
       jugadorReal
     );
   }
+
+  //Aceptar oferta
+  aceptarOferta(jugador: JugadorRealEnCadaLiga): Observable<any> {
+    return this.http.put<any>(
+      this.REST_API_SERVER2 +
+        '/aceptarOferta/l=' +
+        jugador.idLiga +
+        '/j=' +
+        jugador.idJugadorReal,
+      jugador
+    );
+  }
 }

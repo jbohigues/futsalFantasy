@@ -87,10 +87,10 @@
         >
           <div class="difPuntos">
             <span *ngIf="element.pos === 1">
-              <img src="/assets/images/inferior.png" alt="inferior" />
+              <img src="{{ imagenDifPuntos }}inferior.png" alt="inferior" />
             </span>
             <span *ngIf="element.pos === 3">
-              <img src="/assets/images/superior.png" alt="superior" />
+              <img src="{{ imagenDifPuntos }}superior.png" alt="superior" />
             </span>
             <span *ngIf="element.difPuntos > 9 || element.difPuntos == 0">
               &nbsp;{{ element.difPuntos }}
