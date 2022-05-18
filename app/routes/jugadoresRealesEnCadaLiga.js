@@ -122,4 +122,29 @@ router.put("/vender/idL=:idLiga/idJ=:idJugadorReal", async function (req, res) {
   res.json({ jugador: jugador, status: status });
 });
 
+//Modificar jugador: cambiarle el idEquipoUser, titular y mercado a false y valorTransfer = null
+router.put(
+  "/aceptarOferta/l=:idLiga/j=:idJugadorReal",
+  async function (req, res) {
+    const { idEquipoUser } = req.body;
+
+    const jugador = await prisma.jugadoresrealesencadaliga.update({
+      where: {
+        idJugadorReal_idLiga: {
+          idJugadorReal: Number(req.params.idJugadorReal),
+          idLiga: Number(req.params.idLiga),
+        },
+      },
+      data: {
+        idEquipoUser: idEquipoUser,
+        mercado: false,
+        titular: false,
+        valorTransferencia: null,
+      },
+    });
+    let status = jugador == null ? "mal" : "exito";
+    res.json({ jugador: jugador, status: status });
+  }
+);
+
 module.exports = router;

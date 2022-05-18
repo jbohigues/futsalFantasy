@@ -4,13 +4,13 @@ var prismaclient = require("@prisma/client");
 
 const prisma = new prismaclient.PrismaClient();
 
-router.get("/u=:id", async function (req, res, next) {
+//Obtener la información de la liga de un usuario
+router.get("/u=:idLiga", async function (req, res, next) {
   try {
-    const id = Number(req.params.id);
     const ligaUser = await prisma.ligas.findFirst({
       where: {
-          id: id,
-      }
+        id: Number(req.params.idLiga),
+      },
     });
     res.json(ligaUser);
   } catch (error) {
