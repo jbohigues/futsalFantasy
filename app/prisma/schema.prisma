@@ -193,7 +193,6 @@ model traspasos {
   equiposusuarios_equiposusuariosTotraspasos_idEquipoUserReceptor equiposusuarios? @relation("equiposusuariosTotraspasos_idEquipoUserReceptor", fields: [idEquipoUserReceptor], references: [id], onDelete: Cascade, map: "traspasos_ibfk_8")
   jugadoresreales                                                 jugadoresreales  @relation(fields: [idJugador], references: [id], onDelete: Cascade, map: "traspasos_ibfk_4")
 
-  @@unique([idJugador, idEquipoUserEmisor], map: "idJugador_idEquipoUserEmisor")
   @@index([idEquipoUserEmisor], map: "idEquipoUserEmisor")
   @@index([idEquipoUserReceptor], map: "idEquipoUserReceptor")
   @@index([idJugador], map: "idJugador")

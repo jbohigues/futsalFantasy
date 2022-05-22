@@ -7,6 +7,7 @@ const prisma = new prismaClient.PrismaClient();
 module.exports = function (req, res, next) {
   var bearerToken;
   var bearerHeader = req.headers["authorization"];
+  console.log(typeof bearerHeader, bearerHeader);
   if (typeof bearerHeader !== "undefined") {
     var bearer = bearerHeader.split(" ");
     bearerToken = bearer[1];

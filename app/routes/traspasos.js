@@ -62,6 +62,7 @@ router.get("/j=:idJugador/e=:idEmisor", async function (req, res) {
       where: {
         idJugador: Number(req.params.idJugador),
         idEquipoUserEmisor: Number(req.params.idEmisor),
+        estado: "P",
       },
     });
     let status = traspaso == null ? "noHayJugador" : "hayJugador";
@@ -115,7 +116,7 @@ router.delete("/retirarPuja/p=:idPuja", async function (req, res) {
 //Aceptar oferta por un jugador: pasa el estado de traspaso a Aceptada
 router.put("/aceptarOferta/p=:idPuja", async function (req, res) {
   const { estado } = req.body;
-  const update = await prisma.traspasos.update({
+  const traspaso = await prisma.traspasos.update({
     where: {
       id: Number(req.params.idPuja),
     },
@@ -123,8 +124,8 @@ router.put("/aceptarOferta/p=:idPuja", async function (req, res) {
       estado: estado,
     },
   });
-  let status = update == null ? "mal" : "update";
-  res.json({ update: update, status: status });
+  let status = traspaso == null ? "mal" : "update";
+  res.json({ traspaso: traspaso, status: status });
 });
 
 module.exports = router;

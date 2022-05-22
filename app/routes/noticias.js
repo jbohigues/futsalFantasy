@@ -36,10 +36,26 @@ router.get("/:skip/:filtro", async function (req, res, next) {
         },
       ],
       where: {
-        tema: filtro
-      }
+        tema: filtro,
+      },
     });
     res.json(noticias);
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
+//Crear noticia nueva
+router.post("/nuevoFichaje", async function (req, res) {
+  try {
+    console.log(req.body);
+    const noticia = await prisma.noticias.create({
+      data: {
+        ...req.body,
+      },
+    });
+    let status = noticia == null ? "fracaso" : "nuevaNoticia";
+    res.json({ noticia: noticia, status: status });
   } catch (error) {
     res.send("ERROR: " + error);
   }

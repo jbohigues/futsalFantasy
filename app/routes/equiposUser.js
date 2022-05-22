@@ -7,7 +7,7 @@ const prisma = new prismaclient.PrismaClient();
 //Obtener el equipo de un usuario por su id
 router.get("/e=:idEquipoUser", async function (req, res) {
   try {
-    const equiposLiga = await prisma.equiposusuarios.findMany({
+    const equiposLiga = await prisma.equiposusuarios.findFirst({
       where: {
         id: Number(req.params.idEquipoUser),
       },
@@ -97,6 +97,22 @@ router.get("/l2=:id", async function (req, res) {
   } catch (error) {
     res.send("ERROR: " + error);
   }
+});
+
+//Actualizamos el saldo de cierto EquipoUser
+router.put("/actualizarSaldo/e=:idEquipoUser", async function (req, res) {
+  const { dinero } = req.body;
+
+  const equipoUser = await prisma.equiposusuarios.update({
+    where: {
+      id: Number(req.params.idEquipoUser),
+    },
+    data: {
+      dinero: dinero,
+    },
+  });
+  let status = equipoUser == null ? "mal" : "actualizado";
+  res.json({ equipoUser: equipoUser, status: status });
 });
 
 module.exports = router;
