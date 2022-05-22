@@ -38,7 +38,7 @@ export interface Jugadores {
 export class TablaFichajesComponent implements OnInit {
   jugadoresMercado: JugadorRealEnCadaLiga[] = [];
   jugadores: Jugadores[] = [];
-  misPujas: Jugadores[] = [];
+  // misPujas: Jugadores[] = [];
   jugadorPuja!: JugadorRealEnCadaLiga;
   jugadorPujaFormateado!: Jugadores;
   loading: boolean = true;
@@ -85,12 +85,14 @@ export class TablaFichajesComponent implements OnInit {
     //Obtengo el capital de mi equipo
     this.dinero = this.miEquipo.dinero;
 
-    //Obtengo la lista de jugadores a los que he pujado
-    this.traspasosService
-      .getMisPujas(this.miEquipo.idUsuario)
-      .subscribe((res) => {
-        this.misPujas = res.traspaso;
-      });
+    // //Obtengo la lista de jugadores a los que he pujado
+    // this.traspasosService
+    //   .getMisPujas(this.miEquipo.idUsuario)
+    //   .subscribe((res) => {
+    //     console.log(res);
+
+    //     this.misPujas = res.traspaso;
+    //   });
 
     //Obtengo los jugadores puestos en el mercado de fichajes
     this.jugadoresRealesService
@@ -155,11 +157,14 @@ export class TablaFichajesComponent implements OnInit {
           this.traspasosService
             .comprobarExistePuja(jugador.id, this.miEquipo.id)
             .subscribe((res2) => {
+              console.log(res2);
+
               if (res2.status === 'hayJugador') {
                 jugador.clasePuja = 'hayPuja';
                 jugador.hayPuja = true;
                 jugador.precioMiPuja = res2.traspaso.precio;
                 jugador.idTraspaso = res2.traspaso.id;
+                console.log(jugador);
               }
             });
         });
@@ -172,6 +177,7 @@ export class TablaFichajesComponent implements OnInit {
 
   abrirModal(element: Jugadores) {
     this.jugadorPujaFormateado = element;
+    console.log(this.dinero);
 
     for (const jugador of this.jugadoresMercado) {
       if (this.jugadorPujaFormateado.id === jugador.idJugadorReal) {
@@ -224,20 +230,22 @@ export class TablaFichajesComponent implements OnInit {
               idJugador: this.traspaso.idJugador,
               precio: this.traspaso.precio,
             };
+            console.log(this.puja);
+
             this.traspasosService
               .pujarPorJugador(this.puja)
               .subscribe((res) => {
-                if (res.status === 'hayTraspaso')
+                if (res.status === 'hayTraspaso') {
+                  this.jugadores.forEach((jugador) => {
+                    if (jugador.id === this.puja.idJugador) {
+                      jugador.idTraspaso = res.traspaso.id;
+                      jugador.hayPuja = true;
+                      jugador.clasePuja = 'hayPuja';
+                      jugador.precioMiPuja = this.puja.precio;
+                    }
+                  });
                   this.openSnackBar('Puja realizada con éxito');
-                else this.openSnackBar('No se ha podido realizar la puja');
-                this.jugadores.forEach((jugador) => {
-                  if (jugador.id === this.puja.idJugador) {
-                    jugador.idTraspaso = res.traspaso.id;
-                    jugador.hayPuja = true;
-                    jugador.clasePuja = 'hayPuja';
-                    jugador.precioMiPuja = this.puja.precio;
-                  }
-                });
+                } else this.openSnackBar('No se ha podido realizar la puja');
               });
             //Si hay puja, hago update
           } else {

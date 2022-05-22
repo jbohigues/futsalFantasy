@@ -52,6 +52,11 @@ export class LocalStorageService {
     localStorage.setItem('isLogin', JSON.stringify(this.isLogin));
   }
 
+  //Guardamos los nuevos datos del equipoUser
+  setEquipoUser(equipoUser: EquipoUser) {
+    localStorage.setItem('equipoUser', JSON.stringify(equipoUser));
+  }
+
   //Devuelve el usuario del localStorage como Usuario
   getUsuarioLocalStorage() {
     this.currentUser = JSON.parse(

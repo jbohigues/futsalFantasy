@@ -1,12 +1,20 @@
 export interface Noticia {
-    id: number,
-    tema: Tema,
-    texto: string,
-    fecha: Date,
-    diaNuevo: boolean
+  id: number;
+  idLiga: number;
+  tema: Tema;
+  texto: string;
+  fecha: Date;
+  diaNuevo: boolean;
 }
 
-enum Tema {
-    Informacion = 'I',
-    Traspaso = 'T'
+export interface NoticiaOferta {
+  idLiga: number;
+  tema: Tema;
+  texto: string;
+  fecha: Date;
+}
+
+export enum Tema {
+  Informacion = 'I',
+  Traspaso = 'T',
 }

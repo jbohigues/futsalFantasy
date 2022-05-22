@@ -31,4 +31,11 @@ export class EquiposUserService {
       this.REST_API_SERVER + '/e=' + idEquipoUser
     );
   }
+
+  actualizarSaldo(equipoUser: EquipoUser): Observable<any> {
+    return this.http.put<any>(
+      this.REST_API_SERVER + '/actualizarSaldo/e=' + equipoUser.id,
+      equipoUser
+    );
+  }
 }

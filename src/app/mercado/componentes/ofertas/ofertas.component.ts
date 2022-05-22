@@ -2,9 +2,14 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { EquiposUserService } from 'src/app/global/servicios/equipos-user.service';
 import { JugadoresRealesService } from 'src/app/global/servicios/jugadores-reales.service';
+import { LocalStorageService } from 'src/app/global/servicios/local-storage.service';
 import { TraspasosService } from 'src/app/global/servicios/traspasos.service';
+import { NoticiasService } from 'src/app/inicio/servicios/noticias.service';
+import { EquipoUser } from 'src/app/interfaces/equipo-user';
 import { JugadorRealEnCadaLiga } from 'src/app/interfaces/jugador-real-en-cada-liga';
+import { NoticiaOferta, Tema } from 'src/app/interfaces/noticia';
 import { Estado, Traspaso } from 'src/app/interfaces/traspaso';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Jugadores } from '../tabla-fichajes/tabla-fichajes.component';
@@ -24,6 +29,10 @@ export class OfertasComponent implements OnInit {
   jugadorPujaFormateado!: Jugadores;
   jugadorPuja!: JugadorRealEnCadaLiga;
   traspaso!: Traspaso;
+  equipoEmisor!: EquipoUser;
+  equipoReceptor!: EquipoUser;
+  oferta: number = 0;
+  noticia!: NoticiaOferta;
 
   @Input() ofertas: any;
 
@@ -50,7 +59,10 @@ export class OfertasComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private jugadoresRealesService: JugadoresRealesService,
-    private traspasosService: TraspasosService
+    private traspasosService: TraspasosService,
+    private equiposUsersService: EquiposUserService,
+    private localStorage: LocalStorageService,
+    private noticiasService: NoticiasService
   ) {}
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
@@ -119,24 +131,32 @@ export class OfertasComponent implements OnInit {
       console.log(data);
       if (data != undefined) {
         if (data.resolucionOferta === 'aceptada') {
+          //Obtengo la oferta realizada
+          this.oferta = data.jugadorPuja.ofertaNumber;
+          //Obtengo la informacion del jugador real que se quiere intercambiar
           this.jugadoresRealesService
             .getInfoJugador(data.jugadorPuja.id)
             .subscribe((res) => {
+              //Obtengo el equipo que recibirá el jugador
+              this.equipoReceptor = res.equiposusuarios;
+              //y el jugador que se quiere intercambiar
               this.jugadorPuja = res;
+              //Paso el jugador real al usuario que ha realizado la oferta
               this.jugadorPuja.idEquipoUser =
                 data.jugadorPuja.idEquipoUserEmisor;
+              //Quitamos el jugador real del mercado y ponemos valores por defecto: titular=false; valorTransferencia=null
               this.jugadoresRealesService
                 .aceptarOferta(this.jugadorPuja)
                 .subscribe((res2) => {
-                  console.log(res2);
                   if (res2.status === 'exito') {
-                    //Pasar el estado del traspaso a Aceptado
+                    //Obtenemos el traspaso, si existe
                     this.traspasosService
                       .comprobarExistePuja(
                         this.jugadorPuja.idJugadorReal,
                         this.jugadorPuja.idEquipoUser
                       )
                       .subscribe((res3) => {
+                        //Pasar el estado del traspaso a Aceptado
                         if (res3.status === 'hayJugador') {
                           this.traspaso = res3.traspaso;
                           this.traspaso.estado = Estado.Aceptada;
@@ -144,17 +164,72 @@ export class OfertasComponent implements OnInit {
                             .aceptarOferta(this.traspaso)
                             .subscribe((res4) => {
                               if (res4.status === 'update') {
-                                //Modificar capital de cada usuario
-                                //Comprobar que el otro usuario recibe el jugador
-                                //Alineacion peta: falta un jugador titular (en teoria seran suplentes) pero puede pasar
-                                //Poner alternativa si no llega a 5 titulares (poner imagen en esa posicion)
-                                alert(
-                                  'Has vendido a ' +
-                                    data.jugadorPuja.alias +
-                                    ' por ' +
-                                    data.precioPuja
-                                );
-                                window.location.reload();
+                                //Obtengo el equipoUser del usuario que hace la oferta
+                                this.equiposUsersService
+                                  .getEquipoUsuarioPorIDEquipoUser(
+                                    res4.traspaso.idEquipoUserEmisor
+                                  )
+                                  .subscribe((res5) => {
+                                    this.equipoEmisor = res5;
+                                    //Modifico capital equipo emisor
+                                    if (this.equipoEmisor != null) {
+                                      this.equipoEmisor.dinero =
+                                        this.equipoEmisor.dinero - this.oferta;
+                                      this.equiposUsersService
+                                        .actualizarSaldo(this.equipoEmisor)
+                                        .subscribe((res6) => {
+                                          //Modifico capital equipo receptor
+                                          if (res6.status === 'actualizado') {
+                                            this.equipoReceptor.dinero =
+                                              this.equipoReceptor.dinero +
+                                              this.oferta;
+                                            this.equiposUsersService
+                                              .actualizarSaldo(
+                                                this.equipoReceptor
+                                              )
+                                              .subscribe((res7) => {
+                                                console.log(res7);
+                                                if (
+                                                  res7.status === 'actualizado'
+                                                ) {
+                                                  //Guardo el equipo en el localstorage
+                                                  this.localStorage.setEquipoUser(
+                                                    this.equipoReceptor
+                                                  );
+                                                  //Guardar en cada localstorage, el equipo q toca
+                                                  //Peticio i guardar
+                                                  this.noticia = {
+                                                    idLiga:
+                                                      this.equipoEmisor.idLiga,
+                                                    tema: Tema.Traspaso,
+                                                    texto:
+                                                      this.jugadorPuja
+                                                        .jugadoresreales.alias +
+                                                      ' ha fichado por el ' +
+                                                      this.equipoReceptor
+                                                        .nombre,
+                                                    fecha: new Date(),
+                                                  };
+                                                  console.log(this.noticia);
+
+                                                  this.noticiasService
+                                                    .crearNoticia(this.noticia)
+                                                    .subscribe((res8) => {
+                                                      if (
+                                                        res8.status ===
+                                                        'nuevaNoticia'
+                                                      )
+                                                        alert('Noticia creada');
+                                                    });
+                                                }
+                                              });
+                                          }
+                                        });
+                                    }
+                                  });
+                                //Crear una noticia: X jugador ha fichado por X equipo
+
+                                // window.location.reload();
                               }
                             });
                         }

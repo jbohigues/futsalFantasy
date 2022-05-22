@@ -160,7 +160,6 @@ export class DialogVentaComponent implements OnInit {
       //Obtengo el valor minimo para poner el jugador en venta
       this.valorMinimo = this.jugador.valorMercado;
     }
-    console.log(this.valorMinimo);
 
     this.valorMinimoFormateado = new Intl.NumberFormat('de-DE', {
       style: 'currency',

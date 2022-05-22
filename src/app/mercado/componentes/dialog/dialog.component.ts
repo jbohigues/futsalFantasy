@@ -104,7 +104,8 @@ export class DialogComponent implements OnInit {
       //Obtengo un boleano diciendome si ya he realizado una puja sobre ese jugador
       this.hayPuja = this.data.hayPuja;
       //Obtengo la puja maxima que puede realizar el usuario
-      this.pujaMaxima = this.data.pujaMaxima;
+      if (this.data.pujaMaxima < 0) this.pujaMaxima = 0;
+      else this.pujaMaxima = this.data.pujaMaxima;
       //Obtengo el jugador
       this.jugador = this.data.jugadorPuja;
       console.log(this.data);
@@ -343,11 +344,10 @@ export class DialogComponent implements OnInit {
     if (valor > this.pujaMaxima) {
       this.hayError = true;
       this.error =
-        'El precio de venta máximo es de ' + this.pujaMaximaFormateada + ' *';
+        'El precio de puja máximo es de ' + this.pujaMaximaFormateada + ' *';
     } else if (valor < this.jugador.jugadoresreales.valorMercado) {
       this.hayError = true;
-      this.error =
-        'El precio de venta mínimo es de ' + this.valorMercado + ' *';
+      this.error = 'El precio de puja mínimo es de ' + this.valorMercado + ' *';
     } else {
       this.hayError = false;
     }
