@@ -114,7 +114,7 @@ router.delete("/retirarPuja/p=:idPuja", async function (req, res) {
 });
 
 //Aceptar oferta por un jugador: pasa el estado de traspaso a Aceptada
-router.put("/aceptarOferta/p=:idPuja", async function (req, res) {
+router.put("/responderOferta/p=:idPuja", async function (req, res) {
   const { estado } = req.body;
   const traspaso = await prisma.traspasos.update({
     where: {

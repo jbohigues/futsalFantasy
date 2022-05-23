@@ -18,6 +18,21 @@ router.get("/e=:idEquipoUser", async function (req, res) {
   }
 });
 
+//Comprobar si existe el nombre de un equipo
+router.get("/eq=:nombreEquipo", async function (req, res) {
+  try {
+    const equiposLiga = await prisma.equiposusuarios.findFirst({
+      where: {
+        nombre: req.params.nombreEquipo,
+      },
+    });
+    let status = equiposLiga == null ? "noExiste" : "existe";
+    res.json({ equiposLiga: equiposLiga, status: status });
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
 //Obtiene el equipo de un usuario y sus jugadores ordenados por posicion
 router.get("/u=:id", async function (req, res) {
   try {
@@ -113,6 +128,22 @@ router.put("/actualizarSaldo/e=:idEquipoUser", async function (req, res) {
   });
   let status = equipoUser == null ? "mal" : "actualizado";
   res.json({ equipoUser: equipoUser, status: status });
+});
+
+//Crear equipoUser
+router.post("/crearEquipoUser", async function (req, res) {
+  try {
+    const equipoUser = await prisma.equiposusuarios.create({
+      data: {
+        ...req.body,
+        // codigoLiga: generateRandomString(),
+      },
+    });
+    let status = equipoUser == null ? "fallo" : "exito";
+    res.json({ equipoUser: equipoUser, status: status });
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
 });
 
 module.exports = router;

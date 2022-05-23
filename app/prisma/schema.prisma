@@ -52,7 +52,7 @@ model equiposusuarios {
   idUsuario                                                 Int
   idLiga                                                    Int
   nombre                                                    String                      @db.VarChar(50)
-  foto                                                      String                      @default("equipo.png") @db.VarChar(50)
+  foto                                                      String                      @default("logoEquipoDefecto26") @db.VarChar(50)
   puntos                                                    Int                         @default(0)
   dinero                                                    Int                         @default(40000000)
   numJugadores                                              Int                         @default(15)
@@ -135,7 +135,7 @@ model jugadoresrealesencadaliga {
 model ligas {
   id                        Int                         @id @default(autoincrement())
   nombre                    String                      @db.VarChar(50)
-  foto                      String                      @db.VarChar(50)
+  foto                      String                      @default("logoLigaDefecto14") @db.VarChar(50)
   codigoLiga                String                      @db.VarChar(50)
   abono                     Int                         @default(100000)
   numMaxPlantilla           Int                         @default(23)

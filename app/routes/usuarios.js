@@ -86,7 +86,6 @@ router.post("/registro", async function (req, res, next) {
       token: generateRandomString(),
     },
   });
-  console.log(res);
   let status = "Usuario registrado con éxito.";
   res.json({ usuario: user, status: status });
 });

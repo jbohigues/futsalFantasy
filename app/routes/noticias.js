@@ -4,10 +4,13 @@ var prismaclient = require("@prisma/client");
 
 const prisma = new prismaclient.PrismaClient();
 
-router.get("/:skip", async function (req, res, next) {
+router.get("/l=:idLiga/s=:skip", async function (req, res, next) {
   try {
     const skip = Number(req.params.skip);
     const noticias = await prisma.noticias.findMany({
+      where: {
+        idLiga: Number(req.params.idLiga),
+      },
       skip: skip,
       take: 2,
       orderBy: [
@@ -22,12 +25,15 @@ router.get("/:skip", async function (req, res, next) {
   }
 });
 
-router.get("/:skip/:filtro", async function (req, res, next) {
+router.get("/l=:idLiga/s=:skip/f=:filtro", async function (req, res, next) {
   try {
     const skip = Number(req.params.skip);
     const filtro = req.params.filtro;
 
     const noticias = await prisma.noticias.findMany({
+      where: {
+        idLiga: Number(req.params.idLiga),
+      },
       skip: skip,
       take: 2,
       orderBy: [
@@ -48,7 +54,6 @@ router.get("/:skip/:filtro", async function (req, res, next) {
 //Crear noticia nueva
 router.post("/nuevoFichaje", async function (req, res) {
   try {
-    console.log(req.body);
     const noticia = await prisma.noticias.create({
       data: {
         ...req.body,

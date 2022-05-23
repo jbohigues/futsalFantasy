@@ -5,11 +5,28 @@ var prismaclient = require("@prisma/client");
 
 const prisma = new prismaclient.PrismaClient();
 
+//Obtiene todos los jugadoresReales almacenados en la bd
+router.get("/", async function (req, res) {
+  try {
+    const jugadores = await prisma.jugadoresreales.findMany({
+      select: {
+        id: true,
+        posicion: true,
+      },
+    });
+    let status = jugadores == null ? "mal" : "exito";
+    res.json({ jugadores: jugadores, status: status });
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
 //Obtiene la informacion de un jugador dado su id
-router.get("/j=:idJugador", async function (req, res) {
+router.get("/l=:idLiga/j=:idJugador", async function (req, res) {
   try {
     const jugadores = await prisma.jugadoresrealesencadaliga.findFirst({
       where: {
+        idLiga: Number(req.params.idLiga),
         idJugadorReal: Number(req.params.idJugador),
       },
       include: {
@@ -61,6 +78,7 @@ router.get("/l=:idLiga/e=:idEquipoUser", async function (req, res) {
   try {
     let { idLiga, idEquipoUser } = req.params;
     if (idEquipoUser == 0) idEquipoUser = null;
+    console.log(idLiga, idEquipoUser);
     const jugadores = await prisma.jugadoresrealesencadaliga.findMany({
       where: {
         idLiga: Number(idLiga),
@@ -84,7 +102,7 @@ router.get("/l=:idLiga/e=:idEquipoUser", async function (req, res) {
 });
 
 //Cambia la titularidad a un jugador
-router.put("/update/idL=:idLiga/idJ=:idJugadorReal", async function (req, res) {
+router.put("/update/l=:idLiga/j=:idJugadorReal", async function (req, res) {
   const { titular } = req.body;
 
   const jugador = await prisma.jugadoresrealesencadaliga.update({
@@ -146,5 +164,33 @@ router.put(
     res.json({ jugador: jugador, status: status });
   }
 );
+
+//Crear equipoUser
+router.post("/crearEquipo", async function (req, res) {
+  try {
+    const equipoUser = await prisma.jugadoresrealesencadaliga.create({
+      data: {
+        ...req.body,
+      },
+    });
+    let status = equipoUser == null ? "fallo" : "exito";
+    res.json({ equipoUser: equipoUser, status: status });
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
+//Poner jugador libre en el mercado
+router.post("/mercado", async function (req, res) {
+  const jugadorEnVenta = await prisma.jugadoresrealesencadaliga.create({
+    data: {
+      ...req.body,
+      idEquipoUser: null,
+      valorTransferencia: null,
+    },
+  });
+  let status = jugadorEnVenta == null ? "mal" : "exito";
+  res.json({ jugadorEnVenta: jugadorEnVenta, status: status });
+});
 
 module.exports = router;
