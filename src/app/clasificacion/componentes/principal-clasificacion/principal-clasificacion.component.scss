@@ -1,55 +1,57 @@
 @font-face {
-    font-family: "Henny Penny";
-    src: url("/assets/tipografia/Henny_Penny/HennyPenny-Regular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
+  font-family: "Henny Penny";
+  src: url("/assets/tipografia/Henny_Penny/HennyPenny-Regular.ttf")
+    format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
 @font-face {
-    font-family: "Ultra";
-    src: url("/assets/tipografia/Ultra/Ultra-Regular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
+  font-family: "Ultra";
+  src: url("/assets/tipografia/Ultra/Ultra-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
 @font-face {
-    font-family: "Berkshire";
-    src: url("/assets/tipografia/Berkshire_Swash/BerkshireSwash-Regular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
+  font-family: "Berkshire";
+  src: url("/assets/tipografia/Berkshire_Swash/BerkshireSwash-Regular.ttf")
+    format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
 @font-face {
-    font-family: "Ubuntu";
-    src: url("/assets/tipografia/Ubuntu/Ubuntu-Regular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
+  font-family: "Ubuntu";
+  src: url("/assets/tipografia/Ubuntu/Ubuntu-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
 @font-face {
-    font-family: "Anton";
-    src: url("/assets/tipografia/Anton/Anton-Regular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
+  font-family: "Anton";
+  src: url("/assets/tipografia/Anton/Anton-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
-#main{
-    background: linear-gradient(var(--azul), var(--rosa));
+#main {
+  background: linear-gradient(var(--azul), var(--rosa));
 
-    #contenido{
-        margin: 5vw 6vw 3vw;
-        display: flex;
-        justify-content: space-between;
-    }
+  #contenido {
+    margin: 5vw 6vw 3vw;
+    display: flex;
+    justify-content: space-between;
+  }
 
-    #cuadroLiga{
-        position: fixed;
-        margin-left: 2vw;
-    }
+  #cuadroLiga {
+    position: fixed;
+    display: contents;
+    // margin-left: 2vw;
+  }
 
-    #cuadroClasif{
-        margin-left: 30vw;
-        width: 60vw;
-    }
-
+  #cuadroClasif {
+    // margin-left: 30vw;
+    width: 60vw;
+  }
 }

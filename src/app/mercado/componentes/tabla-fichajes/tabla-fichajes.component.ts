@@ -82,6 +82,8 @@ export class TablaFichajesComponent implements OnInit {
   ngOnInit() {
     //Obtengo mi equipo
     this.miEquipo = this.localStorage.getEquipoLocalStorage();
+    console.log(this.miEquipo);
+
     //Obtengo el capital de mi equipo
     this.dinero = this.miEquipo.dinero;
 
@@ -98,6 +100,8 @@ export class TablaFichajesComponent implements OnInit {
     this.jugadoresRealesService
       .getJugadoresMercado(this.miEquipo.idLiga)
       .subscribe((res) => {
+        console.log(res);
+
         this.jugadoresMercado = res;
         this.jugadoresMercado.forEach((jugador) => {
           //Si no tiene equipo, le metemos foto y nombre de equipo de Mercado
@@ -198,13 +202,14 @@ export class TablaFichajesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((data) => {
+      console.log(this.miEquipo);
+
       //Si lo que recibo del dialog tiene valores y no pulso sobre cancelar, creo una instancia de traspaso
       if (data != undefined && data.tipoPuja != 'cancel') {
         this.traspaso = {
           id: 0,
           idJugador: data.jugadorPuja.idJugadorReal,
-          idEquipoUserEmisor:
-            this.miEquipo.jugadoresrealesencadaliga[0].idEquipoUser,
+          idEquipoUserEmisor: this.miEquipo.id,
           idEquipoUserReceptor: data.jugadorPuja.idEquipoUser,
           precio: data.precioPuja,
           estado: Estado.Pendiente,

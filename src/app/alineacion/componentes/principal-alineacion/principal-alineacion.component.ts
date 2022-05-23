@@ -162,12 +162,19 @@ export class PrincipalAlineacionComponent implements OnInit {
         pos = i;
       }
     }
+    console.log(this.jugadorSeleccionado);
 
     this.jugadoresRealesService
-      .updateJugadorReal(this.jugadorSeleccionado, this.usuarioLogueado.id)
+      .updateJugadorReal(
+        this.jugadorSeleccionado,
+        this.equipoUserLogueado.idLiga
+      )
       .subscribe((res) => {
         this.jugadoresRealesService
-          .updateJugadorReal(this.misJugadores[pos], this.usuarioLogueado.id)
+          .updateJugadorReal(
+            this.misJugadores[pos],
+            this.equipoUserLogueado.idLiga
+          )
           .subscribe((res2) => {
             window.location.reload();
             //NO QUIERO QUE RECARGE LA PAGINA!!!!!!

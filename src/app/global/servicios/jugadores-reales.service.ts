@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { JugadorReal } from 'src/app/interfaces/jugador-real';
-import { JugadorRealEnCadaLiga } from 'src/app/interfaces/jugador-real-en-cada-liga';
+import {
+  JugadorMercado,
+  JugadorRealEnCadaLiga,
+  JugadorRealEnCadaLigaCreate,
+} from 'src/app/interfaces/jugador-real-en-cada-liga';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -15,7 +19,12 @@ export class JugadoresRealesService {
 
   constructor(private http: HttpClient) {}
 
-  //Obtiene los jugadores reales de un equipo
+  //Obtiene todos los jugadoresReales almacenados en la bd
+  obtenerJugadoresReales(): Observable<any> {
+    return this.http.get<any>(this.REST_API_SERVER2 + '/');
+  }
+
+  //Obtiene los jugadores reales de cierto equipoUser en cierta liga
   getJugadoresRealesDeEquipoUsuario(
     idLiga: number,
     idEquipoUser: number
@@ -28,11 +37,7 @@ export class JugadoresRealesService {
   //Cambia la titularidad de un jugador real
   updateJugadorReal(jugadorReal: JugadorReal, idLiga: number): Observable<any> {
     return this.http.put<any>(
-      this.REST_API_SERVER2 +
-        '/update/idL=' +
-        idLiga +
-        '/idJ=' +
-        jugadorReal.id,
+      this.REST_API_SERVER2 + '/update/l=' + idLiga + '/j=' + jugadorReal.id,
       jugadorReal
     );
   }
@@ -45,8 +50,10 @@ export class JugadoresRealesService {
   }
 
   //Obtiene la informacion de cierto jugador
-  getInfoJugador(idJugadorReal: number): Observable<any> {
-    return this.http.get<any>(this.REST_API_SERVER2 + '/j=' + idJugadorReal);
+  getInfoJugador(idJugadorReal: number, idLiga: number): Observable<any> {
+    return this.http.get<any>(
+      this.REST_API_SERVER2 + '/l=' + idLiga + '/j=' + idJugadorReal
+    );
   }
 
   //Modificar jugador: ponerlo (en venta) o quitarlo del mercado de fichajes
@@ -74,5 +81,15 @@ export class JugadoresRealesService {
         jugador.idJugadorReal,
       jugador
     );
+  }
+
+  //Crear equipoUser
+  crearEquipoUser(jugador: JugadorRealEnCadaLigaCreate): Observable<any> {
+    return this.http.post<any>(this.REST_API_SERVER2 + '/crearEquipo', jugador);
+  }
+
+  //Poner jugador libre en el mercado
+  ponerJugadorLibreEnMercado(jugador: JugadorMercado): Observable<any> {
+    return this.http.post<any>(this.REST_API_SERVER2 + '/mercado', jugador);
   }
 }

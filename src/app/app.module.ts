@@ -11,6 +11,7 @@ import { ClasificacionModule } from './clasificacion/clasificacion.module';
 import { AlineacionModule } from './alineacion/alineacion.module';
 import { MercadoModule } from './mercado/mercado.module';
 import { JornadaModule } from './jornada/jornada.module';
+import { LigaModule } from './liga/liga.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { JornadaModule } from './jornada/jornada.module';
     JornadaModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    LigaModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -12,20 +12,24 @@ export class NoticiasService {
 
   constructor(private http: HttpClient) {}
 
-  getNoticias(skip: number): Observable<Noticia[]> {
-    return this.http.get<Noticia[]>(this.REST_API_SERVER + '/' + skip);
+  getNoticias(idLiga: number, skip: number): Observable<Noticia[]> {
+    return this.http.get<Noticia[]>(
+      this.REST_API_SERVER + '/l=' + idLiga + '/s=' + skip
+    );
   }
 
-  getNoticiasConFiltro(skip: number, filtro: string): Observable<Noticia[]> {
+  getNoticiasConFiltro(
+    idLiga: number,
+    skip: number,
+    filtro: string
+  ): Observable<Noticia[]> {
     return this.http.get<Noticia[]>(
-      this.REST_API_SERVER + '/' + skip + '/' + filtro
+      this.REST_API_SERVER + '/l=' + idLiga + '/s=' + skip + '/f=' + filtro
     );
   }
 
   //Crear nueva noticia
   crearNoticia(noticia: NoticiaOferta): Observable<any> {
-    console.log(noticia);
-
-    return this.http.put<any>(this.REST_API_SERVER + '/nuevoFichaje', noticia);
+    return this.http.post<any>(this.REST_API_SERVER + '/nuevoFichaje', noticia);
   }
 }

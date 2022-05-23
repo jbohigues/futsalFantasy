@@ -11,7 +11,7 @@
         <button mat-raised-button id="login"><span>¡Hola <span class="mayus">{{currentUser.usuario}}</span>!</span></button>
     </nav>
 </div> -->
-<mat-toolbar id="navbar">
+<mat-toolbar id="navbar" *ngIf="!vistaLiga">
   <button (click)="navigate('/inicio')">Inicio</button>
   <button (click)="navigate('/clasificacion')">Clasificación</button>
   <button (click)="navigate('/alineacion')">Alineación</button>
@@ -28,4 +28,15 @@
   <button mat-raised-button id="login" (click)="logout()">
     ¡Hola {{ currentUser.usuario }}!
   </button>
+</mat-toolbar>
+
+<mat-toolbar id="navbarBlanco" *ngIf="vistaLiga">
+  <span class="logo">
+    <span class="textLogoBlanco">FutsalFantasy</span>
+    <img
+      class="imgLogo"
+      src="/assets/images/logoFutsalFantasy.png"
+      alt="logo"
+    />
+  </span>
 </mat-toolbar>

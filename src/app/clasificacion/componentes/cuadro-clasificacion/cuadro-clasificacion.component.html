@@ -39,7 +39,10 @@
           class="ultimo"
           src="{{ imagen }}ultimo.png"
           alt="ultimo"
-          *ngIf="element.posicion === equiposClasificacion.length"
+          *ngIf="
+            element.posicion === equiposClasificacion.length &&
+            equiposClasificacion.length > 3
+          "
         />
         <span
           *ngIf="

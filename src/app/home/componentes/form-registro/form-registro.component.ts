@@ -23,7 +23,7 @@ export class FormRegistroComponent implements OnInit {
   ) {
     this.registroForm = this.formBuilder.group(
       {
-        nombre: ['', [Validators.required, Validators.minLength(6)]],
+        nombre: ['', Validators.required],
         apellidos: [''],
         usuario: ['', [Validators.required, Validators.minLength(6)]],
         email: ['', [Validators.required, Validators.email]],
@@ -73,13 +73,7 @@ export class FormRegistroComponent implements OnInit {
     const { nombre, apellidos, usuario, email, password } =
       this.registroForm.value;
     console.log(this.registroForm.value);
-    if (
-      nombre === '' ||
-      apellidos === '' ||
-      usuario === '' ||
-      email === '' ||
-      password === ''
-    )
+    if (nombre === '' || usuario === '' || email === '' || password === '')
       this.openSnackBar('Debe rellenar los campos obligatorios.');
     else {
       this.usuariosService
@@ -87,7 +81,7 @@ export class FormRegistroComponent implements OnInit {
         .subscribe((res) => {
           if (res.status == 'Usuario registrado con éxito.') {
             this.localstorage.setSession(res.usuario);
-            this.router.navigate(['/inicio']);
+            this.router.navigate(['/liga']);
             this.openSnackBar(res.status);
           }
         });

@@ -54,6 +54,8 @@ export class LocalStorageService {
 
   //Guardamos los nuevos datos del equipoUser
   setEquipoUser(equipoUser: EquipoUser) {
+    console.log(equipoUser);
+
     localStorage.setItem('equipoUser', JSON.stringify(equipoUser));
   }
 

@@ -1,0 +1,16 @@
+#main {
+  background: linear-gradient(black, var(--rosa));
+  h1 {
+    font-size: 4vw;
+    text-align: center;
+    color: white;
+    margin-bottom: 4vw;
+  }
+
+  #contenido {
+    // margin: 1vw 6vw 3vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

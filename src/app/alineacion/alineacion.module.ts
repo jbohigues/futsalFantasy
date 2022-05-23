@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogVentaComponent } from './componentes/dialog-venta/dialog-venta.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { PosicionVaciaComponent } from './componentes/posicion-vacia/posicion-vacia.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     CuadroAlineacionComponent,
     PlantillaComponent,
     DialogVentaComponent,
+    PosicionVaciaComponent,
   ],
   imports: [
     CommonModule,

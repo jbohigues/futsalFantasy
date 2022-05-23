@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EquipoUser } from 'src/app/interfaces/equipo-user';
+import { EquipoUser, EquipoUserCreate } from 'src/app/interfaces/equipo-user';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -24,6 +24,10 @@ export class EquiposUserService {
     return this.http.get<EquipoUser[]>(this.REST_API_SERVER + '/l2=' + id);
   }
 
+  comprobarExisteNombreEquipo(nombreEquipo: string): Observable<any> {
+    return this.http.get<any>(this.REST_API_SERVER + '/eq=' + nombreEquipo);
+  }
+
   getEquipoUsuarioPorIDEquipoUser(
     idEquipoUser: number
   ): Observable<EquipoUser> {
@@ -35,6 +39,13 @@ export class EquiposUserService {
   actualizarSaldo(equipoUser: EquipoUser): Observable<any> {
     return this.http.put<any>(
       this.REST_API_SERVER + '/actualizarSaldo/e=' + equipoUser.id,
+      equipoUser
+    );
+  }
+
+  crearEquipoUser(equipoUser: EquipoUserCreate): Observable<any> {
+    return this.http.post<any>(
+      this.REST_API_SERVER + '/crearEquipoUser',
       equipoUser
     );
   }

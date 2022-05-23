@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { EquiposUserService } from 'src/app/global/servicios/equipos-user.service';
 import { JugadoresRealesService } from 'src/app/global/servicios/jugadores-reales.service';
-import { LocalStorageService } from 'src/app/global/servicios/local-storage.service';
 import { TraspasosService } from 'src/app/global/servicios/traspasos.service';
 import { NoticiasService } from 'src/app/inicio/servicios/noticias.service';
 import { EquipoUser } from 'src/app/interfaces/equipo-user';
@@ -33,6 +33,7 @@ export class OfertasComponent implements OnInit {
   equipoReceptor!: EquipoUser;
   oferta: number = 0;
   noticia!: NoticiaOferta;
+  equipoLogueado!: EquipoUser;
 
   @Input() ofertas: any;
 
@@ -61,14 +62,16 @@ export class OfertasComponent implements OnInit {
     private jugadoresRealesService: JugadoresRealesService,
     private traspasosService: TraspasosService,
     private equiposUsersService: EquiposUserService,
-    private localStorage: LocalStorageService,
-    private noticiasService: NoticiasService
+    private noticiasService: NoticiasService,
+    private _snackBar: MatSnackBar
   ) {}
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
   ngOnInit(): void {
     this.ofertas.forEach((oferta: any) => {
+      console.log(oferta);
+
       //Si no tiene equipo, le metemos foto y nombre de equipo de Mercado
       if (oferta.idEquipoUserEmisor === null) {
         this.foto = 'logoMercado';
@@ -130,12 +133,13 @@ export class OfertasComponent implements OnInit {
     dialogRef.afterClosed().subscribe((data) => {
       console.log(data);
       if (data != undefined) {
+        //ACEPTAR OFERTA
         if (data.resolucionOferta === 'aceptada') {
           //Obtengo la oferta realizada
           this.oferta = data.jugadorPuja.ofertaNumber;
           //Obtengo la informacion del jugador real que se quiere intercambiar
           this.jugadoresRealesService
-            .getInfoJugador(data.jugadorPuja.id)
+            .getInfoJugador(data.jugadorPuja.id, this.ofertas[0].idLiga)
             .subscribe((res) => {
               //Obtengo el equipo que recibirá el jugador
               this.equipoReceptor = res.equiposusuarios;
@@ -161,7 +165,7 @@ export class OfertasComponent implements OnInit {
                           this.traspaso = res3.traspaso;
                           this.traspaso.estado = Estado.Aceptada;
                           this.traspasosService
-                            .aceptarOferta(this.traspaso)
+                            .responderOferta(this.traspaso)
                             .subscribe((res4) => {
                               if (res4.status === 'update') {
                                 //Obtengo el equipoUser del usuario que hace la oferta
@@ -188,16 +192,11 @@ export class OfertasComponent implements OnInit {
                                                 this.equipoReceptor
                                               )
                                               .subscribe((res7) => {
+                                                //Creo la noticia respectiva
                                                 console.log(res7);
                                                 if (
                                                   res7.status === 'actualizado'
                                                 ) {
-                                                  //Guardo el equipo en el localstorage
-                                                  this.localStorage.setEquipoUser(
-                                                    this.equipoReceptor
-                                                  );
-                                                  //Guardar en cada localstorage, el equipo q toca
-                                                  //Peticio i guardar
                                                   this.noticia = {
                                                     idLiga:
                                                       this.equipoEmisor.idLiga,
@@ -206,11 +205,8 @@ export class OfertasComponent implements OnInit {
                                                       this.jugadorPuja
                                                         .jugadoresreales.alias +
                                                       ' ha fichado por el ' +
-                                                      this.equipoReceptor
-                                                        .nombre,
-                                                    fecha: new Date(),
+                                                      this.equipoReceptor.nombre.toUpperCase(),
                                                   };
-                                                  console.log(this.noticia);
 
                                                   this.noticiasService
                                                     .crearNoticia(this.noticia)
@@ -218,8 +214,13 @@ export class OfertasComponent implements OnInit {
                                                       if (
                                                         res8.status ===
                                                         'nuevaNoticia'
-                                                      )
-                                                        alert('Noticia creada');
+                                                      ) {
+                                                        this.openSnackBar(
+                                                          'Oferta aceptada por ' +
+                                                            this.jugadorPuja.jugadoresreales.alias.toUpperCase()
+                                                        );
+                                                        window.location.reload();
+                                                      }
                                                     });
                                                 }
                                               });
@@ -227,9 +228,6 @@ export class OfertasComponent implements OnInit {
                                         });
                                     }
                                   });
-                                //Crear una noticia: X jugador ha fichado por X equipo
-
-                                // window.location.reload();
                               }
                             });
                         }
@@ -238,12 +236,56 @@ export class OfertasComponent implements OnInit {
                 });
             });
 
-          //Pasar el jugador de un usuario a otro
+          //RECHAZAR OFERTA
         } else if (data.resolucionOferta === 'rechazada') {
           //Pasar el estado del traspaso a Rechazado
-          alert('Has rechazado la oferta por ' + data.jugadorPuja.alias);
+          this.traspasosService
+            .comprobarExistePuja(
+              data.jugadorPuja.id,
+              data.jugadorPuja.idEquipoUserEmisor
+            )
+            .subscribe((res) => {
+              console.log(res);
+              if (res.status === 'hayJugador') {
+                this.traspaso = res.traspaso;
+                this.traspaso.estado = Estado.Rechazada;
+                console.log(this.traspaso);
+                this.traspasosService
+                  .responderOferta(this.traspaso)
+                  .subscribe((res2) => {
+                    if (res2.status === 'update') {
+                      this.openSnackBar(
+                        'Has rechazado la oferta por ' + data.jugadorPuja.alias
+                      );
+                      window.location.reload();
+                    }
+                  });
+              }
+            });
         }
       }
+    });
+  }
+
+  crearNoticia() {
+    this.noticia = {
+      idLiga: 1,
+      tema: Tema.Traspaso,
+      texto: 'Paco ha fichado por el culo',
+    };
+    console.log(this.noticia);
+
+    this.noticiasService.crearNoticia(this.noticia).subscribe((res8) => {
+      if (res8.status === 'nuevaNoticia') alert('Noticia creada');
+    });
+  }
+
+  //Muestra un mensaje
+  openSnackBar(mensaje: string) {
+    this._snackBar.open(mensaje, 'Cerrar', {
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      duration: 5 * 1000,
     });
   }
 }

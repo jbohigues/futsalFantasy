@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { EquipoUser } from 'src/app/interfaces/equipo-user';
-import { JugadorReal } from 'src/app/interfaces/jugador-real';
 import { JugadorRealEnCadaLiga } from 'src/app/interfaces/jugador-real-en-cada-liga';
 import { DialogVentaComponent } from '../dialog-venta/dialog-venta.component';
 import { Jugadores } from 'src/app/mercado/componentes/tabla-fichajes/tabla-fichajes.component';
@@ -61,7 +60,7 @@ export class PlantillaComponent implements OnInit {
 
     //Guardo en un array los jugadores con el formato Jugadores
     this.misJugadores.forEach((jugador: any) => {
-      console.log(jugador);
+      // console.log(jugador);
 
       this.jugadores.push({
         id: jugador.id,
@@ -86,7 +85,7 @@ export class PlantillaComponent implements OnInit {
     //Formateo aquellos que están en venta y los titulares
     this.jugadores.forEach((jugador) => {
       this.jugadoresRealesService
-        .getInfoJugador(jugador.id)
+        .getInfoJugador(jugador.id, this.miEquipo.idLiga)
         .subscribe((res) => {
           if (res.mercado === true) {
             jugador.clasePuja = 'enVenta';
@@ -133,7 +132,7 @@ export class PlantillaComponent implements OnInit {
       if (data != undefined && data.tipoPuja != 'cancel') {
         //Obtenemos la informacion del jugador real
         this.jugadoresRealesService
-          .getInfoJugador(data.jugadorVenta.id)
+          .getInfoJugador(data.jugadorVenta.id, this.miEquipo.idLiga)
           .subscribe((res) => {
             //Retirar jugador de la venta
             if (data.tipoPuja === 'retirar') {

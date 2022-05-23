@@ -1,0 +1,48 @@
+p {
+  margin: 0;
+  padding: 0;
+  &.jugador > img {
+    border-radius: 1vw;
+    width: 8vw;
+    transition: transform 250ms;
+    &:hover {
+      transform: scale(1.2);
+      -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left
+            bottom, from(transparent), color-stop(0.7, transparent), to(rgba(0, 0, 0, 0.4)));
+      -webkit-box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8);
+      -moz-box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8);
+      box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  &.puntos {
+    position: relative;
+    top: 1vw;
+    right: 3vw;
+    z-index: 1;
+    transition: transform 250ms;
+
+    span {
+      z-index: 1;
+      transition: transform 250ms;
+      border-radius: 50%;
+      border: 1px solid black;
+      background-color: rgb(255, 0, 0);
+      color: white;
+    }
+  }
+  &.estado {
+    position: relative;
+    top: 3vw;
+    right: 3vw;
+    img {
+      width: 4vw;
+    }
+  }
+  span {
+    margin: 0;
+    background-color: white;
+    font-size: 1.5vw;
+    padding: 0.5vw;
+  }
+}

@@ -52,9 +52,9 @@ export class TraspasosService {
   }
 
   //Aceptar oferta por un jugador: pasa el estado de traspaso a Aceptada
-  aceptarOferta(puja: Traspaso): Observable<any> {
+  responderOferta(puja: Traspaso): Observable<any> {
     return this.http.put<any>(
-      this.REST_API_SERVER + '/aceptarOferta/p=' + puja.id,
+      this.REST_API_SERVER + '/responderOferta/p=' + puja.id,
       puja
     );
   }

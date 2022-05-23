@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { LocalStorageService } from '../../servicios/local-storage.service';
@@ -10,6 +10,7 @@ import { LocalStorageService } from '../../servicios/local-storage.service';
 })
 export class HeaderComponent implements OnInit {
   currentUser!: Usuario;
+  @Input() vistaLiga!: boolean;
 
   constructor(
     private router: Router,

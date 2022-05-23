@@ -168,7 +168,10 @@ export class VentasComponent implements OnInit {
         if (data.vista === 'mercado') {
           //Obtenemos la informacion del jugador real
           this.jugadoresRealesService
-            .getInfoJugador(data.jugadorVenta.idJugadorReal)
+            .getInfoJugador(
+              data.jugadorVenta.idJugadorReal,
+              this.miEquipo.idLiga
+            )
             .subscribe((res) => {
               //Retirar jugador de la venta
               if (data.tipoPuja === 'retirar') {
@@ -248,7 +251,7 @@ export class VentasComponent implements OnInit {
         } else {
           //Obtenemos la informacion del jugador real
           this.jugadoresRealesService
-            .getInfoJugador(data.jugadorVenta.id)
+            .getInfoJugador(data.jugadorVenta.id, this.miEquipo.idLiga)
             .subscribe((res) => {
               //Retirar jugador de la venta
               if (data.tipoPuja === 'retirar') {

@@ -11,7 +11,6 @@ export interface NoticiaOferta {
   idLiga: number;
   tema: Tema;
   texto: string;
-  fecha: Date;
 }
 
 export enum Tema {

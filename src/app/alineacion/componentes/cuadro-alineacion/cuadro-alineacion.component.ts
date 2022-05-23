@@ -13,6 +13,7 @@ export class CuadroAlineacionComponent implements OnInit {
   hayAla: boolean = false;
   hayLesionados: boolean = false;
   hayExpulsados: boolean = false;
+  hayTitulares: boolean = false;
   jugadoresTitulares: any = [];
   jugadoresReales: any = [];
   map: Map<string, JugadorReal> = new Map();
@@ -39,8 +40,6 @@ export class CuadroAlineacionComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log('hola');
-
     //Me guardo en un array los titulares del equipo del usuario logueado
     this.equipoUserLogueado.jugadoresrealesencadaliga.forEach((element) => {
       this.jugadoresReales.push(element.jugadoresreales);
@@ -48,28 +47,30 @@ export class CuadroAlineacionComponent implements OnInit {
 
       if (element.titular)
         this.jugadoresTitulares.push(element.jugadoresreales);
-      console.log(this.jugadoresTitulares);
     });
 
-    //Me guardo en un map los jugadores titulares con la relacion posicion:jugador
-    this.jugadoresTitulares.forEach((jugador: JugadorReal) => {
-      console.log(jugador);
+    if (this.jugadoresTitulares.length) {
+      this.hayTitulares = true;
+      //Me guardo en un map los jugadores titulares con la relacion posicion:jugador
+      this.jugadoresTitulares.forEach((jugador: JugadorReal) => {
+        console.log(jugador);
 
-      if (jugador != undefined) {
-        if (this.map.get('AL') && jugador.posicion === 'AL')
-          this.map.set(jugador.posicion + '2', jugador);
-        else this.map.set(jugador.posicion, jugador);
+        if (jugador != undefined) {
+          if (this.map.get('AL') && jugador.posicion === 'AL')
+            this.map.set(jugador.posicion + '2', jugador);
+          else this.map.set(jugador.posicion, jugador);
 
-        //Informo de si hay jugadores expulsados o lesionados
-        if (jugador.estado === 'EX') this.hayExpulsados = true;
-        if (jugador.estado === 'L') this.hayLesionados = true;
+          //Informo de si hay jugadores expulsados o lesionados
+          if (jugador.estado === 'EX') this.hayExpulsados = true;
+          if (jugador.estado === 'L') this.hayLesionados = true;
 
-        console.log(this.map);
-
-        //Quito el loading cuando haya 5 titulares
-        if (this.map.size === 5) this.loading = false;
-      }
-    });
+          //Quito el loading cuando haya 5 titulares
+          if (this.map.size === 5) this.loading = false;
+        }
+      });
+    } else {
+      this.loading = false;
+    }
   }
 
   //Abre el menu para realizar los cambios

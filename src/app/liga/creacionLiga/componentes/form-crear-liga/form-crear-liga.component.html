@@ -1,0 +1,99 @@
+<div class="form">
+  <form [formGroup]="crearLigaForm" (ngSubmit)="crearLiga(crearLigaForm)">
+    <!-- <mat-label>Icono de la liga</mat-label>
+    <img src="" alt="" /> -->
+    <mat-form-field
+      class="campo"
+      appearance="outline"
+      (change)="comprobarNombreLiga(crearLigaForm)"
+    >
+      <mat-label>Nombre de la liga</mat-label>
+      <input
+        matInput
+        formControlName="nombreLiga"
+        placeholder="Escriba qué nombre tendrá su liga"
+      />
+      <mat-error
+        class="alert"
+        *ngIf="
+          crearLigaForm.controls['nombreLiga'].invalid &&
+          (crearLigaForm.controls['nombreLiga'].dirty ||
+            crearLigaForm.controls['nombreLiga'].touched)
+        "
+      >
+        <span *ngIf="crearLigaForm.controls['nombreLiga'].hasError('required')">
+          Debes poner un nombre de liga
+        </span>
+        <span
+          *ngIf="crearLigaForm.controls['nombreLiga'].hasError('minlength')"
+        >
+          Mínimo 6 carácteres
+        </span>
+        <span
+          *ngIf="crearLigaForm.controls['nombreLiga'].hasError('existeLiga')"
+        >
+          Este nombre de liga ya existe
+        </span>
+      </mat-error>
+    </mat-form-field>
+    <br />
+    <mat-form-field
+      class="campo"
+      appearance="outline"
+      (change)="comprobarNombreEquipo(crearLigaForm)"
+    >
+      <mat-label>Nombre de equipo</mat-label>
+      <input
+        matInput
+        formControlName="nombreEquipo"
+        placeholder="Escriba cómo se llamará su equipo"
+      />
+      <mat-error
+        class="alert"
+        *ngIf="
+          crearLigaForm.controls['nombreEquipo'].invalid &&
+          (crearLigaForm.controls['nombreEquipo'].dirty ||
+            crearLigaForm.controls['nombreEquipo'].touched)
+        "
+      >
+        <span
+          *ngIf="crearLigaForm.controls['nombreEquipo'].hasError('required')"
+        >
+          Debes poner un nombre a tu equipo
+        </span>
+        <span
+          *ngIf="crearLigaForm.controls['nombreEquipo'].hasError('minlength')"
+        >
+          Mínimo 6 carácteres
+        </span>
+        <span
+          *ngIf="
+            crearLigaForm.controls['nombreEquipo'].hasError('existeEquipo')
+          "
+        >
+          Este nombre de equipo ya existe
+        </span>
+      </mat-error>
+    </mat-form-field>
+    <br />
+
+    <div id="buttons">
+      <button
+        type="button"
+        class="cancelar"
+        mat-raised-button
+        (click)="navigate('liga')"
+      >
+        <span>Cancelar</span>
+      </button>
+      <button
+        type="submit"
+        mat-raised-button
+        [disabled]="crearLigaForm.invalid"
+        [ngClass]="crearLigaForm.valid ? 'enter' : 'buttonDisabled'"
+      >
+        <span>Crear liga</span>
+      </button>
+    </div>
+  </form>
+</div>

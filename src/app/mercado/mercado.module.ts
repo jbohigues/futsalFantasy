@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../pipes/pipes.module';
 import { VentasComponent } from './componentes/ventas/ventas.component';
 import { OfertasComponent } from './componentes/ofertas/ofertas.component';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { OfertasComponent } from './componentes/ofertas/ofertas.component';
     FormsModule,
     ReactiveFormsModule,
     PipesModule,
+    MatInputModule,
   ],
 })
 export class MercadoModule {}

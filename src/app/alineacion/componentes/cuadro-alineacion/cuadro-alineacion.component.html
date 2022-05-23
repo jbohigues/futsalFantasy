@@ -1,5 +1,5 @@
 <div id="cuadroPista" *ngIf="!loading">
-  <table aria-describedby="titulares">
+  <table aria-describedby="titulares" *ngIf="hayTitulares">
     <th></th>
     <!-- ALA 1 -->
     <tr>
@@ -150,6 +150,45 @@
               alt="ala2"
             />
           </p>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <table aria-describedby="titulares" *ngIf="!hayTitulares">
+    <th></th>
+    <!-- ALA 1 -->
+    <tr>
+      <td></td>
+      <td colspan="3">
+        <div>
+          <app-posicion-vacia posicion="AL"></app-posicion-vacia>
+        </div>
+      </td>
+    </tr>
+    <!-- PT, CIERRE, PIVOT -->
+    <tr>
+      <td>
+        <div>
+          <app-posicion-vacia posicion="PT"></app-posicion-vacia>
+        </div>
+      </td>
+      <td>
+        <div class="cierre">
+          <app-posicion-vacia posicion="CI"></app-posicion-vacia>
+        </div>
+      </td>
+      <td>
+        <div>
+          <app-posicion-vacia posicion="PV"></app-posicion-vacia>
+        </div>
+      </td>
+    </tr>
+    <!-- ALA 2 -->
+    <tr>
+      <td></td>
+      <td colspan="3">
+        <div class="infoJug">
+          <app-posicion-vacia posicion="AL2"></app-posicion-vacia>
         </div>
       </td>
     </tr>

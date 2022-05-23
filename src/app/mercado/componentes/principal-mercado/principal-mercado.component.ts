@@ -28,6 +28,8 @@ export class PrincipalMercadoComponent implements OnInit {
     this.equipoUserService
       .getEquipoUsuario(this.usuarioLogueado.id)
       .subscribe((res) => {
+        console.log(res);
+
         this.equipoUserLogueado = res;
         this.capital = new Intl.NumberFormat('de-DE', {
           style: 'currency',
@@ -35,6 +37,7 @@ export class PrincipalMercadoComponent implements OnInit {
           maximumFractionDigits: 0,
           currencySign: 'accounting',
         }).format(this.equipoUserLogueado.dinero);
+        this.localStorage.setEquipoUser(this.equipoUserLogueado);
         if (this.equipoUserLogueado != undefined) this.loading = false;
       });
   }
