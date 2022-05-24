@@ -33,6 +33,21 @@ router.get("/l=:nombreLiga", async function (req, res, next) {
   }
 });
 
+//Comprobar si existe una liga con cierto codigo
+router.get("/liga/c=:codigoLiga", async function (req, res, next) {
+  try {
+    const ligaUser = await prisma.ligas.findFirst({
+      where: {
+        codigoLiga: req.params.codigoLiga,
+      },
+    });
+    let status = ligaUser == null ? "noExiste" : "existe";
+    res.json({ ligaUser: ligaUser, status: status });
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
 //Crear liga
 router.post("/crearLiga", async function (req, res) {
   try {

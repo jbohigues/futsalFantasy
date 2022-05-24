@@ -21,6 +21,24 @@ router.get("/", async function (req, res) {
   }
 });
 
+//Obtiene todos los jugadoresReales de cierta liga
+router.get("/jugadores/l=:idLiga", async function (req, res) {
+  try {
+    const jugadores = await prisma.jugadoresrealesencadaliga.findMany({
+      where: {
+        idLiga: Number(req.params.idLiga),
+      },
+      select: {
+        idJugadorReal: true,
+      },
+    });
+    let status = jugadores == null ? "mal" : "exito";
+    res.json({ jugadores: jugadores, status: status });
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
 //Obtiene la informacion de un jugador dado su id
 router.get("/l=:idLiga/j=:idJugador", async function (req, res) {
   try {

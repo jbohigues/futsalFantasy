@@ -5,6 +5,7 @@ var prismaclient = require("@prisma/client");
 
 const prisma = new prismaclient.PrismaClient();
 
+//Obtiene todos los usuarios
 router.get("/", async function (req, res, next) {
   try {
     const usuarios = await prisma.usuarios.findMany();
@@ -14,7 +15,7 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-//getUsuario()
+//Obtiene el usuario logueado a través de usuario y password
 router.get("/u=:usuario/p=:password", async function (req, res, next) {
   try {
     const { usuario, password } = req.params;
@@ -32,6 +33,7 @@ router.get("/u=:usuario/p=:password", async function (req, res, next) {
   }
 });
 
+//Comprueba si existe un usuario con cierto nombre de usuario
 router.get("/u=:usuario", async function (req, res, next) {
   try {
     const { usuario } = req.params;
@@ -52,6 +54,7 @@ router.get("/u=:usuario", async function (req, res, next) {
   }
 });
 
+//Comprueba si existe un usuario con un email especifico
 router.get("/e=:email", async function (req, res, next) {
   try {
     const { email } = req.params;
@@ -72,6 +75,23 @@ router.get("/e=:email", async function (req, res, next) {
   }
 });
 
+//Devuelve usuario a través de su id
+router.get("/usuario/i=:idUser", async function (req, res, next) {
+  try {
+    const user = await prisma.usuarios.findFirst({
+      where: {
+        id: Number(req.params.idUser),
+      },
+    });
+
+    let status = user == null ? "noExiste" : "existe";
+    res.send({ user: user, status: status });
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
+//Crea un nuevo usuario
 router.post("/registro", async function (req, res, next) {
   const { nombre, apellidos, usuario, email, password } = req.body;
   let md5pass = MD5(password).toString();
