@@ -1,0 +1,54 @@
+<div id="main">
+  <app-header vista="perfil"></app-header>
+  <div id="contenido">
+    <div class="user" *ngIf="!loading">
+      <h1>Perfil de @{{ userLogueado.usuario }}</h1>
+      <button mat-fab aria-label="Example icon button with a home icon">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </div>
+    <div id="info">
+      <div
+        id="equipo"
+        (mouseenter)="mostrarMensaje()"
+        (mouseleave)="ocultarMensaje()"
+      >
+        <img
+          src="{{ equipoUserLogo }}{{ equipoUser.foto }}.png"
+          alt="equipoUsuario"
+        />
+        <br />
+        <div id="nombre">
+          <p><strong> Equipo: </strong>{{ equipoUser.nombre }}</p>
+        </div>
+      </div>
+      <div id="tabla" id="mensaje">
+        <table>
+          <tr>
+            <td>
+              <tr>
+                <p><strong>Puntuación: </strong>{{ equipoUser.puntos }} pts</p>
+              </tr>
+              <tr>
+                <p>
+                  <strong>Plantilla: </strong>{{ equipoUser.numJugadores }} jug.
+                </p>
+              </tr>
+              <tr>
+                <p><strong>Posición: </strong>{{ posicion }}º pos.</p>
+              </tr>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div id="tabs">
+      <app-tabs-perfil></app-tabs-perfil>
+    </div>
+
+    <div *ngIf="loading">
+      <app-loading></app-loading>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

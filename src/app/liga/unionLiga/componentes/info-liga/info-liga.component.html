@@ -1,0 +1,73 @@
+<div class="infoLiga" *ngIf="!loading">
+  <div id="info">
+    <div id="liga">
+      <img src="{{ imagen }}{{ liga.foto }}.png" alt="fotoLiga" /> <br />
+      <div id="nombre">
+        <mat-label>Liga</mat-label>
+        <input matInput value="{{ liga.nombre }}" disabled readonly />
+      </div>
+    </div>
+    <div id="tabla">
+      <table>
+        <tr>
+          <td>
+            <mat-label>Dinero por punto</mat-label>
+            <input matInput value="{{ dinero }}" disabled readonly />
+          </td>
+          <td>
+            <mat-label>Máxima plantilla</mat-label>
+            <input
+              matInput
+              value="{{ liga.numMaxPlantilla }} jugadores"
+              disabled
+              readonly
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-label>Jugadores libres en mercado</mat-label>
+            <input
+              matInput
+              value="{{ liga.numJugMercado }} máximo"
+              disabled
+              readonly
+            />
+          </td>
+          <td>
+            <mat-label>Jugadores libres en mercado</mat-label>
+            <input
+              matInput
+              value="{{ liga.diasJugEnMercado }} días"
+              disabled
+              readonly
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-label>Gestión de pujas</mat-label>
+            <input
+              matInput
+              value="{{ liga.diasGestionPujas }} días"
+              disabled
+              readonly
+            />
+          </td>
+          <td>
+            <mat-label>Usuario líder</mat-label>
+            <input
+              matInput
+              value="{{ usuarioLider.usuario }}"
+              disabled
+              readonly
+            />
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="loading">
+  <app-loading></app-loading>
+</div>

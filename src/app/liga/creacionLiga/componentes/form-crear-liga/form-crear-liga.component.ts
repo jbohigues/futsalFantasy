@@ -21,7 +21,6 @@ import { Usuario } from 'src/app/interfaces/usuario';
   styleUrls: ['./form-crear-liga.component.scss'],
 })
 export class FormCrearLigaComponent implements OnInit {
-  hide = true;
   crearLigaForm!: FormGroup;
   liga!: LigaCreate;
   equipoUser!: EquipoUserCreate;

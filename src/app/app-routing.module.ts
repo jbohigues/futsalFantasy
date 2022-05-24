@@ -9,6 +9,7 @@ import { PrincipalLigaComponent } from './liga/componentes/principal-liga/princi
 import { PrincipalCrearLigaComponent } from './liga/creacionLiga/componentes/principal-crear-liga/principal-crear-liga.component';
 import { PrincipalUnirseLigaComponent } from './liga/unionLiga/componentes/principal-unirse-liga/principal-unirse-liga.component';
 import { PrincipalMercadoComponent } from './mercado/componentes/principal-mercado/principal-mercado.component';
+import { PrincipalPerfilComponent } from './perfil/componentes/principal-perfil/principal-perfil.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,7 +22,7 @@ const routes: Routes = [
   { path: 'liga', component: PrincipalLigaComponent },
   { path: 'liga/crearLiga', component: PrincipalCrearLigaComponent },
   { path: 'liga/unirseLiga', component: PrincipalUnirseLigaComponent },
-  // {path: 'perfil'},
+  { path: 'perfil', component: PrincipalPerfilComponent },
   // { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page https://angular.io/guide/router
 ];
 

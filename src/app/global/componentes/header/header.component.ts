@@ -10,6 +10,8 @@ import { LocalStorageService } from '../../servicios/local-storage.service';
 })
 export class HeaderComponent implements OnInit {
   currentUser!: Usuario;
+  estilo: string = '';
+  @Input() vista!: string;
   @Input() vistaLiga!: boolean;
 
   constructor(
@@ -19,6 +21,8 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.localStorage.getUsuarioLocalStorage();
+    if (this.vista === 'perfil') this.estilo = 'perfil';
+    else this.estilo = '';
   }
 
   navigate(ruta: string) {

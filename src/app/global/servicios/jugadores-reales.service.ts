@@ -24,6 +24,11 @@ export class JugadoresRealesService {
     return this.http.get<any>(this.REST_API_SERVER2 + '/');
   }
 
+  //Obtiene todos los jugadoresReales de cierta liga
+  obtenerJugadoresRealesDeCiertaLiga(idLiga: number): Observable<any> {
+    return this.http.get<any>(this.REST_API_SERVER2 + '/jugadores/l=' + idLiga);
+  }
+
   //Obtiene los jugadores reales de cierto equipoUser en cierta liga
   getJugadoresRealesDeEquipoUsuario(
     idLiga: number,
@@ -31,14 +36,6 @@ export class JugadoresRealesService {
   ): Observable<JugadorReal[]> {
     return this.http.get<JugadorReal[]>(
       this.REST_API_SERVER2 + '/l=' + idLiga + '/e=' + idEquipoUser
-    );
-  }
-
-  //Cambia la titularidad de un jugador real
-  updateJugadorReal(jugadorReal: JugadorReal, idLiga: number): Observable<any> {
-    return this.http.put<any>(
-      this.REST_API_SERVER2 + '/update/l=' + idLiga + '/j=' + jugadorReal.id,
-      jugadorReal
     );
   }
 
@@ -53,6 +50,14 @@ export class JugadoresRealesService {
   getInfoJugador(idJugadorReal: number, idLiga: number): Observable<any> {
     return this.http.get<any>(
       this.REST_API_SERVER2 + '/l=' + idLiga + '/j=' + idJugadorReal
+    );
+  }
+
+  //Cambia la titularidad de un jugador real
+  updateJugadorReal(jugadorReal: JugadorReal, idLiga: number): Observable<any> {
+    return this.http.put<any>(
+      this.REST_API_SERVER2 + '/update/l=' + idLiga + '/j=' + jugadorReal.id,
+      jugadorReal
     );
   }
 

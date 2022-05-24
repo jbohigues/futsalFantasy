@@ -59,14 +59,14 @@ export class FormRegistroComponent implements OnInit {
   }
 
   //Comprueba si el email introducido ya está registrado
-  comprobarEmail(formGroup: FormGroup) {
-    const { email } = formGroup.controls;
-    this.usuariosService
-      .getUsuarioConEmail(email.value)
-      .subscribe((res: any) => {
-        if (res.existeEmail) return email.setErrors({ existeEmail: true });
-      });
-  }
+  // comprobarEmail(formGroup: FormGroup) {
+  //   const { email } = formGroup.controls;
+  //   this.usuariosService
+  //     .getUsuarioConEmail(email.value)
+  //     .subscribe((res: any) => {
+  //       if (res.existeEmail) return email.setErrors({ existeEmail: true });
+  //     });
+  // }
 
   //Crea un usuario en la tabla usuarios
   registrar(formGroup: FormGroup) {

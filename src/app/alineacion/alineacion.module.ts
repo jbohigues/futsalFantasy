@@ -33,5 +33,6 @@ import { PosicionVaciaComponent } from './componentes/posicion-vacia/posicion-va
     PipesModule,
     MatDialogModule,
   ],
+  exports: [PlantillaComponent],
 })
 export class AlineacionModule {}

@@ -1,0 +1,97 @@
+.infoLiga {
+  background-color: white;
+  border-radius: 2vw;
+  padding: 3vw;
+  font-size: 1.5vw;
+  margin: 0 1.5vw;
+
+  #info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img {
+      width: 15vw;
+      border-radius: 1vw;
+    }
+    #liga {
+      margin-right: 2vw;
+
+      #nombre {
+        text-align: center;
+      }
+    }
+    #tabla {
+      td {
+        height: 7vw;
+      }
+    }
+  }
+
+  button {
+    background: none;
+    border: none;
+    transition: transform 250ms;
+
+    &:hover {
+      transition: transform 250ms;
+      transform: scale(1.5);
+    }
+  }
+
+  #buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .enter {
+    font-size: 2vw;
+    padding: 1vw 2vw;
+    transition: transform 250ms;
+    border: none;
+    border-radius: 1vw;
+    background-color: black;
+    color: white;
+
+    &:hover {
+      background: var(--degradado);
+      transition: transform 250ms;
+      border: none;
+      span {
+        background: black;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+  }
+
+  .buttonDisabled {
+    font-size: 2vw;
+    padding: 1vw 2vw;
+    border: none;
+    border-radius: 1vw;
+    transition: transform 250ms;
+    background-color: #b3010175;
+    color: rgba(255, 255, 255, 0.623);
+  }
+
+  .cancelar {
+    font-size: 2vw;
+    padding: 1vw 2vw;
+    transition: transform 250ms;
+    border: none;
+    border-radius: 1vw;
+    background-color: rgb(214, 214, 214);
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.441);
+      transition: transform 250ms;
+      border: none;
+      color: white;
+    }
+  }
+}
+// #liga {
+//   display: flex;
+//   justify-content: end;
+//   align-items: center;
+// }

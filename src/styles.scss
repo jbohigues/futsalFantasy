@@ -38,8 +38,21 @@ $angular-theme: mat.define-light-theme(
 
 body {
   margin: 0;
-  height: 100vh;
+  #main {
+    position: relative;
+    min-height: 100vh;
+  }
+  #footer {
+    display: flex;
+    flex-flow: row;
+    margin-bottom: 0;
+
+    footer {
+      align-self: end;
+    }
+  }
 }
+
 :root {
   --rosa: #ff00d4;
   --azul: #00ffff;

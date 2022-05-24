@@ -12,10 +12,14 @@
     </nav>
 </div> -->
 <mat-toolbar id="navbar" *ngIf="!vistaLiga">
-  <button (click)="navigate('/inicio')">Inicio</button>
-  <button (click)="navigate('/clasificacion')">Clasificación</button>
-  <button (click)="navigate('/alineacion')">Alineación</button>
-  <span class="logo">
+  <button [ngClass]="estilo" (click)="navigate('/inicio')">Inicio</button>
+  <button [ngClass]="estilo" (click)="navigate('/clasificacion')">
+    Clasificación
+  </button>
+  <button [ngClass]="estilo" (click)="navigate('/alineacion')">
+    Alineación
+  </button>
+  <span class="logo" [ngClass]="estilo">
     <span class="textLogo">FutsalFantasy</span>
     <img
       class="imgLogo"
@@ -23,11 +27,17 @@
       alt="logo"
     />
   </span>
-  <button (click)="navigate('/mercado')">Mercado</button>
-  <button (click)="navigate('/jornada')">Jornada</button>
-  <button mat-raised-button id="login" (click)="logout()">
+  <button [ngClass]="estilo" (click)="navigate('/mercado')">Mercado</button>
+  <button [ngClass]="estilo" (click)="navigate('/jornada')">Jornada</button>
+  <button mat-raised-button id="login" [matMenuTriggerFor]="menu">
     ¡Hola {{ currentUser.usuario }}!
   </button>
+  <mat-menu #menu="matMenu" xPosition="before">
+    <button mat-menu-item class="menu" (click)="navigate('/perfil')">
+      Perfil
+    </button>
+    <button mat-menu-item class="menu" (click)="logout()">Cerrar sesión</button>
+  </mat-menu>
 </mat-toolbar>
 
 <mat-toolbar id="navbarBlanco" *ngIf="vistaLiga">

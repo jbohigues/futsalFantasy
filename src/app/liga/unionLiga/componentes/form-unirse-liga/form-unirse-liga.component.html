@@ -1,0 +1,146 @@
+<div id="unirseLiga">
+  <div id="formularios">
+    <div id="divUnirse">
+      <h1>Unirme a una liga</h1>
+
+      <form
+        [formGroup]="unirseLigaForm"
+        (ngSubmit)="comprobarCodigoLiga(unirseLigaForm)"
+        class="form"
+      >
+        <!-- <mat-label>Icono de la liga</mat-label>
+    <img src="" alt="" /> -->
+        <mat-form-field class="campo" appearance="outline">
+          <mat-label>Código de la liga</mat-label>
+          <input
+            matInput
+            formControlName="codigoLiga"
+            placeholder="Escriba el código su liga"
+          />
+          <mat-error
+            class="alert"
+            *ngIf="
+              unirseLigaForm.controls['codigoLiga'].invalid &&
+              (unirseLigaForm.controls['codigoLiga'].dirty ||
+                unirseLigaForm.controls['codigoLiga'].touched)
+            "
+          >
+            <span
+              *ngIf="unirseLigaForm.controls['codigoLiga'].hasError('required')"
+            >
+              Debe poner un código
+            </span>
+            <span
+              *ngIf="
+                unirseLigaForm.controls['codigoLiga'].hasError('minlength')
+              "
+            >
+              Mínimo 6 carácteres
+            </span>
+            <span
+              *ngIf="unirseLigaForm.controls['codigoLiga'].hasError('noExiste')"
+            >
+              El código introducido no es válido
+            </span>
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <div id="buttons">
+          <button
+            type="button"
+            class="cancelar"
+            mat-raised-button
+            (click)="navigate('liga')"
+          >
+            <span>Cancelar</span>
+          </button>
+          <button
+            type="submit"
+            mat-raised-button
+            [disabled]="unirseLigaForm.invalid"
+            [ngClass]="unirseLigaForm.valid ? 'enter' : 'buttonDisabled'"
+          >
+            <span>Siguiente</span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div id="equipo" *ngIf="hayLiga">
+      <!-- <h1>Información de la liga</h1> -->
+      <form
+        [formGroup]="nombreEquipoForm"
+        (ngSubmit)="unirseALiga(nombreEquipoForm)"
+        class="form"
+      >
+        <!-- <mat-label>Icono de la liga</mat-label>
+    <img src="" alt="" /> -->
+        <mat-form-field class="campo" appearance="outline">
+          <mat-label>Nombre de equipo</mat-label>
+          <input
+            matInput
+            formControlName="nombreEquipo"
+            placeholder="Escriba el nombre que le dará a su equipo"
+            (change)="comprobarNombreEquipo(nombreEquipoForm)"
+          />
+          <mat-error
+            class="alert"
+            *ngIf="
+              nombreEquipoForm.controls['nombreEquipo'].invalid &&
+              (nombreEquipoForm.controls['nombreEquipo'].dirty ||
+                nombreEquipoForm.controls['nombreEquipo'].touched)
+            "
+          >
+            <span
+              *ngIf="
+                nombreEquipoForm.controls['nombreEquipo'].hasError('required')
+              "
+            >
+              Debe poner un nombre para su equipo
+            </span>
+            <span
+              *ngIf="
+                nombreEquipoForm.controls['nombreEquipo'].hasError('minlength')
+              "
+            >
+              Mínimo 6 carácteres
+            </span>
+            <span
+              *ngIf="
+                nombreEquipoForm.controls['nombreEquipo'].hasError(
+                  'existeEquipo'
+                )
+              "
+            >
+              Este nombre de equipo ya existe
+            </span>
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <div id="buttons">
+          <button
+            type="button"
+            class="cancelar"
+            mat-raised-button
+            (click)="navigate('liga')"
+          >
+            <span>Cancelar</span>
+          </button>
+          <button
+            type="submit"
+            mat-raised-button
+            [disabled]="nombreEquipoForm.invalid"
+            [ngClass]="nombreEquipoForm.valid ? 'enter' : 'buttonDisabled'"
+          >
+            <span>¡Unirme!</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="liga" *ngIf="hayLiga">
+    <h1>Información de la liga</h1>
+    <app-info-liga [liga]="liga"></app-info-liga>
+  </div>
+</div>

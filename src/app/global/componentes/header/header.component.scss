@@ -24,7 +24,7 @@
 
     &:hover {
       transition: transform 250ms;
-      transform: translateY(-5px);
+      // transform: translateY(-5px);
       background-color: white;
       border-radius: 0.5vw;
     }
@@ -82,4 +82,20 @@
   .textLogoBlanco {
     font-size: 2vw !important;
   }
+}
+
+.perfil {
+  color: white !important;
+
+  &:hover {
+    color: black !important;
+    .textLogo {
+      color: white;
+    }
+  }
+}
+
+::ng-deep .menu:hover {
+  background: linear-gradient(90deg, black, var(--rosa)) !important;
+  color: white !important;
 }

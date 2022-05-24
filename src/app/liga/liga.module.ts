@@ -10,6 +10,8 @@ import { FormCrearLigaComponent } from './creacionLiga/componentes/form-crear-li
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { FormUnirseLigaComponent } from './unionLiga/componentes/form-unirse-liga/form-unirse-liga.component';
+import { InfoLigaComponent } from './unionLiga/componentes/info-liga/info-liga.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { MatInputModule } from '@angular/material/input';
     PrincipalCrearLigaComponent,
     PrincipalUnirseLigaComponent,
     FormCrearLigaComponent,
+    FormUnirseLigaComponent,
+    InfoLigaComponent,
   ],
   imports: [
     CommonModule,

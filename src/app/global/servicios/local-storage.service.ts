@@ -10,6 +10,7 @@ export class LocalStorageService {
   private isLogin: boolean = false;
   private currentUser!: Usuario;
   private equipoUser!: EquipoUser;
+  private posicion!: string;
 
   constructor(private equipoUserService: EquiposUserService) {}
 
@@ -72,5 +73,15 @@ export class LocalStorageService {
     return (this.equipoUser = JSON.parse(
       String(localStorage.getItem('equipoUser'))
     ) as EquipoUser);
+  }
+
+  //Guardamos la posición en la clasificación
+  setPosicion(pos: string) {
+    localStorage.setItem('posicion', JSON.stringify(pos));
+  }
+
+  //Devuelve la posicion del localStorage
+  getPosicion() {
+    return JSON.parse(String(localStorage.getItem('posicion')));
   }
 }

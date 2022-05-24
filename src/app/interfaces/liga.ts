@@ -5,6 +5,7 @@ export interface Liga {
   codigoLiga: string;
   abono: number;
   numMaxPlantilla: number;
+  numJugMercado: number;
   diasJugEnMercado: number;
   diasGestionPujas: number;
   idUsuarioLider: number;

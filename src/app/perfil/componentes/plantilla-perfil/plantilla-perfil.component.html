@@ -1,0 +1,86 @@
+<div id="tabla" *ngIf="!loading">
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z8"
+    aria-describedby="misJugadores"
+    matSort
+  >
+    <!-- Foto Column -->
+    <ng-container matColumnDef="jugador">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Jugador</th>
+      <td mat-cell *matCellDef="let element">
+        <img
+          src="{{ imagen }}{{ element.jugador }}.png"
+          class="imagenJugador"
+          alt="{{ element.alias }}"
+        />
+      </td>
+    </ng-container>
+
+    <!-- EquipoReal Column -->
+    <ng-container matColumnDef="equipoReal">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Equipo</th>
+      <td mat-cell *matCellDef="let element">
+        <img
+          src="{{ imagenEquipoReal }}{{ element.equipoReal }}.png"
+          class="imagenJugador"
+          alt="{{ element.alias }}"
+        />
+      </td>
+    </ng-container>
+
+    <!-- Estado Column -->
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+      <td mat-cell *matCellDef="let element">
+        <img
+          src="{{ imagenEstado }}{{ element.estado }}.png"
+          alt="estado de forma"
+        />
+      </td>
+    </ng-container>
+
+    <!-- Posicion Column -->
+    <ng-container matColumnDef="posicion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Posición</th>
+      <td mat-cell *matCellDef="let element" [ngClass]="[element.posicion]">
+        <span>{{ element.posicion }}</span>
+      </td>
+    </ng-container>
+
+    <!-- Alias Column -->
+    <ng-container matColumnDef="alias">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Alias</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.alias }}
+      </td>
+    </ng-container>
+
+    <!-- Valor Column -->
+    <ng-container matColumnDef="capital">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Valor mercado</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.capital }}
+      </td>
+    </ng-container>
+
+    <!-- Puntos Column -->
+    <ng-container matColumnDef="puntos">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Puntos</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.puntos }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      class="filaHover"
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+    ></tr>
+  </table>
+</div>
+<div *ngIf="loading">
+  <app-loading></app-loading>
+</div>

@@ -78,11 +78,12 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field
+    <!-- <mat-form-field
       class="campo"
       appearance="outline"
       (change)="comprobarEmail(registroForm)"
-    >
+    > -->
+    <mat-form-field class="campo" appearance="outline">
       <mat-label>Email</mat-label>
       <input
         name="email"
@@ -105,9 +106,9 @@
         <span *ngIf="registroForm.controls['email'].hasError('email')">
           Introduce un email válido
         </span>
-        <span *ngIf="registroForm.controls['email'].hasError('existeEmail')">
+        <!-- <span *ngIf="registroForm.controls['email'].hasError('existeEmail')">
           Este email ya está registrado
-        </span>
+        </span> -->
       </mat-error>
     </mat-form-field>
 
