@@ -3,9 +3,26 @@
   <div id="contenido">
     <div class="user" *ngIf="!loading">
       <h1>Perfil de @{{ userLogueado.usuario }}</h1>
-      <button mat-fab aria-label="Example icon button with a home icon">
+      <button mat-fab aria-label="Example" [matMenuTriggerFor]="menu">
         <mat-icon>settings</mat-icon>
       </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button
+          mat-menu-item
+          class="menu"
+          (click)="navigate('/perfil/configuracion')"
+        >
+          Configurar perfil
+        </button>
+        <button
+          *ngIf="soyUserLider"
+          mat-menu-item
+          class="menu"
+          (click)="navigate('/perfil/configuracionLiga')"
+        >
+          Configurar liga
+        </button>
+      </mat-menu>
     </div>
     <div id="info">
       <div

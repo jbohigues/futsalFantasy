@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PuntosLiga } from 'src/app/interfaces/puntos-liga';
+import { PuntosLiga, PuntosLigaCreate } from 'src/app/interfaces/puntos-liga';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -15,5 +15,13 @@ export class PuntosLigaService {
   //Obtiene los puntos de cada accion guardadas en la configuracion
   getPuntosLiga(idLiga: number): Observable<PuntosLiga> {
     return this.http.get<PuntosLiga>(this.REST_API_SERVER + '/idL=' + idLiga);
+  }
+
+  //Crear configuracion puntos nueva liga
+  crearLiga(puntosLiga: PuntosLigaCreate): Observable<any> {
+    return this.http.post<any>(
+      this.REST_API_SERVER + '/crearPuntosLiga',
+      puntosLiga
+    );
   }
 }

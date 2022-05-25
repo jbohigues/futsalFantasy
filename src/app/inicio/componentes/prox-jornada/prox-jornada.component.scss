@@ -5,6 +5,7 @@
   box-shadow: 6px 8px 2px 0px rgba(0, 0, 0, 0.377);
   padding: 1vw;
   text-align: center;
+  font-size: larger;
 
   h1 {
     font-size: 1.5vw;
@@ -25,7 +26,7 @@
         justify-content: center;
         img {
           transition: transform 250ms;
-          width: 4vw;
+          width: 6vw;
           &:hover {
             transition: transform 250ms;
             transform: scale(1.2);

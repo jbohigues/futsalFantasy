@@ -55,4 +55,12 @@ export class EquiposUserService {
       equipoUser
     );
   }
+
+  //Actualiza los datos de un equipoUser
+  actualizarEquipoUser(equipo: EquipoUser): Observable<any> {
+    return this.http.put<any>(
+      this.REST_API_SERVER + '/update/e=' + equipo.id,
+      equipo
+    );
+  }
 }

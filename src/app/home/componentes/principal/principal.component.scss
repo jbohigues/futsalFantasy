@@ -1,114 +1,117 @@
 @font-face {
-    font-family: "Henny Penny";
-    src: url("/assets/tipografia/Henny_Penny/HennyPenny-Regular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
+  font-family: "Henny Penny";
+  src: url("/assets/tipografia/Henny_Penny/HennyPenny-Regular.ttf")
+    format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
 @font-face {
-    font-family: "Ultra";
-    src: url("/assets/tipografia/Ultra/Ultra-Regular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
+  font-family: "Ultra";
+  src: url("/assets/tipografia/Ultra/Ultra-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
 @font-face {
-    font-family: "Berkshire";
-    src: url("/assets/tipografia/Berkshire_Swash/BerkshireSwash-Regular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
+  font-family: "Berkshire";
+  src: url("/assets/tipografia/Berkshire_Swash/BerkshireSwash-Regular.ttf")
+    format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
 @font-face {
-    font-family: "Ubuntu";
-    src: url("/assets/tipografia/Ubuntu/Ubuntu-Regular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
+  font-family: "Ubuntu";
+  src: url("/assets/tipografia/Ubuntu/Ubuntu-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
 @font-face {
-    font-family: "Anton";
-    src: url("/assets/tipografia/Anton/Anton-Regular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
+  font-family: "Anton";
+  src: url("/assets/tipografia/Anton/Anton-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
 
-#main{
-    background: linear-gradient(black, var(--azul), var(--rosa));
-    height: auto;
+#main {
+  background: linear-gradient(black, var(--azul), var(--rosa));
+  height: auto;
 }
 
-.botonIniciarSesion{
-    display: flex;
-    justify-content: flex-end;
+.botonIniciarSesion {
+  display: flex;
+  justify-content: flex-end;
+  padding: 2vw;
+
+  & > a {
+    text-decoration: none;
+
+    #iniciarSesion {
+      font-size: 1.5vw;
+      padding: 1vw;
+      transition: transform 250ms;
+      border: none;
+      border-radius: 0.5vw;
+
+      &:hover {
+        background: var(--degradado);
+        transition: transform 250ms;
+        transform: scale(1.1);
+        color: white;
+      }
+    }
+  }
+}
+
+#titulo {
+  text-align: center;
+  img {
+    width: 50vw;
+  }
+}
+
+#contenido {
+  text-align: center;
+  p {
+    font-size: 4vw;
+    margin: 5vw 3vw;
     padding: 2vw;
-    
-    &>a{
-        text-decoration: none;
-        
-        #iniciarSesion{
-            font-size: 1.5vw;
-            padding: 1vw;
-            transition: transform 250ms;
-            border: none;
-            border-radius: 0.5vw;
-
-            &:hover{
-                background: var(--degradado);
-                transition: transform 250ms;
-                transform: scale(1.1);
-                color: white;
-            }
-        }
+    &.gradient {
+      background: linear-gradient(90deg, var(--azul), var(--rosa));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-}
-
-#titulo{
-    text-align: center;
-    img{
-        width: 50vw;
-    }
-}
-
-#contenido{
-    text-align: center;
-    p{
-        font-size: 4vw;
-        margin: 5vw 3vw;
-        padding: 2vw;
-        &.gradient{
-            background: linear-gradient(90deg, var(--azul), var(--rosa));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    }
-    #cardsHome{
-        display: flex;
-        justify-content: center;
-    }
-}
-
-#cuadroLogin{
-    background-color: white;
-    border-radius: 2vw;
-    margin: 10vw 15vw 5vw;
+  }
+  #cardsHome {
     display: flex;
     justify-content: center;
-    padding: 3vw;
+  }
 }
 
-#logocuadroLogin{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    h1{
-        font-family: "Henny Penny";
-        font-size: 5vw;
-    }
-    
-    img{
-        width: 12vw;
-        transform: rotate(180deg);
-    }
+#cuadroLogin {
+  background-color: white;
+  border-radius: 2vw;
+  margin: 10vw 15vw 5vw;
+  display: flex;
+  justify-content: center;
+  padding: 3vw;
+  box-shadow: 6px 8px 2px 0px rgba(0, 0, 0, 0.377);
+}
+
+#logocuadroLogin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    font-family: "Henny Penny";
+    font-size: 5vw;
+  }
+
+  img {
+    width: 12vw;
+    transform: rotate(180deg);
+  }
 }

@@ -9,6 +9,7 @@ import { TabsPerfilComponent } from './componentes/tabs-perfil/tabs-perfil.compo
 import { MatTabsModule } from '@angular/material/tabs';
 import { PlantillaPerfilComponent } from './componentes/plantilla-perfil/plantilla-perfil.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { MatTableModule } from '@angular/material/table';
     MatInputModule,
     MatTabsModule,
     MatTableModule,
+    MatMenuModule,
   ],
 })
 export class PerfilModule {}

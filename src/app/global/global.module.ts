@@ -13,12 +13,12 @@ import { MatMenuModule } from '@angular/material/menu';
   declarations: [HeaderComponent, FooterComponent, LoadingComponent],
   imports: [CommonModule, MatButtonModule, MatToolbarModule, MatMenuModule],
   exports: [HeaderComponent, FooterComponent, LoadingComponent],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
-      multi: true,
-    },
-  ],
+  // providers: [
+  //   {
+  //     provide: HTTP_INTERCEPTORS,
+  //     useClass: AuthInterceptorService,
+  //     multi: true,
+  //   },
+  // ],
 })
 export class GlobalModule {}

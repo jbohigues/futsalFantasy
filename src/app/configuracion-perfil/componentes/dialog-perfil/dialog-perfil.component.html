@@ -1,0 +1,7 @@
+<h1>¡Elige un logo para el equipo!</h1>
+<div id="logos">
+  <app-logo-equipo-user
+    *ngFor="let logo of logosBD"
+    [logo]="logo"
+  ></app-logo-equipo-user>
+</div>

@@ -1,0 +1,329 @@
+<form [formGroup]="confPerfilForm">
+  <div class="form">
+    <div id="formEquipo">
+      <table>
+        <tr>
+          <td class="fotoEquipo">
+            <img
+              src="{{ logoEquipo }}{{ equipoUser.foto }}.png"
+              alt="fotoEquipo"
+              (click)="abrirModal()"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <!-- NOMBRE DE EQUIPO -->
+            <mat-form-field class="campo" appearance="outline">
+              <mat-label>Nombre de equipo</mat-label>
+              <input
+                name="nombreEquipo"
+                matInput
+                placeholder="Escriba su nombre de equipo"
+                required
+                formControlName="nombreEquipo"
+                [(ngModel)]="equipoUser.nombre"
+                (change)="hayCambios = true"
+              />
+              <mat-error
+                class="alert"
+                *ngIf="
+                  confPerfilForm.controls['nombreEquipo'].invalid &&
+                  (confPerfilForm.controls['nombreEquipo'].dirty ||
+                    confPerfilForm.controls['nombreEquipo'].touched)
+                "
+              >
+                <span
+                  *ngIf="
+                    confPerfilForm.controls['nombreEquipo'].hasError('required')
+                  "
+                >
+                  Debes poner un nombre de equipo
+                </span>
+                <span
+                  *ngIf="
+                    confPerfilForm.controls['nombreEquipo'].hasError(
+                      'minlength'
+                    )
+                  "
+                >
+                  Mínimo 6 carácteres
+                </span>
+                <span
+                  *ngIf="
+                    confPerfilForm.controls['nombreEquipo'].hasError(
+                      'maxlength'
+                    )
+                  "
+                >
+                  Máximo 20 carácteres
+                </span>
+                <span
+                  *ngIf="
+                    confPerfilForm.controls['nombreEquipo'].hasError(
+                      'existeEquipo'
+                    )
+                  "
+                >
+                  Este nombre de equipo ya existe
+                </span>
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div id="formPerfil">
+      <!-- NOMBRE -->
+      <mat-form-field class="campo" appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input
+          name="nombre"
+          matInput
+          placeholder="Escriba su nombre"
+          required
+          formControlName="nombre"
+          [(ngModel)]="userLogueado.nombre"
+          (change)="hayCambios = true"
+        />
+        <mat-error
+          class="alert"
+          *ngIf="
+            confPerfilForm.controls['nombre'].invalid &&
+            (confPerfilForm.controls['nombre'].dirty ||
+              confPerfilForm.controls['nombre'].touched)
+          "
+        >
+          <span *ngIf="confPerfilForm.controls['nombre'].hasError('required')">
+            Debes poner un nombre
+          </span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="campo" appearance="outline">
+        <mat-label>Apellidos</mat-label>
+        <input
+          name="apellidos"
+          matInput
+          placeholder="Escriba sus apellidos (opcional)"
+          formControlName="apellidos"
+          [(ngModel)]="userLogueado.apellidos"
+          (change)="hayCambios = true"
+        />
+        <mat-error
+          class="alert"
+          *ngIf="
+            confPerfilForm.controls['apellidos'].invalid &&
+            (confPerfilForm.controls['apellidos'].dirty ||
+              confPerfilForm.controls['apellidos'].touched)
+          "
+        >
+          <span
+            *ngIf="confPerfilForm.controls['apellidos'].hasError('minlength')"
+          >
+            Mínimo 6 carácteres
+          </span>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- NOMBRE USUARIO -->
+      <mat-form-field
+        class="campo"
+        appearance="outline"
+        (change)="comprobarUsuario(confPerfilForm)"
+      >
+        <mat-label>Nombre de usuario</mat-label>
+        <input
+          name="nick"
+          matInput
+          placeholder="Escriba su nombre de usuario"
+          required
+          formControlName="usuario"
+          [(ngModel)]="userLogueado.usuario"
+          (change)="hayCambios = true"
+        />
+        <mat-error
+          class="alert"
+          *ngIf="
+            confPerfilForm.controls['usuario'].invalid &&
+            (confPerfilForm.controls['usuario'].dirty ||
+              confPerfilForm.controls['usuario'].touched)
+          "
+        >
+          <span *ngIf="confPerfilForm.controls['usuario'].hasError('required')">
+            Debes poner un nombre de usuario
+          </span>
+          <span
+            *ngIf="confPerfilForm.controls['usuario'].hasError('minlength')"
+          >
+            Mínimo 6 carácteres
+          </span>
+          <span
+            *ngIf="confPerfilForm.controls['usuario'].hasError('maxlength')"
+          >
+            Máximo 20 carácteres
+          </span>
+          <span
+            *ngIf="confPerfilForm.controls['usuario'].hasError('existeUser')"
+          >
+            Este usuario ya existe
+          </span>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- EMAIL -->
+      <mat-form-field class="campo" appearance="outline">
+        <mat-label>Correo electrónico</mat-label>
+        <input
+          name="email"
+          matInput
+          placeholder="usuario@ejemplo.com"
+          required
+          formControlName="email"
+          [(ngModel)]="userLogueado.email"
+          (change)="hayCambios = true"
+        />
+        <mat-error
+          class="alert"
+          *ngIf="
+            confPerfilForm.controls['email'].invalid &&
+            (confPerfilForm.controls['email'].dirty ||
+              confPerfilForm.controls['email'].touched)
+          "
+        >
+          <span *ngIf="confPerfilForm.controls['email'].hasError('required')">
+            Debes poner un email
+          </span>
+          <span *ngIf="confPerfilForm.controls['email'].hasError('email')">
+            Introduce un email válido
+          </span>
+        </mat-error>
+      </mat-form-field>
+      <br />
+      <div id="butPas">
+        <button class="buttonPassword" (click)="mostrarFormPassword(mensaje)">
+          {{ mensaje }}
+        </button>
+
+        <div id="password">
+          <!-- PASSWORD -->
+          <mat-form-field class="campo" appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input
+              name="password"
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              formControlName="password"
+              (change)="hayCambios = true"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hide = !hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+            >
+              <mat-icon class="password">{{
+                hide ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+            <mat-error
+              class="alert"
+              *ngIf="confPerfilForm.controls['password'].invalid"
+            >
+              <!-- <span
+                *ngIf="confPerfilForm.controls['password'].hasError('required')"
+              >
+                Debes escribir una contraseña
+              </span> -->
+              <span
+                *ngIf="
+                  confPerfilForm.controls['password'].hasError('minlength')
+                "
+              >
+                Mínimo 6 carácteres
+              </span>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- PASSWORD2 -->
+          <mat-form-field class="campo" appearance="outline">
+            <mat-label>Repetir contraseña</mat-label>
+            <input
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              formControlName="password2"
+              (change)="hayCambios = true"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hide = !hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+            >
+              <mat-icon class="password">{{
+                hide ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+            <mat-error
+              class="alert"
+              *ngIf="confPerfilForm.controls['password2'].invalid"
+            >
+              <!-- <span
+                *ngIf="
+                  confPerfilForm.controls['password2'].hasError('required')
+                "
+              >
+                Debes escribir una contraseña
+              </span> -->
+              <span
+                *ngIf="
+                  confPerfilForm.controls['password2'].hasError('minlength')
+                "
+              >
+                Mínimo 6 carácteres
+              </span>
+              <span
+                *ngIf="
+                  confPerfilForm.controls['password2'].hasError('notEqual')
+                "
+              >
+                Las contraseñas deben coincidir
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="button">
+    <button
+      type="submit"
+      class="cancelar"
+      mat-raised-button
+      (click)="navigate('/perfil')"
+    >
+      <span>Cancelar</span>
+    </button>
+    <button
+      type="submit"
+      mat-raised-button
+      class="buttonDisabled"
+      disabled
+      *ngIf="!hayCambios"
+    >
+      <span>No hay cambios</span>
+    </button>
+    <button
+      type="submit"
+      mat-raised-button
+      [disabled]="confPerfilForm.invalid"
+      [ngClass]="confPerfilForm.valid ? 'actualizar' : 'buttonDisabled'"
+      (click)="actualizarPerfil()"
+      *ngIf="hayCambios"
+    >
+      <span>Actualizar perfil</span>
+    </button>
+  </div>
+</form>

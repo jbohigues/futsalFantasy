@@ -13,6 +13,8 @@ import { MercadoModule } from './mercado/mercado.module';
 import { JornadaModule } from './jornada/jornada.module';
 import { LigaModule } from './liga/liga.module';
 import { PerfilModule } from './perfil/perfil.module';
+import { ConfiguracionPerfilModule } from './configuracion-perfil/configuracion-perfil.module';
+import { ConfiguracionLigaModule } from './configuracion-liga/configuracion-liga.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +31,8 @@ import { PerfilModule } from './perfil/perfil.module';
     HttpClientModule,
     LigaModule,
     PerfilModule,
+    ConfiguracionPerfilModule,
+    ConfiguracionLigaModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

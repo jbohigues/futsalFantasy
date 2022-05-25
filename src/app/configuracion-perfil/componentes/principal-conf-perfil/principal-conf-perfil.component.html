@@ -1,0 +1,16 @@
+<div id="main">
+  <app-header vista="perfil"></app-header>
+  <div id="contenido">
+    <div class="user" *ngIf="!loading">
+      <h1>Editar perfil</h1>
+      <div id="formConfPerfil">
+        <app-form-conf-perfil></app-form-conf-perfil>
+      </div>
+
+      <div *ngIf="loading">
+        <app-loading></app-loading>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

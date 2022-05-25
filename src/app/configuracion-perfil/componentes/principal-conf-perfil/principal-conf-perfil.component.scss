@@ -1,0 +1,21 @@
+#main {
+  background: linear-gradient(black, var(--azul));
+
+  #contenido {
+    margin: 2vw 10vw;
+    h1 {
+      margin: 5vw 0;
+      font-size: 4vw;
+      color: white;
+    }
+    #formConfPerfil {
+      background-color: white;
+      border-radius: 2vw;
+      // margin: 10vw 15vw 5vw;
+      display: flex;
+      justify-content: center;
+      padding: 3vw;
+      box-shadow: 6px 8px 2px 0px rgba(0, 0, 0, 0.377);
+    }
+  }
+}

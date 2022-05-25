@@ -3,11 +3,12 @@
 
   #contenido {
     margin: 2vw 10vw;
+    h1 {
+      margin: 3vw 0;
+    }
     .user {
-      margin: 3vw;
-      margin-top: 5vw;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       align-items: center;
 
       h1 {
@@ -15,7 +16,13 @@
         color: white;
       }
       button {
-        background-color: var(--rosa);
+        background-color: transparent;
+        mat-icon {
+          font-size: 3vw;
+          &:hover {
+            color: var(--rosa);
+          }
+        }
       }
     }
     #info {
@@ -119,26 +126,6 @@
       padding: 3vw 1vw 2vw;
     }
   }
-
-  //   #info {
-  //     // text-align: center;
-  //     display: flex;
-  //     justify-content: center;
-  //     align-items: center;
-  //     background-color: white;
-  //     border-radius: 2vw;
-  //     padding: 1vw 3vw;
-  //     font-size: 1.5vw;
-  //     margin: 0 1.5vw;
-  //     img {
-  //       width: 15vw;
-  //     }
-  //     table {
-  //       td {
-  //         height: 15vw;
-  //       }
-  //     }
-  //   }
 }
 
 #mensaje {
@@ -151,5 +138,4 @@
   color: black;
   z-index: 2;
   margin-left: 1vw;
-  //   height: 38vh;
 }

@@ -15,3 +15,7 @@ export interface PuntosLiga {
   excelentePartido: number;
   perfectoPartido: number;
 }
+
+export interface PuntosLigaCreate {
+  idLiga: number;
+}

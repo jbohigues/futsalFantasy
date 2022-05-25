@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { EquipoUser } from 'src/app/interfaces/equipo-user';
+import { LiderLiga } from 'src/app/interfaces/lider-liga';
+import { Liga } from 'src/app/interfaces/liga';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { EquiposUserService } from './equipos-user.service';
+import { LigaUserService } from './liga-user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +15,14 @@ export class LocalStorageService {
   private currentUser!: Usuario;
   private equipoUser!: EquipoUser;
   private posicion!: string;
+  private liga!: Liga;
+  private valido!: boolean;
+  private liderLiga!: LiderLiga;
 
-  constructor(private equipoUserService: EquiposUserService) {}
+  constructor(
+    private equipoUserService: EquiposUserService,
+    private ligaService: LigaUserService
+  ) {}
 
   //Guardamos la sesion de usuario en el localStorage (user, boolean isLogin y token)
   setSession(user: Usuario) {
@@ -22,10 +32,23 @@ export class LocalStorageService {
     this.equipoUserService.getEquipoUsuario(user.id).subscribe((res) => {
       this.equipoUser = res;
       this.isLogin = true;
-
       localStorage.setItem('equipoUser', JSON.stringify(this.equipoUser));
       localStorage.setItem('isLogin', JSON.stringify(this.isLogin));
       localStorage.setItem('token', JSON.stringify(user.token));
+
+      this.ligaService
+        .getLigaUsuario(this.equipoUser.idLiga)
+        .subscribe((res2) => {
+          console.log(res2);
+          if (res2) this.liga = res2;
+          if (this.liga.idUsuarioLider === this.currentUser.id) {
+            this.liderLiga = {
+              idUser: user.id,
+              idLiga: this.liga.id,
+            };
+            localStorage.setItem('liderLiga', JSON.stringify(this.liderLiga));
+          }
+        });
     });
   }
 
@@ -35,6 +58,8 @@ export class LocalStorageService {
     localStorage.removeItem('equipoUser');
     localStorage.removeItem('token');
     localStorage.removeItem('isLogin');
+    localStorage.removeItem('posicion');
+    localStorage.removeItem('liderLiga');
     this.isLogin = false;
   }
 
@@ -55,8 +80,6 @@ export class LocalStorageService {
 
   //Guardamos los nuevos datos del equipoUser
   setEquipoUser(equipoUser: EquipoUser) {
-    console.log(equipoUser);
-
     localStorage.setItem('equipoUser', JSON.stringify(equipoUser));
   }
 
@@ -83,5 +106,12 @@ export class LocalStorageService {
   //Devuelve la posicion del localStorage
   getPosicion() {
     return JSON.parse(String(localStorage.getItem('posicion')));
+  }
+
+  //Saber si un user es lider en cierta liga
+  getUserLider() {
+    return (this.liderLiga = JSON.parse(
+      String(localStorage.getItem('liderLiga'))
+    ) as LiderLiga);
   }
 }
