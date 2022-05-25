@@ -19,4 +19,19 @@ router.get("/idL=:idLiga", async function (req, res) {
   }
 });
 
+//Crear configuracion puntos nueva liga
+router.post("/crearPuntosLiga", async function (req, res) {
+  try {
+    const puntosliga = await prisma.puntosliga.create({
+      data: {
+        idLiga: Number(req.body.idLiga),
+      },
+    });
+    let status = puntosliga == null ? "fracaso" : "creado";
+    res.json({ puntosliga: puntosliga, status: status });
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
 module.exports = router;

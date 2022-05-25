@@ -110,6 +110,20 @@ router.post("/registro", async function (req, res, next) {
   res.json({ usuario: user, status: status });
 });
 
+//Actualiza la información de un usuario
+router.put("/update/u=:idUsuario", async function (req, res) {
+  const user = await prisma.usuarios.update({
+    where: {
+      id: Number(req.params.idUsuario),
+    },
+    data: {
+      ...req.body,
+    },
+  });
+  let status = user == null ? "mal" : "update";
+  res.json({ user: user, status: status });
+});
+
 const generateRandomString = () => {
   var length = 18;
   var resultado = "";

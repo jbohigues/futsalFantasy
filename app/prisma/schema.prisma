@@ -31,20 +31,21 @@ model cardshome {
 }
 
 model equiposreales {
-  id                                               Int               @id @default(autoincrement())
-  nombre                                           String            @db.VarChar(50)
-  foto                                             String            @db.VarChar(50)
-  puntos                                           Int               @default(0)
+  id                                               Int                  @id @default(autoincrement())
+  nombre                                           String               @db.VarChar(50)
+  foto                                             String               @db.VarChar(50)
+  puntos                                           Int                  @default(0)
   valor                                            Int?
-  partidosJugados                                  Int               @default(0)
-  victorias                                        Int               @default(0)
-  derrotas                                         Int               @default(0)
-  empates                                          Int               @default(0)
+  partidosJugados                                  Int                  @default(0)
+  victorias                                        Int                  @default(0)
+  derrotas                                         Int                  @default(0)
+  empates                                          Int                  @default(0)
   jugadores                                        Int?
   lesionados                                       Int?
-  calendario_calendario_idLocalToequiposreales     calendario[]      @relation("calendario_idLocalToequiposreales")
-  calendario_calendario_idVisitanteToequiposreales calendario[]      @relation("calendario_idVisitanteToequiposreales")
+  calendario_calendario_idLocalToequiposreales     calendario[]         @relation("calendario_idLocalToequiposreales")
+  calendario_calendario_idVisitanteToequiposreales calendario[]         @relation("calendario_idVisitanteToequiposreales")
   jugadoresreales                                  jugadoresreales[]
+  logosequiposreales                               logosequiposreales[]
 }
 
 model equiposusuarios {
@@ -108,6 +109,7 @@ model jugadoresreales {
   foto                      String?                     @db.VarChar(50)
   idEquipoReal              Int
   equiposreales             equiposreales               @relation(fields: [idEquipoReal], references: [id], onDelete: Cascade, map: "jugadoresreales_ibfk_3")
+  fotosjugadoresreales      fotosjugadoresreales[]
   infojugadoresenpartido    infojugadoresenpartido[]
   jugadoresrealesencadaliga jugadoresrealesencadaliga[]
   traspasos                 traspasos[]
@@ -209,6 +211,29 @@ model usuarios {
   estado          usuarios_estado   @default(P)
   equiposusuarios equiposusuarios[]
   ligas           ligas[]
+}
+
+model fotosjugadoresreales {
+  id              Int             @id @default(autoincrement())
+  idJugadorReal   Int
+  nombre          String          @db.VarChar(20)
+  jugadoresreales jugadoresreales @relation(fields: [idJugadorReal], references: [id], onDelete: Cascade, map: "fotosjugadoresreales_ibfk_2")
+
+  @@index([idJugadorReal], map: "idJugadorReal")
+}
+
+model logosequiposreales {
+  id            Int           @id @default(autoincrement())
+  idEquipoReal  Int
+  nombre        String        @db.VarChar(20)
+  equiposreales equiposreales @relation(fields: [idEquipoReal], references: [id], onDelete: Cascade, map: "logosequiposreales_ibfk_2")
+
+  @@index([idEquipoReal], map: "idEquipoReal")
+}
+
+model logosequipousers {
+  id     Int    @id @default(autoincrement())
+  nombre String @unique(map: "nombre") @db.VarChar(20)
 }
 
 enum iconosestadojugador_estado {

@@ -14,4 +14,5 @@ module.exports = function (app) {
   );
   app.use("/traspasos", require("./routes/traspasos"));
   app.use("/puntosLiga", require("./routes/puntosLiga"));
+  app.use("/logosEquipoUsers", require("./routes/logosEquipoUsers"));
 };

@@ -130,6 +130,22 @@ router.put("/actualizarSaldo/e=:idEquipoUser", async function (req, res) {
   res.json({ equipoUser: equipoUser, status: status });
 });
 
+//Actualiza la información de un equipo en configuracionPerfil
+router.put("/update/e=:idEquipo", async function (req, res) {
+  const equipo = await prisma.equiposusuarios.update({
+    where: {
+      id: Number(req.params.idEquipo),
+    },
+    data: {
+      nombre: req.body.nombre,
+      foto: req.body.foto,
+      // ...req.body,
+    },
+  });
+  let status = equipo == null ? "mal" : "update";
+  res.json({ equipo: equipo, status: status });
+});
+
 //Crear equipoUser
 router.post("/crearEquipoUser", async function (req, res) {
   try {
