@@ -1,0 +1,11 @@
+# RewriteEngine on
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteRule . index.php [L]
+
+RewriteEngine on
+# Si un directorio o fichero existe, se utiliza directamente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Sino, se envía a index.php
+RewriteRule . index.php
