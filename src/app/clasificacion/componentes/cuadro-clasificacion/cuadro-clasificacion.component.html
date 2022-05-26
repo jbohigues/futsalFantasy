@@ -83,7 +83,7 @@
         <img
           src="{{ logoEquipo }}{{ element.foto }}.png"
           alt="logoEquipo"
-          (click)="navigate(element.token, '/perfil', '/clasificacion')"
+          (click)="navigate(element.token, element.posicion, '/perfil')"
         />
       </td>
     </ng-container>

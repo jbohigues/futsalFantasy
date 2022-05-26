@@ -3,7 +3,12 @@
   <div id="contenido">
     <div class="user" *ngIf="!loading">
       <h1>Perfil de @{{ userLogueado.usuario }}</h1>
-      <button mat-fab aria-label="Example" [matMenuTriggerFor]="menu">
+      <button
+        mat-fab
+        aria-label="Example"
+        [matMenuTriggerFor]="menu"
+        *ngIf="miPerfil"
+      >
         <mat-icon>settings</mat-icon>
       </button>
       <mat-menu #menu="matMenu" xPosition="before">
@@ -24,7 +29,7 @@
         </button>
       </mat-menu>
     </div>
-    <div id="info">
+    <div id="info" *ngIf="!loading">
       <div
         id="equipo"
         (mouseenter)="mostrarMensaje()"
@@ -48,7 +53,8 @@
               </tr>
               <tr>
                 <p>
-                  <strong>Plantilla: </strong>{{ equipoUser.numJugadores }} jug.
+                  <strong>Plantilla: </strong
+                  >{{ equipoUser.jugadoresrealesencadaliga.length }} jug.
                 </p>
               </tr>
               <tr>
@@ -59,10 +65,9 @@
         </table>
       </div>
     </div>
-    <div id="tabs">
-      <app-tabs-perfil></app-tabs-perfil>
+    <div id="tabs" *ngIf="!loading">
+      <app-tabs-perfil [equipoUserLogueado]="equipoUser"></app-tabs-perfil>
     </div>
-
     <div *ngIf="loading">
       <app-loading></app-loading>
     </div>

@@ -70,8 +70,6 @@ export class OfertasComponent implements OnInit {
 
   ngOnInit(): void {
     this.ofertas.forEach((oferta: any) => {
-      console.log(oferta);
-
       //Si no tiene equipo, le metemos foto y nombre de equipo de Mercado
       if (oferta.idEquipoUserEmisor === null) {
         this.foto = 'logoMercado';
@@ -131,7 +129,6 @@ export class OfertasComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      console.log(data);
       if (data != undefined) {
         //ACEPTAR OFERTA
         if (data.resolucionOferta === 'aceptada') {
@@ -139,7 +136,12 @@ export class OfertasComponent implements OnInit {
           this.oferta = data.jugadorPuja.ofertaNumber;
           //Obtengo la informacion del jugador real que se quiere intercambiar
           this.jugadoresRealesService
-            .getInfoJugador(data.jugadorPuja.id, this.ofertas[0].idLiga)
+            .getInfoJugador(
+              data.jugadorPuja.id,
+              this.ofertas[0]
+                .equiposusuarios_equiposusuariosTotraspasos_idEquipoUserEmisor
+                .idLiga
+            )
             .subscribe((res) => {
               //Obtengo el equipo que recibirá el jugador
               this.equipoReceptor = res.equiposusuarios;

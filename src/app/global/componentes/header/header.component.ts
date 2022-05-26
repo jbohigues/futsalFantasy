@@ -25,9 +25,15 @@ export class HeaderComponent implements OnInit {
     else this.estilo = '';
   }
 
+  // navigate(ruta: string) {
+  //   this.router.navigate([ruta], {
+  //     queryParams: { u: this.currentUser.token },
+  //   });
+  // }
+
   navigate(ruta: string) {
     this.router.navigate([ruta], {
-      queryParams: { u: this.currentUser.token },
+      queryParams: { tok: this.currentUser.token },
     });
   }
 

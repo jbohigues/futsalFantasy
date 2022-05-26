@@ -1,6 +1,8 @@
 <mat-tab-group mat-align-tabs="center">
   <mat-tab label="Plantilla">
-    <app-plantilla-perfil></app-plantilla-perfil>
+    <app-plantilla-perfil
+      [equipoUserLogueado]="equipoUserLogueado"
+    ></app-plantilla-perfil>
   </mat-tab>
   <!-- <mat-tab label="Ventas" *ngIf="hayPujas">
     <app-ventas></app-ventas>

@@ -37,7 +37,6 @@ export class TabsComponent implements OnInit {
 
     //Compruebo si tengo ofertas, es decir, si alguien ha pujado por mis jugadores
     this.traspasosService.getOfertas(this.miEquipo.id).subscribe((res2) => {
-      console.log(res2);
       if (res2.status === 'hayOfertas') {
         this.hayOfertas = true;
         this.ofertas = res2.traspaso;

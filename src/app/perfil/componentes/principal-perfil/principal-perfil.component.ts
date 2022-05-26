@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { EquiposUserService } from 'src/app/global/servicios/equipos-user.service';
 import { LigaUserService } from 'src/app/global/servicios/liga-user.service';
 import { LocalStorageService } from 'src/app/global/servicios/local-storage.service';
+import { UsuariosService } from 'src/app/home/servicios/usuarios.service';
 import { EquipoUser } from 'src/app/interfaces/equipo-user';
 import { Usuario } from 'src/app/interfaces/usuario';
 
@@ -11,7 +13,8 @@ import { Usuario } from 'src/app/interfaces/usuario';
   styleUrls: ['./principal-perfil.component.scss'],
 })
 export class PrincipalPerfilComponent implements OnInit {
-  loading: boolean = false;
+  loading: boolean = true;
+  miPerfil: boolean = false;
   soyUserLider: boolean = false;
   posicion: string = '';
   userLogueado!: Usuario;
@@ -24,14 +27,18 @@ export class PrincipalPerfilComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private localStorage: LocalStorageService,
-    private ligaService: LigaUserService
+    private ligaService: LigaUserService,
+    private userService: UsuariosService,
+    private equiposService: EquiposUserService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
       this.token = this.localStorage.getToken();
-      console.log(typeof params.u, typeof this.token);
-      if (params.u === this.token) {
+      console.log(params.tok, this.token);
+      if (params.tok === this.token) {
+        //Es el perfil del userLogueado
+        this.miPerfil = true;
         //Obtenemos perfil usuario
         this.userLogueado = this.localStorage.getUsuarioLocalStorage();
         //Obtenemos el equipo del usuario
@@ -45,14 +52,31 @@ export class PrincipalPerfilComponent implements OnInit {
           .subscribe((res) => {
             console.log(res);
             this.idUserLider = res.idUsuarioLider;
-            if (this.idUserLider === this.userLogueado.id) {
+            if (this.idUserLider === this.userLogueado.id)
               this.soyUserLider = true;
-              this.loading = true;
-            }
+            this.loading = false;
           });
       } else {
-        alert('Lo siento, no puedes acceder');
-        this.router.navigate([params.r]);
+        //Si vamos a un perfil distinto del usuario logueado
+        this.userService
+          .getUsuarioPorToken(params.tok)
+          .subscribe((res: any) => {
+            console.log(res);
+            this.posicion = params.pos;
+            if (res.status === 'existe') {
+              //Obtenemos el usuario del perfil seleccionado
+              this.userLogueado = res.user;
+              //Obtenemos su equipo
+              this.equiposService
+                .getEquipoUsuario(this.userLogueado.id)
+                .subscribe((res2) => {
+                  if (res2) {
+                    this.equipoUser = res2;
+                    this.loading = false;
+                  }
+                });
+            }
+          });
       }
     });
   }

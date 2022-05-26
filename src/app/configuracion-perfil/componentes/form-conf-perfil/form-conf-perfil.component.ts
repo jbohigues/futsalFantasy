@@ -138,7 +138,7 @@ export class FormConfPerfilComponent implements OnInit {
                   //Si éxito: lo guardamos en localStorage
                   this.localStorage.setEquipoUser(this.equipoUser);
                   this.openSnackBar('Datos actualizados correctamente.');
-                  this.router.navigate(['/perfil']);
+                  this.navigate('/perfil');
                 }
               });
           }
@@ -167,7 +167,11 @@ export class FormConfPerfilComponent implements OnInit {
   }
 
   navigate(ruta: string) {
-    this.router.navigate([ruta]);
+    console.log(this.userLogueado);
+
+    this.router.navigate([ruta], {
+      queryParams: { tok: this.userLogueado.token },
+    });
   }
 
   abrirModal() {

@@ -1,17 +1,18 @@
 button {
   border: none !important;
   background-color: transparent !important;
-  img {
-    width: 8vw;
-    background-color: rgba(152, 152, 152, 0.634);
-    border-radius: 1vw;
-    transition: transform 250ms;
-    box-shadow: 6px 8px 2px 0px rgba(0, 0, 0, 0.377);
+}
 
-    &:hover {
-      transition: transform 250ms;
-      transform: scale(1.3);
-      background-color: var(--rosa);
-    }
+img {
+  width: 8vw;
+  background-color: rgba(152, 152, 152, 0.634);
+  border-radius: 1vw;
+  transition: transform 250ms;
+  box-shadow: 6px 8px 2px 0px rgba(0, 0, 0, 0.377);
+
+  &:hover {
+    transition: transform 250ms;
+    transform: scale(1.3);
+    background-color: var(--rosa);
   }
 }

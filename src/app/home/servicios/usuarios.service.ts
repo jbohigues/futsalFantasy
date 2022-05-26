@@ -39,6 +39,11 @@ export class UsuariosService {
     return this.http.get<any>(this.REST_API_SERVER + '/usuario/i=' + idUser);
   }
 
+  //Devuelve usuario a través de su id
+  getUsuarioPorToken(token: string): any {
+    return this.http.get<any>(this.REST_API_SERVER + '/usuario/t=' + token);
+  }
+
   //Crea un nuevo usuario
   registrarUsuario(
     nombre: string,

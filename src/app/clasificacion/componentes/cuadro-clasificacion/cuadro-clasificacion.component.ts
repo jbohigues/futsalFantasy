@@ -136,9 +136,9 @@ export class CuadroClasificacionComponent implements OnInit {
     }
   }
 
-  navigate(token: string, ruta: string, rutaActual: string) {
+  navigate(token: string, posicion: number, ruta: string) {
     this.router.navigate([ruta], {
-      queryParams: { u: token, r: rutaActual },
+      queryParams: { tok: token, pos: posicion },
     });
   }
 }

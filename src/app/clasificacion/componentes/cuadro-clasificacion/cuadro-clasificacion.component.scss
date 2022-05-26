@@ -72,8 +72,11 @@ table {
   .logoEquipo {
     img {
       width: 6vw;
+      transition: transform 250ms;
       &:hover {
-        background-color: var(--rosa);
+        transition: transform 250ms;
+        transform: scale(1.2);
+        // background-color: var(--rosa);
       }
     }
   }
