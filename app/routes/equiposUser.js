@@ -106,6 +106,7 @@ router.get("/l2=:id", async function (req, res) {
             jugadoresreales: true,
           },
         },
+        usuarios: true,
       },
     });
     res.json(equiposLiga);
