@@ -91,6 +91,22 @@ router.get("/usuario/i=:idUser", async function (req, res, next) {
   }
 });
 
+//Devuelve usuario a través de su id
+router.get("/usuario/t=:token", async function (req, res, next) {
+  try {
+    const user = await prisma.usuarios.findFirst({
+      where: {
+        token: req.params.token,
+      },
+    });
+
+    let status = user == null ? "noExiste" : "existe";
+    res.send({ user: user, status: status });
+  } catch (error) {
+    res.send("ERROR: " + error);
+  }
+});
+
 //Crea un nuevo usuario
 router.post("/registro", async function (req, res, next) {
   const { nombre, apellidos, usuario, email, password } = req.body;
