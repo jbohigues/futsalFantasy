@@ -80,7 +80,11 @@
         class="logoEquipo"
         [ngClass]="{ esUserLogueado: element.id === idBuscado }"
       >
-        <img src="{{ logoEquipo }}{{ element.foto }}.png" alt="logoEquipo" />
+        <img
+          src="{{ logoEquipo }}{{ element.foto }}.png"
+          alt="logoEquipo"
+          (click)="navigate(element.token, '/perfil', '/clasificacion')"
+        />
       </td>
     </ng-container>
 

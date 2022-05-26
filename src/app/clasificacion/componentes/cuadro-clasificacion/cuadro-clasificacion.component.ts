@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { EquiposUserService } from 'src/app/global/servicios/equipos-user.service';
 import { LocalStorageService } from 'src/app/global/servicios/local-storage.service';
 import { EquipoUser } from 'src/app/interfaces/equipo-user';
@@ -15,6 +16,7 @@ export interface Clasificacion {
   puntos: number;
   posicionRespectoUserLogueado: number;
   foto: string;
+  token: string;
 }
 
 @Component({
@@ -48,7 +50,8 @@ export class CuadroClasificacionComponent implements OnInit {
 
   constructor(
     private localStorage: LocalStorageService,
-    private equiposUsersService: EquiposUserService
+    private equiposUsersService: EquiposUserService,
+    private router: Router
   ) {}
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
@@ -82,8 +85,9 @@ export class CuadroClasificacionComponent implements OnInit {
             puntos: this.equiposUsers[i].puntos,
             posicionRespectoUserLogueado: 0,
             foto: this.equiposUsers[i].foto,
+            token: this.equiposUsers[i].usuarios.token,
           };
-          console.log(i + 1);
+          console.log(this.equiposClasificacion[i]);
 
           //Si el equipo es del usuario logueado, guardo la posicion en una variable y en el localStorage
           if (this.equiposUsers[i].idUsuario === this.userLogueado.id) {
@@ -130,5 +134,11 @@ export class CuadroClasificacionComponent implements OnInit {
       array[j].posicionRespectoUserLogueado = 1;
       array[j].difPuntos = array[j].puntos - array[pos].puntos;
     }
+  }
+
+  navigate(token: string, ruta: string, rutaActual: string) {
+    this.router.navigate([ruta], {
+      queryParams: { u: token, r: rutaActual },
+    });
   }
 }

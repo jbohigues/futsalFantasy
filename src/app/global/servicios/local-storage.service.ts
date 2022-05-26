@@ -29,12 +29,13 @@ export class LocalStorageService {
     this.currentUser = user;
     localStorage.setItem('currentUser', JSON.stringify(user));
 
+    this.isLogin = true;
+    localStorage.setItem('isLogin', JSON.stringify(this.isLogin));
+    localStorage.setItem('token', JSON.stringify(user.token));
+
     this.equipoUserService.getEquipoUsuario(user.id).subscribe((res) => {
       this.equipoUser = res;
-      this.isLogin = true;
       localStorage.setItem('equipoUser', JSON.stringify(this.equipoUser));
-      localStorage.setItem('isLogin', JSON.stringify(this.isLogin));
-      localStorage.setItem('token', JSON.stringify(user.token));
 
       this.ligaService
         .getLigaUsuario(this.equipoUser.idLiga)
@@ -65,9 +66,8 @@ export class LocalStorageService {
 
   //Devuelve un boolean segun tengamos la variable isLogin en localStorage o no
   getIsLogin(): boolean {
-    const islogin = localStorage.getItem('isLogin');
-    if (islogin != null) return true;
-    else return false;
+    const islogin = Boolean(localStorage.getItem('isLogin'));
+    return islogin;
   }
 
   //Guardamos en localStorage los nuevos datos cambiados del usuario
@@ -106,6 +106,11 @@ export class LocalStorageService {
   //Devuelve la posicion del localStorage
   getPosicion() {
     return JSON.parse(String(localStorage.getItem('posicion')));
+  }
+
+  //Devuelve el token del localStorage
+  getToken() {
+    return JSON.parse(String(localStorage.getItem('token')));
   }
 
   //Saber si un user es lider en cierta liga

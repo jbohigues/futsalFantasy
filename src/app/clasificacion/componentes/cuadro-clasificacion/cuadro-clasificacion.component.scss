@@ -72,6 +72,9 @@ table {
   .logoEquipo {
     img {
       width: 6vw;
+      &:hover {
+        background-color: var(--rosa);
+      }
     }
   }
 

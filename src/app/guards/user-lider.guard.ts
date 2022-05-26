@@ -7,11 +7,9 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { LigaUserService } from '../global/servicios/liga-user.service';
 import { LocalStorageService } from '../global/servicios/local-storage.service';
 import { EquipoUser } from '../interfaces/equipo-user';
 import { LiderLiga } from '../interfaces/lider-liga';
-import { Liga } from '../interfaces/liga';
 import { Usuario } from '../interfaces/usuario';
 
 @Injectable({

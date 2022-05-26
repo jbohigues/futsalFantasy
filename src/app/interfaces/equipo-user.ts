@@ -1,5 +1,6 @@
 import { JugadorReal } from './jugador-real';
 import { JugadorRealEnCadaLiga } from './jugador-real-en-cada-liga';
+import { Usuario } from './usuario';
 
 export interface EquipoUser {
   id: number;
@@ -12,6 +13,7 @@ export interface EquipoUser {
   numJugadores: number;
   jugadoresrealesencadaliga: JugadorRealEnCadaLiga[];
   jugadoresreales: JugadorReal[];
+  usuarios: Usuario;
 }
 
 export interface EquipoUserCreate {

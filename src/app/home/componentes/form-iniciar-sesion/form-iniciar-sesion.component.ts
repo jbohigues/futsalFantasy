@@ -8,7 +8,7 @@ import { UsuariosService } from '../../servicios/usuarios.service';
 @Component({
   selector: 'app-form-iniciar-sesion',
   templateUrl: './form-iniciar-sesion.component.html',
-  styleUrls: ['./form-iniciar-sesion.component.scss']
+  styleUrls: ['./form-iniciar-sesion.component.scss'],
 })
 export class FormIniciarSesionComponent implements OnInit {
   hide = true;
@@ -19,44 +19,45 @@ export class FormIniciarSesionComponent implements OnInit {
     private usuariosService: UsuariosService,
     private localstorage: LocalStorageService,
     private router: Router,
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar
+  ) {
     this.usuarioForm = this.formBuilder.group({
       usuario: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   //Comprueba que existe ese usuario con esa contraseña
   login(usuarioForm: FormGroup) {
     const { usuario, password } = usuarioForm.value;
-    
-    if (usuario === "" && password === "")
-      this.openSnackBar("Debe rellenar los campos.");
+
+    if (usuario === '' && password === '')
+      this.openSnackBar('Debe rellenar los campos.');
     else {
       this.usuariosService.getUsuario(usuario, password).subscribe((res) => {
-        
         //Si no devuelve ningun usuario => muestra mensaje de usuario o contraseña incorrectos
         if (res === null)
-          this.openSnackBar("Usuario o contraseña incorrectos.");
+          this.openSnackBar('Usuario o contraseña incorrectos.');
         else {
           this.localstorage.setSession(res);
-          this.openSnackBar("Usuario logueado con éxito.");
-          this.router.navigate(["/inicio"]);
+
+          if (this.localstorage.getIsLogin()) {
+            this.openSnackBar('Usuario logueado con éxito.');
+            this.router.navigate(['/inicio']);
+          }
         }
       });
     }
   }
 
   //Muestra un mensaje
-  openSnackBar(mensaje:string) {
+  openSnackBar(mensaje: string) {
     this._snackBar.open(mensaje, 'Cerrar', {
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
-      duration: 5*1000
+      duration: 5 * 1000,
     });
   }
-
 }
