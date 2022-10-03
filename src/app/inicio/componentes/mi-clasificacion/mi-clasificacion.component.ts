@@ -34,8 +34,6 @@ export class MiClasificacionComponent implements OnInit {
     this.equiposUsersService
       .getEquiposLigaOrdenados(this.miEquipo.idLiga)
       .subscribe((res) => {
-        console.log(res);
-
         this.equiposUsers = res;
 
         //Los recorro para ver cual es el equipo del usuario logueado
@@ -66,7 +64,6 @@ export class MiClasificacionComponent implements OnInit {
             this.dataSource.slice(i, 1);
           }
         }
-        console.log(this.dataSource);
         if (this.dataSource.length === 3) {
           //Saco la diferencia de puntos respecto al equipo del usuario logueado
           this.dataSource[0].difPuntos =
@@ -75,6 +72,7 @@ export class MiClasificacionComponent implements OnInit {
             this.dataSource[1].puntos - this.dataSource[2].puntos;
           this.dataSource[1].difPuntos = 0;
           this.dataSource[0].pos = 1;
+          this.dataSource[1].pos = 2;
           this.dataSource[2].pos = 3;
         }
       });

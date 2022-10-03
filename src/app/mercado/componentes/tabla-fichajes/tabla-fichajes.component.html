@@ -13,7 +13,7 @@
       </th>
       <td mat-cell *matCellDef="let element" class="primera">
         <img
-          src="{{ imagen }}{{ element.jugador }}.png"
+          src="{{ imagen }}{{ element.jugador }}.jpg"
           class="imagenJugador"
           alt="{{ element.alias }}"
         />
@@ -108,18 +108,18 @@
           matTooltip="Pujar por {{ element.alias }}"
           matTooltipPosition="right"
           color="basic"
-          *ngIf="element.precioVenta != null"
+          *ngIf="element.hayPuja"
           (click)="abrirModal(element)"
           [ngClass]="element.clasePuja"
         >
-          {{ element.precioVenta }}
+          {{ element.precioMiPujaFormat }}
         </button>
         <button
           mat-raised-button
           matTooltip="Pujar por {{ element.alias }}"
           matTooltipPosition="right"
           color="basic"
-          *ngIf="element.precioVenta == null"
+          *ngIf="!element.hayPuja"
           (click)="abrirModal(element)"
           [ngClass]="element.clasePuja"
         >

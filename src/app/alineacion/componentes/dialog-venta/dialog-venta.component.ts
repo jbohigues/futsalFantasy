@@ -72,7 +72,6 @@ export class DialogVentaComponent implements OnInit {
   ngOnInit(): void {
     //Obtengo el jugador
     this.jugador = this.data.jugadorVenta;
-    console.log(this.jugador);
 
     //Si venimos del mercado de fichajes, preparamos los datos para la vista
     if (this.data.vista === 'mercado') {

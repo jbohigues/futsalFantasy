@@ -162,7 +162,6 @@ export class PrincipalAlineacionComponent implements OnInit {
         pos = i;
       }
     }
-    console.log(this.jugadorSeleccionado);
 
     this.jugadoresRealesService
       .updateJugadorReal(

@@ -66,9 +66,7 @@ export class DialogComponent implements OnInit {
   ngOnInit(): void {
     //Si viene de la vista de ofertas
     if (this.data.vista === 'oferta') {
-      console.log(this.data);
       this.jugador = this.data.jugadorPuja;
-
       this.valorMercado = this.jugador.valor;
       this.pujaNumber = this.jugador.ofertaNumber;
 
@@ -108,7 +106,6 @@ export class DialogComponent implements OnInit {
       else this.pujaMaxima = this.data.pujaMaxima;
       //Obtengo el jugador
       this.jugador = this.data.jugadorPuja;
-      console.log(this.data);
 
       this.jugadorPuja = [];
       //Obtengo el precio de la puja en caso de que ya haya realizado una a ese jugador
@@ -373,12 +370,10 @@ export class DialogComponent implements OnInit {
   }
 
   rechazarOferta() {
-    console.log('rechazada');
     this.data.resolucionOferta = 'rechazada';
   }
 
   aceptarOferta() {
     this.data.resolucionOferta = 'aceptada';
-    console.log('aceptada');
   }
 }

@@ -18,7 +18,6 @@ export class InfoLigaComponent implements OnInit {
   constructor(private usuariosService: UsuariosService) {}
 
   ngOnInit(): void {
-    console.log(this.liga);
     this.dinero = new Intl.NumberFormat('de-DE', {
       style: 'currency',
       currency: 'EUR',
@@ -28,8 +27,6 @@ export class InfoLigaComponent implements OnInit {
     this.usuariosService
       .getUsuarioPorId(this.liga.idUsuarioLider)
       .subscribe((res: any) => {
-        console.log(res);
-
         if (res.status === 'existe') {
           this.usuarioLider = res.user;
           this.loading = false;

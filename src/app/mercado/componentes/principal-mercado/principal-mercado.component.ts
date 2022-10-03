@@ -28,8 +28,6 @@ export class PrincipalMercadoComponent implements OnInit {
     this.equipoUserService
       .getEquipoUsuario(this.usuarioLogueado.id)
       .subscribe((res) => {
-        console.log(res);
-
         this.equipoUserLogueado = res;
         this.capital = new Intl.NumberFormat('de-DE', {
           style: 'currency',

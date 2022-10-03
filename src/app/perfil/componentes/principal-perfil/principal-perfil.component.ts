@@ -35,7 +35,6 @@ export class PrincipalPerfilComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
       this.token = this.localStorage.getToken();
-      console.log(params.tok, this.token);
       if (params.tok === this.token) {
         //Es el perfil del userLogueado
         this.miPerfil = true;
@@ -45,12 +44,10 @@ export class PrincipalPerfilComponent implements OnInit {
         this.equipoUser = this.localStorage.getEquipoLocalStorage();
         //Obtenemos la posicion
         this.posicion = this.localStorage.getPosicion()!;
-        console.log(this.posicion);
         //Obtener el usuario lider de esta liga
         this.ligaService
           .getLigaUsuario(this.equipoUser.idLiga)
           .subscribe((res) => {
-            console.log(res);
             this.idUserLider = res.idUsuarioLider;
             if (this.idUserLider === this.userLogueado.id)
               this.soyUserLider = true;
@@ -61,7 +58,6 @@ export class PrincipalPerfilComponent implements OnInit {
         this.userService
           .getUsuarioPorToken(params.tok)
           .subscribe((res: any) => {
-            console.log(res);
             this.posicion = params.pos;
             if (res.status === 'existe') {
               //Obtenemos el usuario del perfil seleccionado

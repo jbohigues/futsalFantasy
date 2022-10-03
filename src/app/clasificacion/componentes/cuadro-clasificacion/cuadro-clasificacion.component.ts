@@ -87,7 +87,6 @@ export class CuadroClasificacionComponent implements OnInit {
             foto: this.equiposUsers[i].foto,
             token: this.equiposUsers[i].usuarios.token,
           };
-          console.log(this.equiposClasificacion[i]);
 
           //Si el equipo es del usuario logueado, guardo la posicion en una variable y en el localStorage
           if (this.equiposUsers[i].idUsuario === this.userLogueado.id) {

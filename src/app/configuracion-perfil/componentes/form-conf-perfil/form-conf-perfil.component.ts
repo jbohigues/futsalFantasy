@@ -69,7 +69,6 @@ export class FormConfPerfilComponent implements OnInit {
     this.userLogueado = this.localStorage.getUsuarioLocalStorage();
     //Obtengo su equipo
     this.equipoUser = this.localStorage.getEquipoLocalStorage();
-    console.log(this.userLogueado, this.equipoUser);
   }
 
   //Comprueba si el nombre de usuario introducido ya está registrado
@@ -121,19 +120,14 @@ export class FormConfPerfilComponent implements OnInit {
       this.usuariosService
         .actualizarUsuario(this.userLogueado)
         .subscribe((res) => {
-          console.log(res);
-
           if (res.status === 'update') {
             //Si éxito: lo guardamos en localStorage
             this.localStorage.setUser(this.userLogueado);
-            console.log(this.equipoUser);
 
             //Actualizamos equipoUser en bd
             this.equiposService
               .actualizarEquipoUser(this.equipoUser)
               .subscribe((res2) => {
-                console.log(res2);
-
                 if (res2.status === 'update') {
                   //Si éxito: lo guardamos en localStorage
                   this.localStorage.setEquipoUser(this.equipoUser);
@@ -167,8 +161,6 @@ export class FormConfPerfilComponent implements OnInit {
   }
 
   navigate(ruta: string) {
-    console.log(this.userLogueado);
-
     this.router.navigate([ruta], {
       queryParams: { tok: this.userLogueado.token },
     });
@@ -182,7 +174,6 @@ export class FormConfPerfilComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      console.log(data);
       if (data) {
         this.equipoUser.foto = data.nombre;
         this.hayCambios = true;

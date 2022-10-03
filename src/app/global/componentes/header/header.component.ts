@@ -32,9 +32,11 @@ export class HeaderComponent implements OnInit {
   // }
 
   navigate(ruta: string) {
-    this.router.navigate([ruta], {
-      queryParams: { tok: this.currentUser.token },
-    });
+    if (ruta === '/perfil') {
+      this.router.navigate([ruta], {
+        queryParams: { tok: this.currentUser.token },
+      });
+    } else this.router.navigate([ruta]);
   }
 
   logout() {

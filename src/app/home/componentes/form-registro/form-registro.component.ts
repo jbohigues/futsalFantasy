@@ -72,7 +72,6 @@ export class FormRegistroComponent implements OnInit {
   registrar(formGroup: FormGroup) {
     const { nombre, apellidos, usuario, email, password } =
       this.registroForm.value;
-    console.log(this.registroForm.value);
     if (nombre === '' || usuario === '' || email === '' || password === '')
       this.openSnackBar('Debe rellenar los campos obligatorios.');
     else {

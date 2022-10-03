@@ -46,15 +46,12 @@ export class PlantillaPerfilComponent implements OnInit {
     //Me guardo en un array los jugadores del equipo del usuario logueado
     this.equipoUserLogueado.jugadoresrealesencadaliga.forEach(
       (element: any) => {
-        console.log(element);
         this.misJugadores.push(element.jugadoresreales);
       }
     );
 
     //Guardo en un array los jugadores con el formato Jugadores
     this.misJugadores.forEach((jugador: any) => {
-      // console.log(jugador);
-
       this.jugadores.push({
         id: jugador.id,
         jugador: jugador.foto,

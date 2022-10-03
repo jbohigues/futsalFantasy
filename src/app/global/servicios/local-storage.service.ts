@@ -40,7 +40,6 @@ export class LocalStorageService {
       this.ligaService
         .getLigaUsuario(this.equipoUser.idLiga)
         .subscribe((res2) => {
-          console.log(res2);
           if (res2) this.liga = res2;
           if (this.liga.idUsuarioLider === this.currentUser.id) {
             this.liderLiga = {

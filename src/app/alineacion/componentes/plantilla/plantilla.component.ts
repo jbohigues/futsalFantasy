@@ -54,14 +54,11 @@ export class PlantillaComponent implements OnInit {
       this.titular = element.titular;
       if (element.titular) element.jugadoresreales.claseTitular = 'titular';
       else element.jugadoresreales.claseTitular = '';
-      // console.log(element);
       this.misJugadores.push(element.jugadoresreales);
     });
 
     //Guardo en un array los jugadores con el formato Jugadores
     this.misJugadores.forEach((jugador: any) => {
-      // console.log(jugador);
-
       this.jugadores.push({
         id: jugador.id,
         jugador: jugador.foto,

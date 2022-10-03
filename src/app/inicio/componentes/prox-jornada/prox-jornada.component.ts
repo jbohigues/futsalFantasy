@@ -49,7 +49,6 @@ export class ProxJornadaComponent implements OnInit {
       //Obtengo todas las jornadas ordenadas por fecha
       this.jornadas = res;
       let localDate;
-      console.log(this.hoy);
 
       //Comparo las fechas obtenidas con la fecha actual, para comprobar cual es la primera proxima
       for (const jornada of this.jornadas) {
@@ -66,8 +65,6 @@ export class ProxJornadaComponent implements OnInit {
       }
 
       if (this.proximaJornada != undefined) {
-        console.log(this.proximaJornada);
-
         //Configuracion de la cuenta regresiva
         this.diaString = new Intl.DateTimeFormat('es-Es', {
           weekday: 'long',

@@ -195,7 +195,6 @@ export class OfertasComponent implements OnInit {
                                               )
                                               .subscribe((res7) => {
                                                 //Creo la noticia respectiva
-                                                console.log(res7);
                                                 if (
                                                   res7.status === 'actualizado'
                                                 ) {
@@ -247,11 +246,9 @@ export class OfertasComponent implements OnInit {
               data.jugadorPuja.idEquipoUserEmisor
             )
             .subscribe((res) => {
-              console.log(res);
               if (res.status === 'hayJugador') {
                 this.traspaso = res.traspaso;
                 this.traspaso.estado = Estado.Rechazada;
-                console.log(this.traspaso);
                 this.traspasosService
                   .responderOferta(this.traspaso)
                   .subscribe((res2) => {
@@ -275,7 +272,6 @@ export class OfertasComponent implements OnInit {
       tema: Tema.Traspaso,
       texto: 'Paco ha fichado por el culo',
     };
-    console.log(this.noticia);
 
     this.noticiasService.crearNoticia(this.noticia).subscribe((res8) => {
       if (res8.status === 'nuevaNoticia') alert('Noticia creada');

@@ -43,7 +43,6 @@ export class CuadroAlineacionComponent implements OnInit {
     //Me guardo en un array los titulares del equipo del usuario logueado
     this.equipoUserLogueado.jugadoresrealesencadaliga.forEach((element) => {
       this.jugadoresReales.push(element.jugadoresreales);
-      console.log(element);
 
       if (element.titular)
         this.jugadoresTitulares.push(element.jugadoresreales);
@@ -53,8 +52,6 @@ export class CuadroAlineacionComponent implements OnInit {
       this.hayTitulares = true;
       //Me guardo en un map los jugadores titulares con la relacion posicion:jugador
       this.jugadoresTitulares.forEach((jugador: JugadorReal) => {
-        console.log(jugador);
-
         if (jugador != undefined) {
           if (this.map.get('AL') && jugador.posicion === 'AL')
             this.map.set(jugador.posicion + '2', jugador);

@@ -16,7 +16,7 @@
           </p>
           <p class="jugador">
             <img
-              src="{{ imagen }}{{ map.get('AL')?.foto }}.png"
+              src="{{ imagen }}{{ map.get('AL')?.foto }}.jpg"
               alt="ala"
               (click)="abrirSidenav('AL')"
               matTooltip="Ala"
@@ -27,7 +27,7 @@
           <p class="estado" [ngClass]="hover.get('AL')!">
             <img
               src="{{ imagenEstado }}{{ map.get('AL')?.estado }}.png"
-              alt="ala"
+              alt="estado"
             />
           </p>
         </div>
@@ -47,7 +47,7 @@
           </p>
           <p class="jugador">
             <img
-              src="{{ imagen }}{{ map.get('PT')?.foto }}.png"
+              src="{{ imagen }}{{ map.get('PT')?.foto }}.jpg"
               alt="portero"
               (click)="abrirSidenav('PT')"
               matTooltip="Portero"
@@ -58,7 +58,7 @@
           <p class="estado" [ngClass]="hover.get('PT')!">
             <img
               src="{{ imagenEstado }}{{ map.get('PT')?.estado }}.png"
-              alt="portero"
+              alt="estado"
             />
           </p>
         </div>
@@ -75,7 +75,7 @@
           </p>
           <p class="jugador">
             <img
-              src="{{ imagen }}{{ map.get('CI')?.foto }}.png"
+              src="{{ imagen }}{{ map.get('CI')?.foto }}.jpg"
               alt="cierre"
               (click)="abrirSidenav('CI')"
               matTooltip="Cierre"
@@ -86,7 +86,7 @@
           <p class="estado" [ngClass]="hover.get('CI')!">
             <img
               src="{{ imagenEstado }}{{ map.get('CI')?.estado }}.png"
-              alt="cierre"
+              alt="estado"
             />
           </p>
         </div>
@@ -103,7 +103,7 @@
           </p>
           <p class="jugador">
             <img
-              src="{{ imagen }}{{ map.get('PV')?.foto }}.png"
+              src="{{ imagen }}{{ map.get('PV')?.foto }}.jpg"
               alt="pivot"
               (click)="abrirSidenav('PV')"
               matTooltip="Pivot"
@@ -114,7 +114,7 @@
           <p class="estado" [ngClass]="hover.get('PV')!">
             <img
               src="{{ imagenEstado }}{{ map.get('PV')?.estado }}.png"
-              alt="pivot"
+              alt="estado"
             />
           </p>
         </div>
@@ -135,7 +135,7 @@
           </p>
           <p class="jugador">
             <img
-              src="{{ imagen }}{{ map.get('AL2')?.foto }}.png"
+              src="{{ imagen }}{{ map.get('AL2')?.foto }}.jpg"
               alt="ala2"
               (click)="abrirSidenav('AL2')"
               matTooltip="Ala"
@@ -147,7 +147,7 @@
           <p class="estado" [ngClass]="hover.get('AL2')!">
             <img
               src="{{ imagenEstado }}{{ map.get('AL2')?.estado }}.png"
-              alt="ala2"
+              alt="estado"
             />
           </p>
         </div>

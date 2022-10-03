@@ -43,10 +43,7 @@ export class PrincipalJornadaComponent implements OnInit {
           .getPuntosLiga(this.equipoUserLogueado.idLiga)
           .subscribe((res) => {
             this.puntosLiga = res;
-            console.log(this.puntosLiga);
           });
-        console.log(this.equipoUserLogueado);
-
         // if (this.equipoUserLogueado != undefined) this.loading = false;
 
         this.proxJornadaService.getProxJornada().subscribe((res) => {

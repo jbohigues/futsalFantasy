@@ -27,7 +27,6 @@ export class PosicionVaciaComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.posicion);
     switch (this.posicion) {
       case 'PT':
         this.posicionString = 'Portero';

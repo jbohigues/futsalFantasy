@@ -174,8 +174,6 @@ export class FormCrearLigaComponent implements OnInit {
                             this.posibleMercado === 0 &&
                             this.jugadoresMercado < 14
                           ) {
-                            console.log('jugMercado:' + this.jugadoresMercado);
-
                             this.jugadorAMercado = {
                               idLiga: this.equipoUser.idLiga,
                               idJugadorReal: element.id,

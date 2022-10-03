@@ -73,15 +73,12 @@ export class FormUnirseLigaComponent implements OnInit {
     this.ligaService
       .comprobarExisteCodigoLiga(codigoLiga.value)
       .subscribe((res) => {
-        console.log(res);
-
         if (res.status === 'noExiste') {
           this.hayLiga = false;
           return codigoLiga.setErrors({ noExiste: true });
         } else {
           this.liga = res.ligaUser;
           this.hayLiga = true;
-          console.log(this.liga);
         }
       });
   }
@@ -108,7 +105,6 @@ export class FormUnirseLigaComponent implements OnInit {
 
   unirseALiga(nombreEquipoForm: FormGroup) {
     const nombreEquipo = nombreEquipoForm.value;
-    console.log(nombreEquipo);
 
     if (nombreEquipo === '') this.openSnackBar('Debe rellenar el campo.');
     else {
@@ -207,7 +203,6 @@ export class FormUnirseLigaComponent implements OnInit {
       ) {
         if (libre.id === this.jugadoresOcupados[i].idJugadorReal) {
           this.jugadorOcupado = true;
-          console.log('iguales');
         }
       }
       if (!this.jugadorOcupado) this.jugadoresLibres.push(libre);
@@ -224,8 +219,6 @@ export class FormUnirseLigaComponent implements OnInit {
     this.jugadoresParaMiEquipo = [];
 
     for (let i = 0; i < this.jugadoresLibres.length && seguimos; i++) {
-      console.log(this.jugadoresLibres[i]);
-
       if (porteros === 3 && cierres === 3 && alas === 6 && pivots === 3)
         seguimos = false;
       switch (this.jugadoresLibres[i].posicion) {
@@ -233,7 +226,6 @@ export class FormUnirseLigaComponent implements OnInit {
           if (porteros < 3) {
             this.jugadoresParaMiEquipo.push(this.jugadoresLibres[i]);
             porteros++;
-            console.log(porteros);
           }
           break;
         }

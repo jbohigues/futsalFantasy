@@ -28,6 +28,7 @@ export interface Jugadores {
   clasePuja: string;
   precioMiPuja: number;
   idTraspaso: number;
+  precioMiPujaFormat: string;
 }
 
 @Component({
@@ -82,7 +83,6 @@ export class TablaFichajesComponent implements OnInit {
   ngOnInit() {
     //Obtengo mi equipo
     this.miEquipo = this.localStorage.getEquipoLocalStorage();
-    console.log(this.miEquipo);
 
     //Obtengo el capital de mi equipo
     this.dinero = this.miEquipo.dinero;
@@ -100,8 +100,6 @@ export class TablaFichajesComponent implements OnInit {
     this.jugadoresRealesService
       .getJugadoresMercado(this.miEquipo.idLiga)
       .subscribe((res) => {
-        console.log(res);
-
         this.jugadoresMercado = res;
         this.jugadoresMercado.forEach((jugador) => {
           //Si no tiene equipo, le metemos foto y nombre de equipo de Mercado
@@ -153,6 +151,7 @@ export class TablaFichajesComponent implements OnInit {
               hayPuja: false,
               precioMiPuja: 0,
               idTraspaso: 0,
+              precioMiPujaFormat: '',
             });
           }
         });
@@ -161,14 +160,17 @@ export class TablaFichajesComponent implements OnInit {
           this.traspasosService
             .comprobarExistePuja(jugador.id, this.miEquipo.id)
             .subscribe((res2) => {
-              console.log(res2);
-
               if (res2.status === 'hayJugador') {
                 jugador.clasePuja = 'hayPuja';
                 jugador.hayPuja = true;
                 jugador.precioMiPuja = res2.traspaso.precio;
                 jugador.idTraspaso = res2.traspaso.id;
-                console.log(jugador);
+                jugador.precioMiPujaFormat = new Intl.NumberFormat('de-DE', {
+                  style: 'currency',
+                  currency: 'EUR',
+                  maximumFractionDigits: 0,
+                  currencySign: 'accounting',
+                }).format(res2.traspaso.precio);
               }
             });
         });
@@ -181,7 +183,6 @@ export class TablaFichajesComponent implements OnInit {
 
   abrirModal(element: Jugadores) {
     this.jugadorPujaFormateado = element;
-    console.log(this.dinero);
 
     for (const jugador of this.jugadoresMercado) {
       if (this.jugadorPujaFormateado.id === jugador.idJugadorReal) {
@@ -202,8 +203,6 @@ export class TablaFichajesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      console.log(this.miEquipo);
-
       //Si lo que recibo del dialog tiene valores y no pulso sobre cancelar, creo una instancia de traspaso
       if (data != undefined && data.tipoPuja != 'cancel') {
         this.traspaso = {
@@ -235,7 +234,6 @@ export class TablaFichajesComponent implements OnInit {
               idJugador: this.traspaso.idJugador,
               precio: this.traspaso.precio,
             };
-            console.log(this.puja);
 
             this.traspasosService
               .pujarPorJugador(this.puja)
@@ -250,6 +248,7 @@ export class TablaFichajesComponent implements OnInit {
                     }
                   });
                   this.openSnackBar('Puja realizada con éxito');
+                  window.location.reload();
                 } else this.openSnackBar('No se ha podido realizar la puja');
               });
             //Si hay puja, hago update
@@ -263,9 +262,10 @@ export class TablaFichajesComponent implements OnInit {
             this.traspasosService
               .actualizarPuja(this.traspaso)
               .subscribe((res) => {
-                if (res.status === 'update')
+                if (res.status === 'update') {
                   this.openSnackBar('Puja actualizada con éxito');
-                else this.openSnackBar('No se ha podido actualizar la puja');
+                  window.location.reload();
+                } else this.openSnackBar('No se ha podido actualizar la puja');
               });
           }
         }

@@ -14,7 +14,6 @@ export class DialogPerfilComponent implements OnInit {
 
   ngOnInit(): void {
     this.logosService.getLogosEqUs().subscribe((res) => {
-      console.log(res);
       if (res) this.logosBD = res;
     });
   }
