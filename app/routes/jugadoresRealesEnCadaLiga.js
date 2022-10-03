@@ -96,7 +96,6 @@ router.get("/l=:idLiga/e=:idEquipoUser", async function (req, res) {
   try {
     let { idLiga, idEquipoUser } = req.params;
     if (idEquipoUser == 0) idEquipoUser = null;
-    console.log(idLiga, idEquipoUser);
     const jugadores = await prisma.jugadoresrealesencadaliga.findMany({
       where: {
         idLiga: Number(idLiga),
